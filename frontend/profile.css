@@ -1,0 +1,39 @@
+body {
+    font-family: 'Sixtyfour', static;
+    background-image: url('../imagenes/fondo.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    animation: slowPan 120s linear infinite;
+    min-height: 100vh;
+}
+
+@keyframes slowPan {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+
+.button {
+    font-family: 'Sixtyfour', static;
+    font-size: 10px;
+    padding: 1.5em 2em;
+}
+
+
+.navbar-center img {
+    max-height: none ;
+    height: 70px ;    
+    width: auto;
+}
+
+.navbar-profile .navbar{
+  background-color: #16001f;
+  padding-top: -3rem ;
+  padding-bottom: -3rem ;
+}
