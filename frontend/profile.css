@@ -70,3 +70,10 @@ body {
   align-items: center;
 }
 
+.posteo{
+  font-family: 'Jersey 10', sans-serif;  
+  font-size: 20px;
+  margin-top: 50px ;
+  margin: 30px ;
+  background-color: #1c0227;
+}
