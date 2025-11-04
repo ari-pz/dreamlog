@@ -1,9 +1,8 @@
 body {
     font-family: 'Sixtyfour', static;
-    background-image: url('../imagenes/fondo.gif');
+    background-image: url('./imagenes/fondo.gif');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     background-attachment: fixed;
     animation: slowPan 120s linear infinite;
     min-height: 100vh;
@@ -37,3 +36,37 @@ body {
   padding-top: -3rem ;
   padding-bottom: -3rem ;
 }
+
+
+.perfil{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin: 30px;
+}
+
+#img-usuario{
+  display: inline-block;
+  flex-shrink: 0;  
+  width: 200px;   
+  height: 200px;
+  margin-right: 20px;  
+}
+
+#boton-eliminar{
+  background-color:#4e031b ;
+}
+
+#boton-editar{
+  background-color:#4c0240;
+}
+
+#nombre-usuario{
+  color: white;
+}
+
+.media-content{
+  display: flex;
+  align-items: center;
+}
+
