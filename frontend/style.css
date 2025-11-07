@@ -1,0 +1,37 @@
+/* ============ NEW POST FORM ============ */
+
+.body-form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #240047;
+}
+.h2-form {
+  text-align: center;
+  font-size: 24px;  
+  color: white;
+}
+.newpost-container{
+  width: 300px;
+}
+.newpost-form{
+  display: flex;
+  flex-direction: column;
+}
+.newpost-label{
+  margin-top: 10px;
+  color: white;
+}
+.newpost-input{
+  margin-top: 5px;
+  padding: 5px;
+}
+.newpost-button{
+  margin-top: 15px;
+  padding: 8px; 
+}
+
+/* ============ DIVISION ============ */
+
