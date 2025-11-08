@@ -13,6 +13,53 @@
 
 </head>
 <body>
+    <div class="formulario" id="editar-perfil">  
+    <div class="field">
+      <label class="label">Nombre</label>
+      <div class="control has-icons-left has-icons-right">
+        <input class="input is-success" type="text" placeholder="Ingresa tu numbre" id="nombre-input">
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+        <span class="icon is-small is-right" id="icon-validacion">
+          
+        </span>
+      </div>
+      <p class="help is-success" id="mensaje-validacion">El nombre esta libre </p>
+    </div>
 
+    <div class="field">
+      <label class="label">Contraseña</label>
+      <div class="control has-icons-left has-icons-right">
+        <input class="input is-danger" type="text" placeholder="Nueva contraseña" id="contraseña-input">
+        <span class="icon is-small is-left">
+          <i class="fa-solid fa-key"></i>
+        </span>
+        <span class="icon is-small is-right" id="icon-contra">
+          <i class="fas fa-exclamation-triangle"></i>
+        </span>
+      </div>
+      <p id="mensaje-rechazo"></p>
+    </div>
+
+
+    <div class="field">
+      <label class="label">Bibliografia</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="Descripcion :v"></textarea>
+      </div>
+    </div>
+
+
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-link" id="editar-btn">Editar</button>
+      </div>
+      <div class="control">
+        <a class="button is-link is-light" href="prueba.html">Cancel</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
