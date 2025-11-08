@@ -3,25 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nuevo Sueño</title>
-  <link rel="stylesheet" href="style.css">
+  <title>DreamLog</title>
+  <link rel="stylesheet" href="newpost.css">
 </head>
 
 <body class="body-form">
   <main class="newpost-container">
-    <h2 class="h2-form">Comparte lo que soñaste</h2>
+    <h2 class="h2-form">Comparte tus sueños</h2>
       <form class="newpost-form">
+	  
 	  <label class="newpost-label">¿Qué soñaste?</label>
-	  <input class="newpost-input" required>
-
-	  <label class="newpost-label">Multimedia (Link)</label>
-	  <input class="newpost-input" required>
+	  <textarea class="post-textarea" placeholder="Escrbí tu sueño aquí..."></textarea>
 
 	  <label class="newpost-label">Tags</label>
-	  <input class="newpost-input" required>
+	  <div class="tags-wrapper">
+	    <input class="newpost-input" id="tagField" placeholder="Escribí un tag y presiona Enter">
+	    <div id="tagsContainer"></div>
+          </div>
 
 	  <button class="newpost-button">Publicar</button>
       </form>
   </main>
+
+  <script>
+    const tagField = document.getElementById("tagField");
+    const tagsContainer = document.getElementById("tagsContainer");
+
+    tagField.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const tagText = tagField.value.trim();
+
+        if (tagText !== "") {
+          const tag = document.createElement("span");
+          tag.classList.add("tag");
+          tag.textContent = "#" + tagText; // agrega el hashtag adelante
+          tagsContainer.appendChild(tag);
+          tagField.value = ""; // limpia el input
+	}
+      }
+    });
+  </script>
+
+
 </body>
 </html>
