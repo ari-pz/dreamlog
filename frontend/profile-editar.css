@@ -1,0 +1,30 @@
+body {
+    background-image: url(./imagenes/fondo-perfil-editar.jpeg);
+    border: none;  
+    min-height: 100vh;
+    animation: slowPan 120s linear infinite;
+
+}
+
+@keyframes slowPan {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.formulario{
+    background-color: rgba(40, 4, 67, 0.602) ;
+    max-width: 600px; 
+    margin: auto;   
+    padding: 55px;    
+}
+
+
+
+.label {
+    font-family: 'Sixtyfour', static;
+    margin-top: 30px;
+}

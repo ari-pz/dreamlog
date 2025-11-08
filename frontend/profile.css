@@ -1,0 +1,103 @@
+body {
+    font-family: 'Sixtyfour', static;
+    background-image: url('./imagenes/fondo.gif');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    animation: slowPan 120s linear infinite;
+    min-height: 100vh;
+}
+
+@keyframes slowPan {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+header {
+  background-color: rgba(18, 13, 31, 0.9);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(186, 146, 255, 0.3);
+  backdrop-filter: blur(6px);
+}
+
+#logo{
+  max-height: none ;
+  height: 70px ;    
+  width: auto;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  gap: 1.5rem;
+}
+
+a {
+  color: #e4e4e4;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: #ffe8a3;
+  text-shadow: 0 0 5px rgba(255,232,163,0.6);
+}
+
+
+
+.button {
+    font-family: 'Sixtyfour', static;
+    font-size: 10px;
+    padding: 1.5em 2em;
+}
+
+
+.perfil{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin: 30px;
+}
+
+#img-usuario{
+  display: inline-block;
+  flex-shrink: 0;  
+  width: 200px;   
+  height: 200px;
+  margin-right: 20px;  
+}
+
+#boton-eliminar{
+  background-color:#4e031b ;
+}
+
+#boton-editar{
+  background-color:#4c0240;
+}
+
+#nombre-usuario{
+  color: white;
+}
+
+.media-content{
+  display: flex;
+  align-items: center;
+}
+
+.posteo{
+  font-family: 'Jersey 10', sans-serif;  
+  font-size: 20px;
+  margin-top: 50px ;
+  margin: 30px ;
+  background-color: #1c0227;
+}

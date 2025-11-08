@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DreamLog</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=MedievalSharp&family=Sixtyfour&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="profile.css"> 
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <div class="nav-left">
+      <a href="#">Blogs</a>
+      <a href="#">Acerca de</a>
+    </div>
+
+    <div class="nav-center">
+      <a href="index.html" > 
+        <img src="./imagenes/logo.svg" alt="DreamLog" id="logo">
+      </a>
+    </div>
+
+    <div class="nav-right">
+      <a href="#" id="login-btn">Iniciar sesión</a>
+      <a href="#" id="register-btn">Registrarse</a>
+    </div>
+  </header>
+
+
+  <!-- Datos del Usuario -->
+  <div class="perfil"> 
+      <article class="media">
+        <figure class="image is-128x128" id="img-usuario">
+          <img class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png" />
+        </figure>
+        <div class="media-content">
+          <div class="content">
+            <p id="nombre-usuario">
+              <strong>Nombre Usuario</strong>
+              <br />
+              <br />
+              <h5> Descripcion </h5>
+              Blah blahb blah. 
+            </p>
+            <div class="buttons"> 
+              <a class="button is-primary" id="boton-editar" href="profile-editar.html">Editar</a>
+              <a class="button is-danger" id="boton-eliminar">Eliminar</a>
+            </div>
+          </div>
+          </div>
+      </article>
+    </div>
+
+
+    <div class="posteo" id="posteo-usuario"> 
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
+            <br />
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare
+                magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa
+                sem. Etiam finibus odio quis feugiat facilisis.
+            </p>
+          </div>
+        </div>
+      <div class="media-right">
+        <button class="delete"></button>
+      </div>
+    </article>
+  </div>
+
+</body>
+</html>

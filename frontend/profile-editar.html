@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"> 
+  <title>DreamLog</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=MedievalSharp&family=Sixtyfour&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="profile-editar.css">
+
+</head>
+<body>
+    <div class="formulario" id="editar-perfil">  
+    <div class="field">
+      <label class="label">Nombre</label>
+      <div class="control has-icons-left has-icons-right">
+        <input class="input is-success" type="text" placeholder="Ingresa tu numbre" id="nombre-input">
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+        <span class="icon is-small is-right" id="icon-validacion">
+          
+        </span>
+      </div>
+      <p class="help is-success" id="mensaje-validacion"></p>
+    </div>
+
+    <div class="field">
+      <label class="label">Contraseña</label>
+      <div class="control has-icons-left has-icons-right">
+        <input class="input is-danger" type="text" placeholder="Nueva contraseña" id="contraseña-input">
+        <span class="icon is-small is-left">
+          <i class="fa-solid fa-key"></i>
+        </span>
+        <span class="icon is-small is-right" id="icon-contra">
+          <i class="fas fa-exclamation-triangle"></i>
+        </span>
+      </div>
+      <p id="mensaje-rechazo"></p>
+    </div>
+
+
+    <div class="field">
+      <label class="label">Bibliografia</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="Descripcion..."></textarea>
+      </div>
+    </div>
+
+
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-link" id="editar-btn">Editar</button>
+      </div>
+      <div class="control">
+        <a class="button is-link is-light" href="profile.html">Cancel</a>
+      </div>
+    </div>
+  </div>
+  <script src="profile-editar.js"></script>
+</body>
+</html>
