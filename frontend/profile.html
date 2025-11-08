@@ -10,40 +10,30 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=MedievalSharp&family=Sixtyfour&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <link rel="stylesheet" href="profile.css"> 
 </head>
 <body>
-  <div class="navbar-profile" id="navbar-perfil"> 
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item">
-                    Blogs
-                </a>
-            </div>
+  <!-- Navbar -->
+  <header>
+    <div class="nav-left">
+      <a href="#">Blogs</a>
+      <a href="#">Acerca de</a>
+    </div>
 
-        <div class="navbar-center">
-            <a class="navbar-item" href="index.html">
-            <img src="./imagenes/logo.svg" alt="DreamLog" id="logo">
-            </a>
-        </div>
-    
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button iniciar-sesion">
-                        <strong>Nuevo Post</strong>
-                    </a>
-                    <a class="button is-light">
-                        Perfil
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-  </div>
+    <div class="nav-center">
+      <h1>DreamLog ✦</h1>
+    </div>
 
+    <div class="nav-right">
+      <a href="#" id="login-btn">Iniciar sesión</a>
+      <a href="#" id="register-btn">Registrarse</a>
+    </div>
+  </header>
+
+
+  <!-- Datos del Usuario -->
   <div class="perfil"> 
       <article class="media">
         <figure class="image is-128x128" id="img-usuario">
@@ -59,8 +49,8 @@
               Blah blahb blah. 
             </p>
             <div class="buttons"> 
-              <button class="button is-primary" id="boton-editar">Editar</button>
-              <button class="button is-danger" id="boton-eliminar">Eliminar</button>
+              <a class="button is-primary" id="boton-editar" href="profile-editar.html">Editar</a>
+              <a class="button is-danger" id="boton-eliminar">Eliminar</a>
             </div>
           </div>
           </div>

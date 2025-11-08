@@ -25,19 +25,6 @@ body {
 }
 
 
-.navbar-center img {
-    max-height: none ;
-    height: 70px ;    
-    width: auto;
-}
-
-.navbar-profile .navbar{
-  background-color: #16001f;
-  padding-top: -3rem ;
-  padding-bottom: -3rem ;
-}
-
-
 .perfil{
   position: relative;
   display: inline-flex;
