@@ -6,10 +6,19 @@
   align-items: center;
   height: 100vh;
   margin: 0;
+  background: radial-gradient(circle at 20% 30%, #1a122b, #0a0814 80%);
+  background-color: rgba(0, 0, 0, 0);
+  background-position-x: 0%;
+  background-position-y: 0%;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-image: radial-gradient(circle at 20% 30%, rgb(26, 18, 43), rgb(10, 8, 20) 80%);
+
 }
 .h2-form{
   text-align: center;
   font-size: 24px;  
+  color: white;
 }
 .newpost-container{
   width: 300px;
@@ -20,14 +29,34 @@
 }
 .newpost-label{
   margin-top: 10px;
+  margin-bottom: 6px;
+  color: white;
 }
 .newpost-input{
   margin-top: 5px;
   padding: 5px;
-  background-color: #f2f2f2;
 }
 .newpost-button{
   margin-top: 15px;
   padding: 8px; 
+}
+
+.post-textarea {
+  height: 150px;
+  padding: 12px;
+  font-size: 16px;
+  resize: none; 
+}
+
+input,
+textarea {
+  font-size: 14px; /* tamaño del texto del usuario */
+  padding: 8px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-size: 12px;      /* texto del placeholder más chico */
+  color: #888;          /* opcional: color más suave */
 }
 
