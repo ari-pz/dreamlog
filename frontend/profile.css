@@ -17,6 +17,43 @@ body {
   }
 }
 
+header {
+  background-color: rgba(18, 13, 31, 0.9);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(186, 146, 255, 0.3);
+  backdrop-filter: blur(6px);
+}
+
+#logo{
+  max-height: none ;
+  height: 70px ;    
+  width: auto;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  gap: 1.5rem;
+}
+
+a {
+  color: #e4e4e4;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: #ffe8a3;
+  text-shadow: 0 0 5px rgba(255,232,163,0.6);
+}
+
+
 
 .button {
     font-family: 'Sixtyfour', static;
