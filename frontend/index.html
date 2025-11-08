@@ -3,9 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DreamLog</title>
+  <title>DreamLog ✦</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1> Lov u </h1>
+
+  <!-- NAVBAR: Barra menú ubicada en la parte superior -->
+
+  <header>
+    <div class="nav-left">
+      <a href="#">Blogs</a>
+      <a href="#">Acerca de</a>
+    </div>
+
+    <div class="nav-center">
+      <h1>DreamLog ✦</h1>
+    </div>
+
+    <div class="nav-right">
+      <a href="#" id="login-btn">Iniciar sesión</a>
+      <a href="#" id="register-btn">Registrarse</a>
+    </div>
+  </header>
+
+  <!-- Barra de búsqueda: busca a partir de hashtags/etiquetas -->
+  
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Buscar sueños o #símbolos...">
+  </div>
+
+  <!-- Contenido principal; posteos -->
+  <main class="main-content">
+    <h2>Explora el mundo de los sueños</h2>
+    <p>Comparte, interpreta y descubre patrones ocultos en tus noches.</p>
+  </main>
+
+  <!-- Modal para iniciar sesión -->
+  <!-- Un modal es una ventana emergente que aparece encima del contenido principal y bloquea la interacción con el resto hasta que se cierre -->
+  
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Iniciar sesión</h2>
+      <form>
+        <input type="text" placeholder="Usuario" required>
+        <input type="password" placeholder="Contraseña" required>
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para el registro de usuarios -->
+  <div id="register-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Registrarse</h2>
+      <form>
+        <input type="text" placeholder="Nombre de usuario" required>
+        <input type="email" placeholder="Correo electrónico" required>
+        <input type="password" placeholder="Contraseña" required>
+        <button type="submit">Crear cuenta</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Obtener elementos
+    const loginModal = document.getElementById("login-modal");
+    const registerModal = document.getElementById("register-modal");
+    const loginBtn = document.getElementById("login-btn");
+    const registerBtn = document.getElementById("register-btn");
+    const closeBtns = document.querySelectorAll(".close");
+
+    // Abrir modales
+    loginBtn.onclick = () => loginModal.style.display = "flex";
+    registerBtn.onclick = () => registerModal.style.display = "flex";
+
+    // Cerrar modales
+    closeBtns.forEach(btn => btn.onclick = () => {
+      loginModal.style.display = "none";
+      registerModal.style.display = "none";
+    });
+
+    // Cerrar clickeando fuera
+    window.onclick = e => {
+      if (e.target === loginModal) loginModal.style.display = "none";
+      if (e.target === registerModal) registerModal.style.display = "none";
+    };
+  </script>
+
+  <script>
+    const frases = [
+      "Explorá tus símbolos nocturnos…",
+      "Buscá tus sueños o señales ocultas…",
+      "Descubrí patrones en tus noches…",
+      "Cada búsqueda es un viaje dentro de tu mente…",
+      "¿Qué misterios te visitaron hoy?"
+    ];
+
+    const input = document.getElementById("search-input");
+    let fraseIndex = 0;
+    let typingActive = true;
+    let userStartedTyping = false; // nuevo flag
+
+    // Si el usuario empieza a escribir, se pausa definitivamente el efecto
+    input.addEventListener("input", () => {
+      if (input.value.trim() !== "") {
+        userStartedTyping = true;
+        typingActive = false;
+        input.style.setProperty("--placeholder-opacity", 1);
+        input.placeholder = ""; // limpiar cualquier texto anterior
+      }
+    });
+
+    // Función para escribir letra por letra
+    function escribirFrase(frase, i = 0) {
+      if (!typingActive || userStartedTyping) return;
+
+      input.style.setProperty("--placeholder-opacity", 1);
+
+      if (i <= frase.length) {
+        input.placeholder = frase.substring(0, i);
+        setTimeout(() => escribirFrase(frase, i + 1), 100);
+      } else {
+        setTimeout(() => puffDesaparecer(), 3000);
+      }
+    }
+
+    // Efecto de desvanecimiento
+    function puffDesaparecer() {
+      if (!typingActive || userStartedTyping) return;
+
+      let opacity = 1;
+      const step = 0.05;
+
+      const fade = setInterval(() => {
+        opacity -= step;
+        input.style.setProperty("--placeholder-opacity", opacity);
+
+        if (opacity <= 0) {
+          clearInterval(fade);
+          input.placeholder = "";
+          fraseIndex = (fraseIndex + 1) % frases.length;
+          setTimeout(() => escribirFrase(frases[fraseIndex]), 500);
+        }
+      }, 60);
+    }
+
+    // Iniciar animación
+    escribirFrase(frases[fraseIndex]);
+  </script>
+
 </body>
 </html>
