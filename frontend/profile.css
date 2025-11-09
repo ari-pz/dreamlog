@@ -63,6 +63,7 @@ a:hover {
 
 
 .perfil{
+  color: white !important;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -77,6 +78,10 @@ a:hover {
   margin-right: 20px;  
 }
 
+#nombre-usuario strong{
+  color: white;
+}
+
 #boton-eliminar{
   background-color:#4e031b ;
 }
@@ -85,19 +90,25 @@ a:hover {
   background-color:#4c0240;
 }
 
-#nombre-usuario{
-  color: white;
-}
-
 .media-content{
+  color: white;
   display: flex;
   align-items: center;
 }
 
+.media-content h5{
+  color: white;
+}
+
 .posteo{
   font-family: 'Jersey 10', sans-serif;  
+  color:white;
   font-size: 20px;
   margin-top: 50px ;
   margin: 30px ;
   background-color: #1c0227;
+}
+
+#nombre{
+  color:white;
 }
