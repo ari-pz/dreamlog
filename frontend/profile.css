@@ -1,9 +1,7 @@
 body {
     font-family: 'Sixtyfour', static;
-    background-image: url('./imagenes/fondo.gif');
+    background-image: url('./imagenes/fondo-perfil.jpeg');
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     animation: slowPan 120s linear infinite;
     min-height: 100vh;
 }
@@ -18,7 +16,7 @@ body {
 }
 
 header {
-  background-color: rgba(18, 13, 31, 0.9);
+  background-color: #15041bc5;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,11 +81,11 @@ a:hover {
 }
 
 #boton-eliminar{
-  background-color:#4e031b ;
+  background-color: #310440e2 ;
 }
 
 #boton-editar{
-  background-color:#4c0240;
+  background-color: #42064e;
 }
 
 .media-content{
@@ -103,10 +101,11 @@ a:hover {
 .posteo{
   font-family: 'Jersey 10', sans-serif;  
   color:white;
+  border: 5px solid #21032ccf;
   font-size: 20px;
   margin-top: 50px ;
   margin: 30px ;
-  background-color: #1c0227;
+  background-color: #260534d4;
 }
 
 #nombre{
