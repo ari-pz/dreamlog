@@ -24,7 +24,7 @@ body {
 
 .formulario .input,
 .formulario .textarea{
-  font-family: 'Jersey 10', sans-serif;  
+  font-family: 'Cormorant Garamond', serif; 
   font-size: 18px;
   background-color: rgba(65, 8, 109, 0.479); 
   color: white;
@@ -38,6 +38,7 @@ body {
 
 .label {
   color:white;
-  font-family: 'Sixtyfour', static;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
   margin-top: 30px;
 }
