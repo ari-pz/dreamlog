@@ -1,5 +1,5 @@
 /* Página del Atrapasueños */
-.dreamcatcher-page {
+.atrapasueños-principal {
   text-align: center;
   padding: 3rem 1rem;
   color: #f4f4f4;
@@ -8,8 +8,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* Contenedor general */
-.dreamcatcher-container h2 {
+.atrapasueños-secundario h2 {
   font-family: 'Cormorant Garamond', serif;
   color: #c4a9ff;
   font-size: 2.4rem;
@@ -17,60 +16,178 @@
   margin-bottom: 2rem;
 }
 
-/* Atrapasueños (simulado con círculos y plumas) */
-.dreamcatcher {
-  position: relative;
-  width: 180px;
-  height: 180px;
-  margin: 0 auto 2rem auto;
+.atrapasueños {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto 4rem auto;
 }
 
-.ring {
-  width: 100%;
-  height: 100%;
-  border: 3px solid rgba(200,170,255,0.6);
-  border-radius: 50%;
-  box-shadow: 0 0 15px rgba(200,170,255,0.3);
-  animation: glow 3s ease-in-out infinite alternate;
+.anillo {
+    width: 100%;
+    height: 100%;
+    border: 5px solid rgba(168, 213, 255, 0.8); 
+    border-radius: 50%;
+    box-shadow: 
+        0 0 20px rgba(135, 206, 250, 0.6),  
+        inset 0 0 30px rgba(106, 154, 200, 0.4);
+    animation: glow 3s ease-in-out infinite alternate;
+    position: relative;
+    overflow: hidden;
+    background: rgba(30, 50, 90, 0.6);  
+
 }
 
-.threads {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, transparent 30%, rgba(255,255,255,0.05));
-  border-radius: 50%;
+.atrapasueños-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    opacity: 0.9;
 }
 
-/* Plumas decorativas */
-.feather {
-  position: absolute;
-  width: 14px;
-  height: 50px;
-  background: linear-gradient(to bottom, rgba(184,146,255,0.8), transparent);
-  border-radius: 50% 50% 40% 40%;
-  animation: float 4s ease-in-out infinite alternate;
+.plumas {
+   position: absolute;
+    width: 300px;
+    height: 200px;
+    bottom: -210px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.feather.left {
-  left: 45px;
-  bottom: -60px;
-  animation-delay: 0.5s;
+.pluma {
+   position: absolute;
+    width: 16px;
+    height: 60px;
+    background: rgba(168, 213, 255, 0.643);
+    border-radius: 40% 40% 50% 50%;
+    opacity: 0.4;
+    transition: all 0.5s ease;
+    animation: sway 3s ease-in-out infinite; /*movimiento suave*/
 }
 
-.feather.right {
-  right: 45px;
-  bottom: -60px;
+.pluma:nth-child(1) { 
+    left: 20%; 
+    top: 0; 
+    animation-delay: 0s;
 }
+.pluma:nth-child(2) { 
+    left: 40%; 
+    top: 0;
+    animation-delay: 0.2s;
+}
+.pluma:nth-child(3) { 
+    left: 60%; 
+    top: 0;
+    animation-delay: 0.4s;
+}
+.pluma:nth-child(4) { 
+    left: 80%; 
+    top: 0;
+    animation-delay: 0.6s;
+}
+
+.pluma:nth-child(5) { 
+    left: 30%; 
+    top: 40px;
+    animation-delay: 0.8s;
+}
+
+.pluma:nth-child(6) { 
+    left: 70%; 
+    top: 40px;
+    animation-delay: 1.2s;
+}
+
+.pluma:nth-child(7) { 
+    left: 35%; 
+    top: 80px;
+    animation-delay: 1.4s;
+}
+.pluma:nth-child(8) { 
+    left: 50%; 
+    top: 75px;
+    animation-delay: 1.6s;
+}
+.pluma:nth-child(9) { 
+    left: 65%; 
+    top: 80px;
+    animation-delay: 1.8s;
+}
+
+.pluma:nth-child(10) { 
+    left: 40%; 
+    top: 120px;
+    animation-delay: 2s;
+}
+.pluma:nth-child(11) { 
+    left: 60%; 
+    top: 120px;
+    animation-delay: 2.2s;
+}
+
+.pluma:nth-child(12) { 
+    left: 50%; 
+    top: 160px;
+    animation-delay: 2.4s;
+}
+
+.pluma.active {
+    opacity: 1;
+    background: rgba(168, 213, 255, 0.7);
+    box-shadow: 0 0 15px rgba(136, 204, 246, 0.8);  /* Glow celeste */
+    filter: brightness(1.4);
+
+}
+
+/* Animación de flotación con delays */
+.pluma:nth-child(1) { animation-delay: 0s; }
+.pluma:nth-child(2) { animation-delay: 0.3s; }
+.pluma:nth-child(3) { animation-delay: 0.6s; }
+.pluma:nth-child(4) { animation-delay: 0.9s; }
+.pluma:nth-child(5) { animation-delay: 1.2s; }
+.pluma:nth-child(6) { animation-delay: 1.5s; }
+.pluma:nth-child(7) { animation-delay: 1.8s; }
+.pluma:nth-child(8) { animation-delay: 2.1s; }
+.pluma:nth-child(9) { animation-delay: 2.4s; }
+.pluma:nth-child(10) { animation-delay: 2.7s; }
+.pluma:nth-child(11) { animation-delay: 3s; }
+.pluma:nth-child(12) { animation-delay: 3.3s; }
 
 @keyframes float {
-  from { transform: translateY(0); opacity: 0.9; }
-  to { transform: translateY(8px); opacity: 0.7; }
+    0%, 100% { 
+        opacity: 0.3;
+        filter: brightness(1);
+    }
+    50% { 
+        opacity: 0.5;
+        filter: brightness(1.2);
+    }
 }
 
-@keyframes glow {
-  from { box-shadow: 0 0 10px rgba(200,170,255,0.4); }
-  to { box-shadow: 0 0 25px rgba(255,232,163,0.4); }
+@keyframes sway {
+   0%, 100% { 
+        transform: rotate(-2deg);
+    }
+    50% { 
+        transform: rotate(2deg);
+    }
 }
+
+
+@keyframes glow {
+    from { 
+        box-shadow: 
+            0 0 15px rgba(135, 206, 250, 0.5),
+            inset 0 0 30px rgba(106, 154, 200, 0.3);
+    }
+    to { 
+        box-shadow: 
+            0 0 30px rgba(168, 213, 255, 0.8),
+            inset 0 0 40px rgba(255, 215, 130, 0.3); 
+    }
+}
+
 
 /* Estadísticas */
 .dream-stats {
