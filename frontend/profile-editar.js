@@ -1,3 +1,28 @@
+//Validacion del nombre de usuario
+const nombreInput = document.getElementById('nombre-input');
+const iconoValidacion = document.getElementById('icon-validacion'); 
+const mensajeValidacion = document.getElementById('mensaje-validacion');
+
+mensajeValidacion.textContent= '';
+iconoValidacion.innerHTML = '';
+nombreInput.classList.remove('is-success', 'is-danger');
+
+async function verificarNombre(nombre) {
+  if (nombre.length < 4) {
+    nombreInput.classList.remove('is-success');
+    nombreInput.classList.add('is-danger')
+    mensajeValidacion.textContent = 'El nombre es muy corto';
+    mensajeValidacion.className = 'help is-danger';
+    iconoValidacion.innerHTML = '<i class="fa-solid fa-skull"></i>';
+    return;
+  }
+
+  // Mostrar loading
+  iconoValidacion.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+}
+
+
+// Validacion de la Contraseña
 const contraInput = document.getElementById('contraseña-input');
 const iconValida = document.getElementById('icon-contra');  
 const mensajeValidar = document.getElementById('mensaje-rechazo');
