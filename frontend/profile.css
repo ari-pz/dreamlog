@@ -1,5 +1,5 @@
 body {
-    font-family: 'Sixtyfour', static;
+    font-family: 'Poppins', sans-serif;
     background-image: url('./imagenes/fondo-perfil.jpeg');
     background-size: cover;
     animation: slowPan 120s linear infinite;
@@ -52,11 +52,10 @@ a:hover {
 }
 
 
-
 .button {
-    font-family: 'Sixtyfour', static;
-    font-size: 10px;
-    padding: 1.5em 2em;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  padding: 1em 1.5em;
 }
 
 
@@ -78,6 +77,7 @@ a:hover {
 
 #nombre-usuario strong{
   color: white;
+  font-size: 30px;
 }
 
 #boton-eliminar{
@@ -96,10 +96,11 @@ a:hover {
 
 .media-content h5{
   color: white;
+  font-size: 20px;
 }
 
 .posteo{
-  font-family: 'Jersey 10', sans-serif;  
+  font-family: 'Cormorant Garamond', serif; 
   color:white;
   border: 5px solid #21032ccf;
   font-size: 20px;
