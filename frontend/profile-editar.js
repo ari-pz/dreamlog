@@ -1,4 +1,4 @@
-//Validacion del nombre de usuario
+//Validacion del nombre
 const nombreInput = document.getElementById('nombre-input');
 const iconoValidacion = document.getElementById('icon-validacion'); 
 const mensajeValidacion = document.getElementById('mensaje-validacion');
@@ -74,5 +74,43 @@ contraInput.addEventListener('input', function() {
     iconValida.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
     mensajeValidar.className = 'help is-danger';
     mensajeValidar.textContent = 'La contraseña debe tener al menos 8 caracteres';
+  }
+});
+
+//Funcionalidad Modal
+const modal = document.getElementById('modal-resultado');
+const modalTitulo = document.getElementById('modal-titulo');
+const modalMensaje = document.getElementById('modal-mensaje');
+const btnAceptar = document.getElementById('btn-aceptar');
+const editarBtn = document.getElementById('editar-btn');
+
+
+function mostrarModal(titulo, mensaje, esExito = true) {
+  modalTitulo.textContent = titulo;
+  modalMensaje.textContent = mensaje;
+  modal.classList.add('is-active');  
+  if (esExito) {
+    btnAceptar.className = 'button is-success';
+  } else {
+    btnAceptar.className = 'button is-danger';
+  }
+}
+
+function cerrarModalFunc() {
+  modal.classList.remove('is-active');
+}
+
+// Cierro modal si toco el boton
+btnAceptar.addEventListener('click', cerrarModalFunc);
+
+
+editarBtn.addEventListener('click', function() {
+  const nombreValido = nombreInput.classList.contains('is-success');
+  const contrasenaValida = contraInput.classList.contains('is-success');
+  
+  if (nombreValido && contrasenaValida) {
+    mostrarModal('Éxito >-<', 'Datos actualizados exitosamente.', true);
+  } else {
+    mostrarModal('Error :(', 'Por favor, fijate de que el nombre sea válido y la contraseña tenga al menos 8 dígitos.', false);
   }
 });
