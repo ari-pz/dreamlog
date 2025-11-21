@@ -9,14 +9,15 @@
 </head>
 <body>
 
-  <div id="navbar"></div>div>
+  <div id="navbar"></div>
 
   <script>
-    fetch("/navbar.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementbyId("navbar")
-      });
+  fetch("navbar.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("navbar").innerHTML = data;
+    });
+
   </script>
 
   <!-- Barra de búsqueda: busca a partir de hashtags/etiquetas -->
