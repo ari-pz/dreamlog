@@ -8,19 +8,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+  
+  <!-- Navbar -->
+  
+  <header>
+      <div class="nav-left">
+        <a href="#">Blogs</a>
+        <a href="#">Acerca de</a>
+      </div>
+  
+      <div class="nav-center">
+        <a href="index.html" > 
+          <img src="./imagenes/logo.svg" alt="DreamLog" id="logo">
+        </a>
+      </div>
+  
+      <div class="nav-right">
+        <a href="#" id="login-btn">Iniciar sesión</a>
+        <a href="#" id="register-btn">Registrarse</a>
+      </div>
+    </header>
 
-  <!-- Fetch navbar -->
-
-  <div id="navbar"></div>
-
-  <script>
-  fetch("navbar.html")
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById("navbar").innerHTML = data;
-    });
-
-  </script>
 
   <!-- Barra de búsqueda: busca a partir de hashtags/etiquetas -->
   
