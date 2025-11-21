@@ -9,23 +9,15 @@
 </head>
 <body>
 
-  <!-- NAVBAR: Barra menú ubicada en la parte superior -->
+  <div id="navbar"></div>div>
 
-  <header>
-    <div class="nav-left">
-      <a href="#">Ranking</a>
-      <a href="#"></a>
-    </div>
-
-    <div class="nav-center">
-      <h1>DreamLog ✦</h1>
-    </div>
-
-    <div class="nav-right">
-      <a href="#" id="login-btn">Iniciar sesión</a>
-      <a href="#" id="register-btn">Registrarse</a>
-    </div>
-  </header>
+  <script>
+    fetch("/navbar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementbyId("navbar")
+      });
+  </script>
 
   <!-- Barra de búsqueda: busca a partir de hashtags/etiquetas -->
   
