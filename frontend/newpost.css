@@ -16,11 +16,6 @@
   background-image: radial-gradient(circle at 20% 30%, rgb(26, 18, 43), rgb(10, 8, 20) 80%);
 }
 
-.h2-form{
-  text-align: center;
-  font-size: 24px;  
-  color: white;
-}
 .newpost-container{
   width: 300px;
 }
@@ -28,26 +23,38 @@
   display: flex;
   flex-direction: column;
 }
-.newpost-label{
-  margin-top: 10px;
-  margin-bottom: 6px;
-  color: white;
+
+/* PROFILE */
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.newpost-input{
-  margin-top: 5px;
-  padding: 5px;
+.icon-profile {
+  width: 100px;
+  height: 100px;
+  background-color: #ccc;  /*TEMPORAL*/
+  border: 3px solid #f0f0f0;
+}
+.username {
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
   font-family: Arial, sans-serif;
 }
-.post-textarea {
-  height: 150px;
-  padding: 12px;
-  resize: none; 
-}
 
+/* TEXTAREA */
+.post-textarea {
+  height: 100px;
+  padding: 5px;
+  resize: none;
+  font-family: Arial, sans-serif;
+  font-size: 14px; 
+}
 
 
 /* BUTTONS */
-
 .newpost-button{
   margin-top: 15px;
   width: 50%;
@@ -59,6 +66,7 @@
   text-align: center;
 }
 
+
 /* TAGS */
 
 .tags-wrapper {
@@ -66,21 +74,22 @@
   flex-direction: column;
   gap: 8px;
 }
-
+.tags-input{
+  margin-top: 5px;
+  padding: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
 #tagsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
-
 .tag {
   background-color: #4c0240; 
   color: white;            
-  
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 12px;
+  font-family: Arial, sans-serif;
 }
-
-
-
