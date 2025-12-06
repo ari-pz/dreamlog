@@ -1,10 +1,32 @@
 body {
-    background-image: url(./imagenes/fondo-perfil-editar.jpeg);
     border: none;  
-    min-height: 100vh;
     font-family: 'Cormorant Garamond', serif; 
-    animation: slowPan 120s linear infinite;
+}
 
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-image: url(./imagenes/fondo-perfil-editar.jpeg);
+    animation: slowPan 120s linear infinite;
+    z-index: -2;
+}
+
+
+body::after { 
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #15041b99; 
+    backdrop-filter: blur(1px); 
+    pointer-events: none; /* Para que no bloquee clics */
+    z-index: -1;
 }
 
 @keyframes slowPan {
@@ -17,7 +39,6 @@ body {
 }
 
 .formulario{
-    background-color: rgba(40, 4, 67, 0.602) ;
     max-width: 600px; 
     margin: auto;   
     padding: 55px;    
@@ -45,11 +66,12 @@ body {
 #editar-btn{
   font-family: 'Cormorant Garamond', serif;
   font-size: 20px;
-  background-color: rgb(71, 16, 125);  
+  background-color:  #3d0057;  
 }
 
 #cancelar-btn{
   font-size: 20px;
+  color:#3d0057;
 }
 
 .modal-card {
