@@ -15,21 +15,59 @@
     <h2>Dreamlog</h2>
   </div>
 
+
   <div class="form-container">
-    <form>
+    <form id="registerForm">
       <div class="form-input">
-        <input placeholder="Usuario">
-        <input placeholder="Contraseña">
-	      <input placeholder="Biografía">
-        <input placeholder="Foto de Perfil (Link)">
+        <input id="username" placeholder="Usuario">
+        <input id="password" placeholder="Contraseña">
+	      <input id="bio" placeholder="Biografía">
+        <input id="pfp" placeholder="URL de Foto de Perfil">
       </div>
-      <button>Crear cuenta</button>
+      <button id="submit">Crear cuenta</button>
       <div class="login-register-link">
         <p>¿Ya tienes una cuenta?</p>
         <a href="login.html">Ingresa aquí</a>
       </div>
     </form>
   </div>
-</body>
 
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("registerForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const bio = document.getElementById("bio").value || null;
+      const pfp = document.getElementById("pfp").value || null;
+
+      try {
+        const res = await fetch("/api/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password, bio, pfp})
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("loggedUser", JSON.stringify({
+            user_id: data.user_id,
+            username: data.username
+          }));
+          window.location.href = "/inicio";
+        } else {
+          alert(data.error || "Error al registrarse");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error al registrarse");
+      }
+    });
+  });
+  </script>
+
+
+</body>
 </html>

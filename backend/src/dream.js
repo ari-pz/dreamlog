@@ -39,6 +39,16 @@ async function getUserByUsername(username) {
   return result.rows[0];
 }
 
+// POST USER
+async function createUser(username, password, bio, pfp) {
+  const result = await dbClient.query( 
+    `INSERT INTO users (username, password, bio, pfp)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [username, password, bio, pfp]
+  );
+  return result.rows[0];
+}
 
 
 
@@ -111,6 +121,8 @@ module.exports = {
   getAllUsers,
   getUserById,
   getUserByUsername,
+  createUser,
+  //
   getAllPosts,
   getPostsByUserId
 };
