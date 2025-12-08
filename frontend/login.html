@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dreamlog - Iniciar sesion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="stylesheet" href="css/login-register.css">
+
+</head>
+<body>
+  <div class="logo-index">
+    <h2>Dreamlog</h2>
+  </div>
+  
+  <div class="form-container">
+    <form id="loginForm">
+      <div class="form-input">
+        <input type="text" id="username" placeholder="Usuario">
+        <input type="password" id="password" placeholder="Contraseña">
+      </div>
+      <button type="submit">Entrar</button>
+      <div class="login-register-link">
+        <p>¿No tienes una cuenta?</p>
+	      <a href="register.html">Registrate aquí</a>
+      </div>
+    </form>
+  </div>
+
+
+
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) {
+        alert("Por favor completa todos los campos");
+        return;
+      }
+
+
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+
+      if (res.status === 200) {
+        const data = await res.json();
+        
+        localStorage.setItem("loggedUser", JSON.stringify(data.user));
+        
+        window.location.href = "/inicio";
+      
+      } else {
+        alert("Usuario o contraseña incorrectos");
+      }
+    });
+  </script>
+ 
+
+</body>
+</html>

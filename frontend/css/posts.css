@@ -1,0 +1,43 @@
+/* POSTS */
+#posts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 30px;
+}
+
+#my-posts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+
+
+.post {
+  width: 500px;
+  background-color: #160c2b;  
+  border: 1px solid #5a506b;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px 0;
+  font-family: Arial, sans-serif;
+}
+.post-username {
+  color: violet;
+  font-weight: bold;
+  font-size: 15px;
+}
+.post-content {
+  font-size: 15px;
+  margin: 8px 0;
+  color: white;
+}
+.post-date {
+  font-size: 13px;
+  color: #657786;
+}
+

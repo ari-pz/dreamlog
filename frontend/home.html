@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dreamlog - Inicio</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/posts.css">
+
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+
+  <!----- Navbar ----->
+  <div id="navbar"></div>
+  <script src="/js/navbar.js"></script>
+
+
+
+
+
+  <!-- Barra de búsqueda: busca a partir de hashtags/etiquetas -->
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Buscar sueños o #símbolos...">
+  </div>
+  <script>
+    const frases = [
+      "Explorá tus símbolos nocturnos…",
+      "Buscá tus sueños o señales ocultas…",
+      "Descubrí patrones en tus noches…",
+      "Cada búsqueda es un viaje dentro de tu mente…",
+      "¿Qué misterios te visitaron hoy?"
+    ];
+    const input = document.getElementById("search-input");
+    let fraseIndex = 0;
+    let typingActive = true;
+    let userStartedTyping = false; // nuevo flag
+
+    // Si el usuario empieza a escribir, se pausa definitivamente el efecto
+    input.addEventListener("input", () => {
+      if (input.value.trim() !== "") {
+        userStartedTyping = true;
+        typingActive = false;
+        input.style.setProperty("--placeholder-opacity", 1);
+        input.placeholder = ""; // limpiar cualquier texto anterior
+      }
+    });
+
+    // Función para escribir letra por letra
+    function escribirFrase(frase, i = 0) {
+      if (!typingActive || userStartedTyping) return;
+
+      input.style.setProperty("--placeholder-opacity", 1);
+
+      if (i <= frase.length) {
+        input.placeholder = frase.substring(0, i);
+        setTimeout(() => escribirFrase(frase, i + 1), 100);
+      } else {
+        setTimeout(() => puffDesaparecer(), 3000);
+      }
+    }
+    // Efecto de desvanecimiento
+    function puffDesaparecer() {
+      if (!typingActive || userStartedTyping) return;
+      let opacity = 1;
+      const step = 0.05;
+      const fade = setInterval(() => {
+        opacity -= step;
+        input.style.setProperty("--placeholder-opacity", opacity);
+        if (opacity <= 0) {
+          clearInterval(fade);
+          input.placeholder = "";
+          fraseIndex = (fraseIndex + 1) % frases.length;
+          setTimeout(() => escribirFrase(frases[fraseIndex]), 500);
+        }
+      }, 60);
+    }
+    // Iniciar animación
+    escribirFrase(frases[fraseIndex]);
+  </script>
+
+
+
+
+
+
+
+  <!-- SECCION  POSTS -->
+  <div id="posts"></div>
+
+  <script>
+    async function cargarPosts() {
+      const res = await fetch("http://localhost:3000/api/posts");
+      const posts = await res.json();
+      const container = document.getElementById("posts");
+
+      posts.forEach(post => {
+        const div = document.createElement("div");
+      
+        div.classList.add("post");
+
+        div.innerHTML = `
+          <div class="post-username">@${post.username}</div>
+          <div class="post-content">${post.content}</div>
+          <div class="post-date">${new Date(post.created_at).toLocaleString()}</div>
+          `;
+        container.appendChild(div);
+      });
+    }
+  
+    cargarPosts();
+  </script>
+
+
+
+
+
+
+
+
+</body>
+</html>
