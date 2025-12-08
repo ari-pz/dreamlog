@@ -1,6 +1,6 @@
 body {
     font-family: 'Poppins', sans-serif;
-    background-image: url('./imagenes/fondo-perfil.jpeg');
+    background-image: url('./img/fondo-perfil.jpeg');
     background-size: cover;
     animation: slowPan 120s linear infinite;
     min-height: 100vh;
