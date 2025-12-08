@@ -10,44 +10,32 @@
    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <link rel="stylesheet" href="profile.css"> 
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/posts.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <header>
-    <div class="nav-left">
-      <a href="#">Blogs</a>
-      <a href="#">Acerca de</a>
-    </div>
 
-    <div class="nav-center">
-      <a href="index.html" > 
-        <img src="./imagenes/logo.svg" alt="DreamLog" id="logo">
-      </a>
-    </div>
 
-    <div class="nav-right">
-      <a href="#" id="login-btn">Iniciar sesión</a>
-      <a href="#" id="register-btn">Registrarse</a>
-    </div>
-  </header>
 
+  <!----- Navbar ----->
+  <div id="navbar"></div>
+  <script src="/js/navbar.js"></script>
+
+ 
 
   <!-- Datos del Usuario -->
   <div class="perfil"> 
       <article class="media">
         <figure class="image is-128x128" id="img-usuario">
-          <img class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          <img id="profile-pic" class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png" />
         </figure>
         <div class="media-content">
           <div class="content">
-            <p id="nombre-usuario">
-              <strong>Nombre Usuario</strong>
-              <br />
-              <br />
-              <h5> Descripcion </h5>
-              Blah blahb blah. 
+            <p id="profile-username">
+              <strong>username</strong>
             </p>
+            
+            <p id="profile-bio"></p>
             <div class="buttons"> 
               <a class="button is-primary" id="boton-editar" href="profile-editar.html">Editar</a>
               <a class="button is-danger" id="boton-eliminar">Eliminar</a>
@@ -56,21 +44,83 @@
           </div>
       </article>
     </div>
-
-
-    <div class="posteo" id="posteo-usuario"> 
-        <div class="media-content">
-          <div class="content">
-            <p>
-              <strong id="nombre">John Smith</strong> <small>@johnsmith</small> <small>31m</small>
-            <br />
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare
-                magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa
-                sem. Etiam finibus odio quis feugiat facilisis.
-            </p>
-          </div>
-        </div>
   </div>
+
+
+
+  <!-- Obtener datos del usuario por user_id-->
+  <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+    if (!loggedUser) {
+      window.location.href = "/login.html";
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/users/${loggedUser.user_id}`);
+      if (!res.ok) throw new Error("No se pudo obtener el perfil");
+      const user = await res.json();
+
+      document.getElementById("profile-username").textContent = `@${user.username}`;
+      document.getElementById("profile-bio").textContent = user.bio || "Sin bio";
+      document.getElementById("profile-pic").src = user.pfp || "/imagenes/icon_default.png";
+    } catch (err) {
+      console.error(err);
+    }
+  });
+  </script>
+ 
+ 
+  <!-- Posts del usuario --> 
+  <div id="my-posts"></div>
+
+  <script>
+    async function cargarMisPosts() {
+
+      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+
+      if (!loggedUser) {
+        document.getElementById("my-posts").innerHTML =
+          "<p>No estás logueado</p>";
+        return;
+      }
+
+      const USER_ID = loggedUser.user_id;
+
+      const res = await fetch(`http://localhost:3000/api/posts/${USER_ID}`);
+      const posts = await res.json();
+
+      const container = document.getElementById("my-posts");
+
+      // Por si el usuario no tiene posts
+      if (posts.message) {
+        container.innerHTML = `<p>${posts.message}</p>`;
+        return;
+      }
+
+      posts.forEach(post => {
+        const div = document.createElement("div");
+        div.classList.add("post");
+
+        div.innerHTML = `
+          <div class="post-username">@${post.username}</div>
+          <div class="post-content">${post.content}</div>
+          <div class="post-date">${new Date(post.created_at).toLocaleString()}</div>
+      `;
+
+        container.appendChild(div);
+      });
+    }
+
+    cargarMisPosts(); 
+  </script>
+
+
+
+
+
+
 
 </body>
 </html>
