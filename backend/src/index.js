@@ -24,8 +24,13 @@ app.listen(PORT, () => {
 
 
 //IMPORTAR FUNCIONES
-const { getAllUsers, getUserById, getUserByUsername,
-        getAllPosts, getPostsByUserId } = require("./dream");
+const { getAllUsers,
+        getUserById,
+        getUserByUsername,
+        createUser,
+        getAllPosts,
+        getPostsByUserId 
+} = require("./dream");
 
 
 // =======================================
@@ -58,20 +63,19 @@ app.get("/api/users/:id", async (req, res) => {
 
 // POST user
 app.post("/api/users", async (req, res) => {
+  const { username, password, bio, pfp } = req.body;
   try {
-    const user = await createUser(
-      req.body.username,
-      req.body.password,
-      req.body.bio,
-      req.body.pfp
-    );
-    res.status(201).json(user);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al crear usuario" });
+    const newUser = await createUser(username, password, bio, pfp);
+    res.status(201).json(newUser);
+
+  } catch (err) {
+    if (err.code == '23505'){
+      res.status(400).json({error: "El nombre de usuario ya existe"});
+    } else {
+      res.status(500).json({error: "Error al crear el usuario"})
+    }
   }
 });
-
 
 
 // =======================================
@@ -95,14 +99,6 @@ app.get("/api/posts/:id", async (req, res) => {
 
 
 
-// POST post
-app.post("/api/posts", async (req, res) => {
-  const post = await createPost(
-    req.body.user_id,
-    req.body.content
-  );
-  res.status(201).json(post);
-});
 
 
 
@@ -123,7 +119,7 @@ app.post("/api/login", async (req, res) => {
     }
   
     if (user.password !== password) {
-      console.log("Contrasela incorrecta para:", username);
+      console.log("Contraseña incorrecta para:", username);
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
@@ -142,8 +138,6 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-
-
 // =======================================
 // LOGOUT
 // =======================================
@@ -153,8 +147,4 @@ app.post("/api/logout", (req, res) => {
   console.log(`Usuario "${username}" ha cerrado sesión desde el navegador`);
   res.json({ message: "Logout registrado en el servidor" });
 });
-
-
-
-
 
