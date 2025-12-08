@@ -20,11 +20,9 @@ CREATE TABLE posts (
 
 -- Insert inicial
 INSERT INTO users (username, password, bio, pfp) VALUES
-('arito', '1234', 'always sleeping', null),
-('arito2', '1234', 'esta es mi side, ola', null);
+('arito', '1234', 'always sleeping', 'https://i.pinimg.com/736x/e6/a2/39/e6a239754826cc9ea0000eaf4c72cc02.jpg');
 
 -- Insert posts iniciales
 INSERT INTO posts (user_id, content) VALUES
-(1, 'soñe con un apocalipsis zombie y no sobreviví la primera noche'),
-(2, 'Primer post en Dreamlog');
+(1, 'soñe con un apocalipsis zombie y no sobreviví la primera noche');
 
