@@ -3,32 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dreamlog - Nuevo Sueño</title>
-  <link rel="stylesheet" href="newpost.css">
+  <title>DreamLog - Nuevo Sueño</title>
+  <link rel="stylesheet" href="/css/newpost.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body class="body-form">
-  <main class="newpost-container">
+<body>
 
-    <div class="user-profile"> 
-      <div class="icon-profile"></div>
+  <!----- Navbar ----->
+  <div id="navbar"></div>
+  <script src="/js/navbar.js"></script>
+
+
+  <!-- New Post Form -->
+  <div class="newpost-container">
+      
+    <div class="newpost-form">
+      <form>
+        <textarea class="post-textarea" placeholder="Escrbí tu sueño aquí..."></textarea>
+        <div class="tags-wrapper">
+          <input class="tags-input" id="tagField" placeholder="Escribí un tag y presiona Enter">
+          <div id="tagsContainer"></div>
+        </div>
+        <div class="button-container">
+      <button class="newpost-button">Publicar</button>
+          <button onclick="window.location.href='/profile.html'" class="newpost-button">Cancelar</button>
+        </div>
+      </form>
     </div>
-    <p class="username">@username<p/>
-
-
-    <form class="newpost-form">
-      <textarea class="post-textarea" placeholder="Escrbí tu sueño aquí..."></textarea>
-      <div class="tags-wrapper">
-        <input class="tags-input" id="tagField" placeholder="Escribí un tag y presiona Enter">
-        <div id="tagsContainer"></div>
-      </div>
-      <div class="button-container">
-   	<button class="newpost-button">Publicar</button>
-        <button class="newpost-button">Cancelar</button>
-      </div>
-    </form>
-  </main>
-
+  </div>  
 
   <script>
     const tagField = document.getElementById("tagField");
