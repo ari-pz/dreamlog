@@ -44,7 +44,6 @@
         return;
       }
 
-
       const res = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -56,9 +55,7 @@
 
       if (res.status === 200) {
         const data = await res.json();
-        
-        localStorage.setItem("loggedUser", JSON.stringify(data.user));
-        
+        localStorage.setItem("loggedUser", JSON.stringify(data.user));        
         window.location.href = "/inicio";
       
       } else {
