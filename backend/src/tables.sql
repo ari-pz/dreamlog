@@ -22,10 +22,17 @@ CREATE TABLE IF NOT EXISTS categories (
 );
 
 -- Insert inicial
-INSERT INTO users (username, password, bio, pfp) VALUES
-('arito', '1234', 'always sleeping', 'https://i.pinimg.com/736x/e6/a2/39/e6a239754826cc9ea0000eaf4c72cc02.jpg');
+INSERT INTO users (username, password, bio, pfp)
+SELECT 'arito', '1234', 'always sleeping', 'https://i.pinimg.com/736x/e6/a2/39/e6a239754826cc9ea0000eaf4c72cc02.jpg'
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'arito');
 
--- Insert posts iniciales
-INSERT INTO posts (user_id, content) VALUES
-(1, 'soñe con un apocalipsis zombie y no sobreviví la primera noche');
-
+-- Insert inicial del post solo si no existe
+INSERT INTO posts (user_id, content)
+SELECT 
+    (SELECT user_id FROM users WHERE username = 'arito'),
+    'Mi primer sueño en DreamLog 🌙'
+WHERE NOT EXISTS (
+    SELECT 1 FROM posts 
+    WHERE user_id = (SELECT user_id FROM users WHERE username = 'arito')
+    AND content = 'soñe con un apocalipsis zombie y no sobreviví la primera noche'
+);
