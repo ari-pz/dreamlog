@@ -11,5 +11,5 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=dreamlog
 
-  volumes:
-    dreamlog-db:
+volumes:
+  dreamlog-db:
