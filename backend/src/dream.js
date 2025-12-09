@@ -51,7 +51,12 @@ async function getPostsByUserId(user_id) {
   return result.rows;
 }
 
-
+// GET: cantidad de posts 
+async function getPostsCount(user_id) {
+  const query = `SELECT COUNT(*) FROM posts WHERE user_id = $1`;
+  const { rows } = await dbClient.query(query, [user_id]);
+  return parseInt(rows[0].count, 10);
+}
 
 
 
@@ -61,5 +66,6 @@ async function getPostsByUserId(user_id) {
 // ===================================================
 module.exports = {
   getAllPosts,
-  getPostsByUserId
+  getPostsByUserId,
+  getPostsCount
 };
