@@ -35,11 +35,10 @@ body {
 /* ===== Título dentro del cuadro ===== */
 .atrapasueños-secundario h2 {
   font-family: 'Cormorant Garamond', serif;
-  font-weight: 600;
-  font-size: 2rem;
-  text-align: center;
-  color: #ffffff; /* título en blanco */
-  margin-bottom: 22px;
+  color: #c4a9ff;
+  font-size: 2.4rem;
+  text-shadow: 0 0 10px rgba(196,169,255,0.4);
+  margin-bottom: 2rem;
 }
 
 /* ===== Labels del formulario ===== */
@@ -72,23 +71,6 @@ body {
   border-color: #4a2e8c; /* borde más intenso al focus */
   box-shadow: 0 0 8px rgba(186,146,255,0.3);
 }
-
-/* ===== Botón ===== */
-.atrapasueños-btn {
-  background-color: #9c27b0;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.atrapasueños-btn:hover {
-  background-color: #6a1b9a;
-}
-
 
 /* ===== Botón ===== */
 .atrapasueños-btn {
