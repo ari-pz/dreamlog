@@ -10,10 +10,6 @@ load-db:
 	sleep 5
 	cd ./backend && docker compose exec -T postgres psql -U postgres -d dreamlog < src/tables.sql
 
-#Solo para la primera vez
-init-db:
-	cd ./backend && docker compose exec -T postgres psql -u postgres -d dreamlog < src/tables.sql
-
 # Ejecuta el backend con nodemon
 run-backend:
 	cd ./backend && npm run dev
@@ -23,4 +19,4 @@ start-backend:
 	cd ./backend && npm start
 
 # Modo desarrollo completo: levanta DB, carga tablas y backend
-dev: start-db run-backend
+dev: start-db load-db run-backend
