@@ -38,10 +38,10 @@ INSERT INTO users (username, password, bio, pfp) VALUES
 
 
 -- Insert inicial del post solo si no existe
-INSERT INTO posts (user_id, content, image) VALUES
-(1, 'sigo soñando con ascensores wtf', NULL),
-(2, 'soñe que estaba dentro de un videojuego y perdia mis tres vidas', NULL),
-(3, 'soñe que despertaba pero seguia durmiendo, esa cosa me seguia persiguiendo', NULL);
+INSERT INTO posts (user_id, content) VALUES
+(1, 'sigo soñando con ascensores wtf'),
+(2, 'soñe que estaba dentro de un videojuego y perdia mis tres vidas'),
+(3, 'soñe que despertaba pero seguia durmiendo, esa cosa me seguia persiguiendo');
 
 
 
