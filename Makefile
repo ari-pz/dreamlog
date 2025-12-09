@@ -3,7 +3,7 @@ start-db:
 	cd ./backend && docker compose up -d
 # Detiene los contendores
 stop-db:
-	cd ./backend && docker compose down
+	cd ./backend && docker compose down 
 # Carga las tablas de la base de datos
 load-db:
 	sleep 5
