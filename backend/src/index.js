@@ -28,8 +28,14 @@ const { getAllUsers,
         getUserById,
         getUserByUsername,
         createUser,
-        getAllPosts,
-        getPostsByUserId 
+        updateUsers,
+        nameInUse,
+        deleteUser
+} = require("./users");
+
+const {
+  getAllPosts,
+  getPostsByUserId
 } = require("./dream");
 
 
@@ -77,6 +83,120 @@ app.post("/api/users", async (req, res) => {
   }
 });
 
+//UPDATE profile
+app.put('/api/users/:id', async (req, res) => {
+    const user_id = parseInt(req.params.id);
+    const username = req.body.username;
+    const password = req.body.password;
+    const bio = req.body.bio;
+    const pfp = req.body.pfp;
+
+    console.log('Recibido en PUT /api/users/:id:', { user_id, username, password, bio, pfp });
+
+
+    if (username) {
+        if (username.length < 4) {
+            return res.status(400).json({ error: 'El username debe tener al menos 4 caracteres' });
+        }
+        
+        const usernameOcupado = await nameInUse(username, user_id);
+        if (usernameOcupado) {
+            return res.status(400).json({ error: 'Este nombre ya está en uso' });
+        }
+    }
+
+    if (password) {
+        if (password.length < 8) {
+            return res.status(400).json({ error: 'La contrasenia debe tener al menos 8 caracteres' });
+        }
+        
+        const tieneMayuscula = /[A-Z]/.test(password);
+        if (!tieneMayuscula) {
+            return res.status(400).json({ error: 'La contrasenia debe tener una mayúscula' });
+        }
+        
+        const tieneMinuscula = /[a-z]/.test(password);
+        if (!tieneMinuscula) {
+            return res.status(400).json({ error: 'La contrasenia debe tener una minúscula' });
+        }
+        
+        const tieneNumero = /[0-9]/.test(password);
+        if (!tieneNumero) {
+            return res.status(400).json({ error: 'La contrasenia debe tener un número' });
+        }
+        
+        const tieneEspecial = /[^a-zA-Z0-9]/.test(password);
+        if (!tieneEspecial) {
+            return res.status(400).json({ error: 'La contrasenia debe tener un carácter especial' });
+        }
+    }
+
+    if (bio && bio.length > 500) {
+        return res.status(400).json({ error: 'La biografía no puede tener más de 500 caracteres' });
+    }
+
+    const resultado = await updateUsers(user_id, username, password, bio, pfp);
+
+    if (!resultado) {
+        return res.status(500).json({ error: 'Error al actualizar el perfil' });
+    }
+
+    res.json({ 
+        mensaje: 'Perfil actualizado exitosamente',
+        usuario: resultado
+    });
+});
+
+
+// Endpoint para verificar si un nombre está disponible
+app.get('/api/username/:username/:user_id', async (req, res) => {
+    const username = req.params.username;
+    let user_id;
+
+    if (req.params.user_id) {
+        user_id = parseInt(req.params.user_id);  
+    } else {
+        user_id = null;
+    }
+
+    try {
+        const ocupado = await nameInUse(username, user_id);
+        
+        res.json({ disponible: !ocupado });
+    } catch (error) {
+        console.error('Error verificando nombre:', error);
+        res.status(500).json({ error: 'Error al verificar nombre' });
+    }
+});
+
+// Eliminar cuenta
+app.delete('/api/users/:id', async (req, res) => {
+    const user_id = parseInt(req.params.id);
+    console.log('Intentando eliminar usuario:', user_id);
+    
+    try {
+        const usuario = await getUserById(user_id);
+        
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+        
+        const eliminado = await deleteUser(user_id);
+        
+        if (!eliminado) {
+            return res.status(500).json({ error: 'Error al eliminar la cuenta' });
+        }
+        
+        res.json({ 
+            mensaje: 'Cuenta eliminada exitosamente',
+            user_id: user_id
+        });
+        
+    } catch (error) {
+        console.error('Error en DELETE /api/users/:id:', error);
+        return res.status(500).json({ error: 'Error al eliminar la cuenta' });
+    }
+});
 
 // =======================================
 // POSTS
