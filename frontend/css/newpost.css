@@ -1,66 +1,103 @@
+/* ===== Contenedor principal ===== */
+.atrapasueños-principal {
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px;
+  background-color: #f8f3ff; /* suave fondo violeta */
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
 
-.newpost-container{
-  /*width: 300px;*/
+/* ===== Sección secundaria ===== */
+.atrapasueños-secundario {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px;
-
-}
-.newpost-form{
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-}
-
-
-/* TEXTAREA */
-.post-textarea {
-  height: 100px;
-  padding: 5px;
-  resize: none;
-  font-family: Arial, sans-serif;
-  font-size: 14px; 
-  width: 300px;
+  max-width: 700px;
+  width: 100%;
+  background-color: #ffffffcc; /* fondo blanco semi-transparente */
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-
-/* BUTTONS */
-.newpost-button{
-  margin-top: 15px;
-  width: 50%;
-  padding: 5px;
-}
-.button-container {
-  display: flex;
-  gap: 10px;
+/* ===== Título ===== */
+.atrapasueños-secundario h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 2rem;
   text-align: center;
+  color: #6a1b9a; /* violeta oscuro */
+  margin-bottom: 30px;
 }
 
+/* ===== Atrapasueños imagen ===== */
+.atrapasueños {
+  margin-bottom: 40px;
+}
 
-/* TAGS */
+.atrapasueños-image {
+  width: 120px;
+  height: auto;
+}
 
-.tags-wrapper {
+/* ===== Formulario ===== */
+.form-nuevo-sueno {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 25px;
+  width: 100%;
 }
-.tags-input{
-  margin-top: 5px;
-  padding: 5px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+
+/* ===== Labels ===== */
+.form-nuevo-sueno label {
+  font-weight: 500;
+  color: #6a1b9a;
+  margin-bottom: 8px;
+  display: block;
 }
-#tagsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.tag {
-  background-color: #4c0240; 
-  color: white;            
-  padding: 4px 8px;
+
+/* ===== Inputs y textarea ===== */
+.input-estilo {
+  width: 100%;
+  padding: 12px;
   border-radius: 12px;
-  font-size: 12px;
-  font-family: Arial, sans-serif;
+  border: 2px solid #d1b3ff; /* violeta claro */
+  background-color: #f4e6ff;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.input-estilo:focus {
+  outline: none;
+  border-color: #9c27b0; /* violeta más intenso al focus */
+  box-shadow: 0 0 8px rgba(156,39,176,0.3);
+}
+
+/* ===== Botón ===== */
+.atrapasueños-btn {
+  background-color: #9c27b0;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.atrapasueños-btn:hover {
+  background-color: #6a1b9a;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .atrapasueños-secundario {
+    padding: 30px 20px;
+  }
+
+  .atrapasueños-image {
+    width: 100px;
+  }
 }
