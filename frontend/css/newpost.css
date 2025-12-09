@@ -8,6 +8,16 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* ===== Fondo violeta para toda la página ===== */
+body {
+  background-color: #8e24aa; /* violeta intenso */
+}
+
+/* Hacer que el contenedor principal sea transparente para ver el fondo */
+.atrapasueños-principal {
+  background-color: transparent;
+}
+
 /* ===== Sección secundaria ===== */
 .atrapasueños-secundario {
   display: flex;
