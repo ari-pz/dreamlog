@@ -10,7 +10,7 @@
 
 /* ===== Fondo violeta para toda la página ===== */
 body {
-  background-color: #8e24aa; /* violeta intenso */
+  background-color: rgba(18, 13, 31, 0.9); /* violeta intenso */
 }
 
 /* Hacer que el contenedor principal sea transparente para ver el fondo */
