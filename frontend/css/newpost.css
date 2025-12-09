@@ -18,51 +18,34 @@ body {
   background-color: transparent;
 }
 
-/* ===== Sección secundaria ===== */
+/* ===== Sección secundaria (el cuadro) ===== */
 .atrapasueños-secundario {
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 700px;
   width: 100%;
-  background-color: #ffffffcc; /* fondo blanco semi-transparente */
+  background-color: #6a1b9a; /* ahora violeta oscuro */
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  color: #ffffff; /* texto en blanco */
 }
 
-/* ===== Título ===== */
+/* ===== Título dentro del cuadro ===== */
 .atrapasueños-secundario h2 {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 600;
   font-size: 2rem;
   text-align: center;
-  color: #6a1b9a; /* violeta oscuro */
+  color: #ffffff; /* título en blanco */
   margin-bottom: 30px;
 }
 
-/* ===== Atrapasueños imagen ===== */
-.atrapasueños {
-  margin-bottom: 40px;
-}
-
-.atrapasueños-image {
-  width: 120px;
-  height: auto;
-}
-
-/* ===== Formulario ===== */
-.form-nuevo-sueno {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  width: 100%;
-}
-
-/* ===== Labels ===== */
+/* ===== Labels del formulario ===== */
 .form-nuevo-sueno label {
   font-weight: 500;
-  color: #6a1b9a;
+  color: #ffffff; /* etiquetas en blanco */
   margin-bottom: 8px;
   display: block;
 }
@@ -72,17 +55,22 @@ body {
   width: 100%;
   padding: 12px;
   border-radius: 12px;
-  border: 2px solid #d1b3ff; /* violeta claro */
-  background-color: #f4e6ff;
+  border: 2px solid #9c27b0; /* borde violeta más oscuro */
+  background-color: #7b1fa2; /* fondo violeta oscuro para inputs */
   font-size: 14px;
   font-family: 'Poppins', sans-serif;
+  color: #ffffff; /* texto blanco dentro del input */
   transition: border 0.3s, box-shadow 0.3s;
+}
+
+.input-estilo::placeholder {
+  color: #e1bee7; /* placeholder más claro para que se vea */
 }
 
 .input-estilo:focus {
   outline: none;
-  border-color: #9c27b0; /* violeta más intenso al focus */
-  box-shadow: 0 0 8px rgba(156,39,176,0.3);
+  border-color: #ab47bc; /* borde más intenso al focus */
+  box-shadow: 0 0 8px rgba(171,71,188,0.3);
 }
 
 /* ===== Botón ===== */
