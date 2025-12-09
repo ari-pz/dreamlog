@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Atrapasueños ✦ DreamLog</title>
+  <link rel="stylesheet" href="css/atrapasueños.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!----- Navbar ----->
+  <div id="navbar"></div>
+  <script src="/js/navbar.js"></script>
+  
+  <!-----Principal----->
+
+  <main class="atrapasueños-principal">
+    <section class="atrapasueños-secundario">
+      <h2>Tu Atrapasueños</h2>
+      <div class="atrapasueños">
+          <div class="anillo">
+              <img src="./atrapasueño.png" alt="Atrapasueños" class="atrapasueños-image">
+          </div>
+          <div class="plumas">
+          <div class="pluma"></div>
+          <div class="pluma "></div>
+          <div class="pluma "></div>
+          <div class="pluma"></div>
+          <div class="pluma"></div>
+          <div class="pluma "></div>
+          <div class="pluma"></div>
+          <div class="pluma "></div>
+          <div class="pluma"></div>
+          <div class="pluma "></div>
+          <div class="pluma"></div>
+          <div class="pluma "></div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="dream-stats">
+        <p>✦ 12 sueños tejidos</p>
+        <p>✦ 3 visiones lunares</p>
+        <p>✦ 2 pesadillas disipadas</p>
+      </div>
+
+      <div class="dream-fragments">
+        <h3>Fragmentos atrapados</h3>
+        <div class="fragment-grid">
+          <div class="fragment">🌕 La casa infinita</div>
+          <div class="fragment">🦋 Volar sobre el mar</div>
+          <div class="fragment">🐍 El pasillo azul</div>
+          <div class="fragment">🌑 Sombras conocidas</div>
+        </div>
+      </div>
+
+      <div class="dream-quote">
+        <p id="quote">“Cada hilo guarda un recuerdo invisible.”</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Frases oníricas que cambian cada 10 segundos
+    const frases = [
+      "“Cada hilo guarda un recuerdo invisible.”",
+      "“Tu mente descansa, pero tu alma sigue viajando.”",
+      "“Algunos sueños no quieren ser olvidados.”",
+      "“Lo que tejés de noche, te protege de día.”",
+      "“El tiempo se disuelve en tus visiones.”"
+    ];
+
+    let fraseIndex = 0;
+    const quoteElement = document.getElementById("quote");
+
+    setInterval(() => {
+      fras
