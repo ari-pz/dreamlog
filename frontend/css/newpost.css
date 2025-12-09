@@ -1,48 +1,18 @@
-/* NEW POST FORM */
-
-.body-form{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  
-  background: radial-gradient(circle at 20% 30%, #1a122b, #0a0814 80%);
-  background-color: rgba(0, 0, 0, 0);
-  background-position-x: 0%;
-  background-position-y: 0%;
-  background-repeat: repeat;
-  background-attachment: scroll;
-  background-image: radial-gradient(circle at 20% 30%, rgb(26, 18, 43), rgb(10, 8, 20) 80%);
-}
 
 .newpost-container{
-  width: 300px;
+  /*width: 300px;*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px;
+
 }
 .newpost-form{
   display: flex;
   flex-direction: column;
+  width: 300px;
 }
 
-/* PROFILE */
-.user-profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.icon-profile {
-  width: 100px;
-  height: 100px;
-  background-color: #ccc;  /*TEMPORAL*/
-  border: 3px solid #f0f0f0;
-}
-.username {
-  font-size: 15px;
-  font-weight: bold;
-  color: white;
-  text-align: center;
-  font-family: Arial, sans-serif;
-}
 
 /* TEXTAREA */
 .post-textarea {
@@ -51,6 +21,7 @@
   resize: none;
   font-family: Arial, sans-serif;
   font-size: 14px; 
+  width: 300px;
 }
 
 
