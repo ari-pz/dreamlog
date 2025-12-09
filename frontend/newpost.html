@@ -3,56 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DreamLog - Nuevo Sueño</title>
-  <link rel="stylesheet" href="css/newpost.css">
-  <link rel="stylesheet" href="css/styles.css">
+  <title>Nuevo Sueño ✦ DreamLog</title>
+  <link rel="stylesheet" href="nuevosueño.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
   <!----- Navbar ----->
   <div id="navbar"></div>
   <script src="/js/navbar.js"></script>
 
+  <main class="atrapasueños-principal">
+    <section class="atrapasueños-secundario">
+      <h2>Nuevo Sueño</h2>
 
-  <!-- New Post Form -->
-  <div class="newpost-container">
-      
-    <div class="newpost-form">
-      <form>
-        <textarea class="post-textarea" placeholder="Escrbí tu sueño aquí..."></textarea>
-        <div class="tags-wrapper">
-          <input class="tags-input" id="tagField" placeholder="Escribí un tag y presiona Enter">
-          <div id="tagsContainer"></div>
+      <div class="atrapasueños" style="margin-bottom: 40px;">
+        <div class="anillo">
+            <img src="./atrapasueño.png" alt="Atrapasueños" class="atrapasueños-image">
         </div>
-        <div class="button-container">
-      <button class="newpost-button">Publicar</button>
-          <button onclick="window.location.href='/profile.html'" class="newpost-button">Cancelar</button>
+      </div>
+
+      <form class="form-nuevo-sueno" action="#" method="POST" style="display:flex; flex-direction:column; gap:25px; max-width:600px; margin:auto;">
+
+        <div>
+          <label for="texto">✦ Escribe tu sueño</label>
+          <textarea id="texto" name="texto" rows="6" placeholder="Describe tu visión nocturna..." required class="input-estilo"></textarea>
         </div>
+
+        <div>
+          <label for="imagen">✦ URL de imagen (opcional)</label>
+          <input id="imagen" name="imagen" type="url" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
+        </div>
+
+        <div>
+          <label for="categoria">✦ Categoría</label>
+          <select id="categoria" name="categoria" required class="input-estilo">
+            <option value="Pesadilla">Pesadilla</option>
+            <option value="Recurrente">Recurrente</option>
+            <option value="Absurdo">Absurdo</option>
+            <option value="Sensorial">Sensorial</option>
+            <option value="Lúcido">Lúcido</option>
+            <option value="Inquietante">Inquietante</option>
+          </select>
+        </div>
+
+        <button type="submit" class="atrapasueños-btn" style="margin-top:10px;">
+          Publicar Sueño ✦
+        </button>
+
       </form>
-    </div>
-  </div>  
 
-  <script>
-    const tagField = document.getElementById("tagField");
-    const tagsContainer = document.getElementById("tagsContainer");
-
-    tagField.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const tagText = tagField.value.trim();
-
-        if (tagText !== "") {
-          const tag = document.createElement("span");
-          tag.classList.add("tag");
-          tag.textContent = "#" + tagText; // agrega el hashtag adelante
-          tagsContainer.appendChild(tag);
-          tagField.value = ""; // limpia el input
-	}
-      }
-    });
-  </script>
-
+      <br><br>
+    </section>
+  </main>
 
 </body>
 </html>
+
