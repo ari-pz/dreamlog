@@ -132,8 +132,8 @@ app.put('/api/users/:id', async (req, res) => {
         }
     }
 
-    if (bio && bio.length > 500) {
-        return res.status(400).json({ error: 'La biografía no puede tener más de 500 caracteres' });
+    if (bio && bio.length > 225) {
+        return res.status(400).json({ error: 'La biografía no puede tener más de 225 caracteres' });
     }
 
     const resultado = await updateUsers(user_id, username, password, bio, pfp);
