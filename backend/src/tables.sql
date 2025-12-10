@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS posts (
     user_id INT NOT NULL REFERENCES users(user_id),
     content VARCHAR(255) NOT NULL,
     image VARCHAR(255),
-    category_id INT REFERENCES categories(category_id)
+    category_id INT REFERENCES categories(category_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
