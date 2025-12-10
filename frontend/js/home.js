@@ -1,3 +1,21 @@
+// puede ir en home.js
+async function loadPosts() {
+  try {
+      const res = await fetch("/api/posts");
+      const posts = await res.json();
+      renderPosts(posts);
+  } catch (error) {
+      console.error("Error al cargar posts", error);
+  }
+}
+
+// Cargar posts al inicio
+loadPosts();
+
+
+
+
+
 const frases = [
       "Explorá tus símbolos nocturnos…",
       "Buscá tus sueños o señales ocultas…",

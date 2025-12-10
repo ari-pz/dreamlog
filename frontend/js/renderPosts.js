@@ -9,7 +9,7 @@ function renderPosts(posts) {
     const isOwner = (post.user_id === currentUserId);
 
     container.innerHTML += `
-      <div class="post">
+      <div class="post" data-post-id="${post.post_id}">
 
         <div class="post-header">
           <div class="post-user">
@@ -24,7 +24,7 @@ function renderPosts(posts) {
                 isOwner
                 ? `
                     <a href="#">Editar Sueño</a>
-                    <a href="#" class="style-red">Eliminar Sueño</a>
+                    <a href="#" class="style-red delete-post">Eliminar Sueño</a>
                   `
                 : `
                     <a href="#" class="style-red">Reportar Sueño</a>
@@ -46,9 +46,38 @@ function renderPosts(posts) {
           <span>0 LUNAS</span>
           <span>0 COMENTARIOS</span>
         </div>
-
       </div>
     `;
   });
+
+  // ELIMINAR SUEÑO
+  const deleteLinks = document.querySelectorAll(".delete-post");
+  deleteLinks.forEach(link => {
+    link.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const postDiv = e.target.closest(".post");
+      const postId = postDiv.getAttribute("data-post-id");
+
+      if (confirm("¿Estás seguro que quieres eliminar este post?")) {
+        try {
+          const res = await fetch(`/api/posts/${postId}`, {
+            method: "DELETE"
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            alert("Post eliminado correctamente");
+            loadPosts(); // recargar posts
+          } else {
+            alert(data.message || "No se pudo eliminar el post");
+          }
+        } catch (err) {
+          console.error("Error eliminando post:", err);
+          alert("Hubo un error al eliminar el post");
+        }
+      }
+    });
+  });
 }
+
 
