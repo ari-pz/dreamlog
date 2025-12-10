@@ -6,8 +6,7 @@
   <title>DreamLog</title>
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-
-   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <link rel="stylesheet" href="css/profile.css">
@@ -15,53 +14,82 @@
 </head>
 <body>
 
-
-
   <!----- Navbar ----->
   <div id="navbar"></div>
   <script src="/js/navbar.js"></script>
 
- 
+  <!-- ===== CONTENEDOR DE DOS COLUMNAS ===== -->
+  <div class="perfil-contenedor">
 
-  <!-- Datos del Usuario -->
-  <div class="perfil"> 
-      <article class="media">
-        <figure class="image is-128x128" id="img-usuario">
-          <img id="profile-pic" class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png" />
-        </figure>
-        <div class="media-content">
-          <div class="content">
+    <!-- ====================== COLUMNA IZQUIERDA ====================== -->
+    <div class="col-izquierda">
+
+      <!-- Perfil del usuario -->
+      <div class="usuario-card">
+        <article class="media">
+          <figure class="image is-128x128" id="img-usuario">
+            <img id="profile-pic" class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png" />
+          </figure>
+
+          <div class="media-content">
             <p id="profile-username">
               <strong>username</strong>
             </p>
             
             <p id="profile-bio"></p>
+
             <div class="buttons"> 
               <a class="button is-primary" id="boton-editar" href="profile-editar.html">Editar</a>
               <a class="button is-danger" id="boton-eliminar">Eliminar</a>
             </div>
           </div>
-          </div>
-      </article>
-    </div>
 
-   <!--Pop Up -->
-    <div class="modal" id="modal-resultado">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title" id="modal-titulo"></p>
-        </header>
-        <section class="modal-card-body" id="modal-mensaje"></section>
-        <footer class="modal-card-foot">
-          <button class="button is-success" id="btn-aceptar">Aceptar</button>
-          <button class="button is-success" id="btn-cancelar">Cancelar</button>
-
-        </footer>
+        </article>
       </div>
+
+      <!-- Título de los posts -->
+      <h3 class="titulo-posts">Mis sueños tejidos</h3>
+
+      <!-- Contenedor donde se cargan los posts -->
+      <div id="my-posts"></div>
+
     </div>
 
-  <!-- Obtener datos del usuario por user_id-->
+
+    <!-- ====================== COLUMNA DERECHA (Mascota) ====================== -->
+    <div class="col-derecha">
+
+      <div class="mascota-card">
+        <img id="imagen-mascota" src="" style="width:100%; border-radius:20px; transition: opacity .6s; cursor:pointer;">
+        <p id="frase-mascota" style="margin-top:1rem; opacity:1; transition: opacity .4s; color:#c4a9ff;"></p>
+        <p class="texto-mascota">Tocá tu guía nocturno para recibir un mensaje ✨</p>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- ===== FIN DEL CONTENEDOR DE DOS COLUMNAS ===== -->
+
+
+
+  <!-- ======================= MODAL ======================= -->
+  <div class="modal" id="modal-resultado">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title" id="modal-titulo"></p>
+      </header>
+      <section class="modal-card-body" id="modal-mensaje"></section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" id="btn-aceptar">Aceptar</button>
+        <button class="button is-success" id="btn-cancelar">Cancelar</button>
+      </footer>
+    </div>
+  </div>
+
+
+
+  <!-- ======================= OBTENER DATOS DEL USUARIO ======================= -->
   <script>
   document.addEventListener("DOMContentLoaded", async () => {
     const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
@@ -83,62 +111,103 @@
     }
   });
   </script>
- 
- 
-  <!-- Posts del usuario --> 
-  <div id="my-posts"></div>
 
+
+
+  <!-- ======================= POSTS DEL USUARIO ======================= -->
   <script src="./js/profile.js"></script>
 
-  <!-- 🟦 Mascota -->
+
+
+  <!-- ======================= MASCOTA DINÁMICA ======================= -->
   <script>
-    const imagenesPanda = [
-      "./imagenes-mascotas/panda1.png",
-      "./imagenes-mascotas/panda2.png",
-      "./imagenes-mascotas/panda3.png",
-      "./imagenes-mascotas/panda4.png"
-    ];
+  document.addEventListener("DOMContentLoaded", async () => {
+
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+    if (!loggedUser) return;
+
+    const res = await fetch(`/api/users/${loggedUser.user_id}`);
+    const user = await res.json();
+    const petId = user.pet_id;
+
+    const mascotas = {
+      1: { 
+        imagenes: [
+          "./img_mascotas/gato1.png",
+          "./img_mascotas/gato2.png",
+          "./img_mascotas/gato3.png",
+          "./img_mascotas/gato4.png"
+        ],
+        frases: [
+          "Hoy es un buen día para soñar fuerte 🌙",
+          "Estoy orgulloso de vos, pequeño soñador.",
+          "Respirá... todo va a estar bien 🐼✨",
+          "Tu sueño tiene más poder del que imaginás.",
+          "Recordá: un paso a la vez."
+        ]
+      },
+
+      2: {
+        imagenes: [
+          "./img_mascotas/panda1.png",
+          "./img_mascotas/panda2.png",
+          "./img_mascotas/panda3.png",
+          "./img_mascotas/panda4.png"
+        ],
+        frases: [
+          "Miau... soñemos juntos 💜",
+          "Estoy vigilando tus sueños.",
+          "Las noches brillan más con vos.",
+          "Si dudás, ronroneá profundo.",
+          "Te cuido mientras descansás 🌙🐈‍⬛"
+        ]
+      },
+
+      3: {
+        imagenes: [
+          "./img_mascotas/perezoso1.png",
+          "./img_mascotas/perezoso2.png",
+          "./img_mascotas/perezoso3.png",
+          "./img_mascotas/perezoso4.png"
+        ],
+        frases: [
+          "Todo a su propio ritmo 💤✨",
+          "Respirá lento, soñá fuerte.",
+          "Estoy acá, acompañándote siempre.",
+          "Dormir también es avanzar.",
+          "Tu calma es tu superpoder."
+        ]
+      }
+    };
+
+    const mascota = mascotas[petId] || mascotas[1];
+
+    const imgMascota = document.getElementById("imagen-mascota");
+    const fraseCaja = document.getElementById("frase-mascota");
 
     let indice = 0;
-    const imgMascota = document.getElementById("imagen-mascota");
+    imgMascota.src = mascota.imagenes[0];
 
     setInterval(() => {
       imgMascota.style.opacity = 0;
       setTimeout(() => {
-        indice = (indice + 1) % imagenesPanda.length;
-        imgMascota.src = imagenesPanda[indice];
+        indice = (indice + 1) % mascota.imagenes.length;
+        imgMascota.src = mascota.imagenes[indice];
         imgMascota.style.opacity = 1;
       }, 600);
     }, 7000);
 
-    const frasesPanda = [
-      "Hoy es un buen día para soñar fuerte 🌙",
-      "Estoy orgulloso de vos, pequeño soñador.",
-      "Respirá... todo va a estar bien 🐼✨",
-      "Tu sueño tiene más poder del que imaginás.",
-      "Recordá: un paso a la vez.",
-      "Estoy acá con vos, siempre.",
-      "El descanso también es parte del camino.",
-      "Vos podés más de lo que creés.",
-      "Gracias por visitarme, te extrañaba ♡",
-      "Tu mundo interior es increíble."
-    ];
-
-    const fraseCaja = document.getElementById("frase-mascota");
-
     imgMascota.addEventListener("click", () => {
-      const indiceFrase = Math.floor(Math.random() * frasesPanda.length);
-
+      const frase = mascota.frases[Math.floor(Math.random() * mascota.frases.length)];
       fraseCaja.style.opacity = 0;
-
       setTimeout(() => {
-        fraseCaja.textContent = frasesPanda[indiceFrase];
+        fraseCaja.textContent = frase;
         fraseCaja.style.opacity = 1;
-      }, 400);
+      }, 300);
     });
+
+  });
   </script>
 
-
-  
 </body>
 </html>
