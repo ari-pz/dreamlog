@@ -56,6 +56,7 @@ async function getPostsByUserId(user_id) {
   return result.rows;
 }
 
+
 //Para el desplegables delnewpost.html
 async function getCategories() {
   const query = `SELECT category_id, name FROM categories ORDER BY name ASC;`;
@@ -64,6 +65,14 @@ async function getCategories() {
 }
 
 
+// GET: cantidad de posts 
+async function getPostsCount(user_id) {
+  const query = `SELECT COUNT(*) FROM posts WHERE user_id = $1`;
+  const { rows } = await dbClient.query(query, [user_id]);
+  return parseInt(rows[0].count, 10);
+}
+
+// POST: crear post
 async function createPost(user_id, content, image, category_id) {
   const query = `
     INSERT INTO posts (user_id, content, image, category_id)
@@ -84,6 +93,7 @@ async function createPost(user_id, content, image, category_id) {
 module.exports = {
   getAllPosts,
   getPostsByUserId,
-  getCategories,
-  createPost
+  createPost,
+  getPostsCount,
+  getCategories
 };

@@ -36,6 +36,7 @@ const { getAllUsers,
 const {
   getAllPosts,
   getPostsByUserId,
+  getPostsCount,
   getCategories
 } = require("./posts");
 
@@ -132,8 +133,8 @@ app.put('/api/users/:id', async (req, res) => {
         }
     }
 
-    if (bio && bio.length > 500) {
-        return res.status(400).json({ error: 'La biografía no puede tener más de 500 caracteres' });
+    if (bio && bio.length > 225) {
+        return res.status(400).json({ error: 'La biografía no puede tener más de 225 caracteres' });
     }
 
     const resultado = await updateUsers(user_id, username, password, bio, pfp);
@@ -216,11 +217,13 @@ app.get("/api/posts", async (req, res) => {
 
 // GET post by user_id
 app.get("/api/posts/:id", async (req, res) => {
-  const post = await getPostsByUserId(req.params.id)
-  if (post.lenght === 0) {
-    return res.json({ message: "No hay posts para este usuario" });
+  try {
+    const posts = await getPostsByUserId(req.params.id);
+    res.json(posts); // siempre devuelve array
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener posts del usuario" });
   }
-  res.json(post);
 });
 
 // CREATE new post
@@ -240,6 +243,20 @@ app.post("/api/posts", async (req, res) => {
   }
 });
 
+// GET cantidad de posts 
+app.get("/api/posts/count/:user_id", async (req, res) => {
+  const user_id = parseInt(req.params.user_id);
+  try {
+    const cantidadPosts = await getPostsCount(user_id);
+    res.json({ cantidadPosts });
+  } catch (error) {
+    console.error("Error al obtener cantidad de posts:", error);
+    res.status(500).json({ error: "Error al obtener cantidad de posts" });
+  }
+});
+
+
+
 
 // =======================================
 // CATEGORIES
@@ -255,7 +272,6 @@ app.get("/api/categories", async (req, res) => {
     res.status(500).json({ error: "Error obteniendo categorías" });
   }
 });
-
 
 
 
