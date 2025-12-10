@@ -9,15 +9,13 @@ INSERT INTO posts (user_id, content, image, category_id) VALUES
 (2, 'soñe que estaba dentro de un videojuego y perdia mis tres vidas', null, 3),
 (3, 'soñe que despertaba pero seguia durmiendo, esa cosa me seguia persiguiendo', null, 6);
 
+INSERT INTO lunas (user_id, post_id) VALUES
+(1, 1),
+(1, 2),
+(1, 3);
 
 INSERT INTO comments (user_id, post_id, content) VALUES
 (1, 1, 'Qué miedo con los ascensores 😱'),
 (1, 2, 'Uy, los videojuegos pueden ser intensos 😅'),
 (1, 3, 'Eso es demasiado extraño, me pasó algo parecido');
-
-
-INSERT INTO lunas (user_id, post_id) VALUES
-(1, 1),
-(1, 2),
-(1, 3);
-       
+     

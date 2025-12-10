@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS lunas (
   post_id INT NOT NULL REFERENCES posts(post_id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(user_id, post_id) 
-)
+);
 
 -- COMENTARIOS
 CREATE TABLE IF NOT EXISTS comments (
