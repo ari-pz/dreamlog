@@ -3,57 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nuevo Sueño ✦ DreamLog</title>
+  <title>Dreamlog - Nuevo Sueño</title>
   <link rel="stylesheet" href="css/newpost.css">
   <link rel="stylesheet" href="css/styles.css">
-
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+
+
 
   <!----- Navbar ----->
   <div id="navbar"></div>
   <script src="/js/navbar.js"></script>
 
+
+
   <!-----Principal----->
+  <h2 class="new-dream">Nuevo Sueño</h2>
+  <div class="newpost-container">
+    <label>✦ Escribe tu sueño</label>
+    <textarea id="content" placeholder="Escribe tu sueño aquí..." required class="input-estilo"></textarea>
 
-  <main class="atrapasueños-principal">
-    <section class="atrapasueños-secundario">
-      <h2>Nuevo Sueño</h2>
+    <label>✦ URL de Multimedia (opcional)</label>
+    <input id="image" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
 
-      <form class="form-nuevo-sueno" action="#" method="POST" style="display:flex; flex-direction:column; gap:25px; max-width:600px; margin:auto;">
+    <label>✦ Categorías Disponibles</label>
+      <select id="category" required class="input-estilo">
+        <option value="1">Pesadilla</option>
+        <option value="2">Recurrente</option>
+        <option value="3">Absurdo</option>
+        <option value="4">Sensorial</option>
+        <option value="5">Lúcido</option>
+        <option value="6">Inquietante</option> 
+      </select>
+      <button id="btn-post" type="submit" class="atrapasueños-btn">Publicar Sueño</button>
+  </div>
 
-        <div>
-          <label for="texto">✦ Escribe tu sueño</label>
-          <textarea id="texto" name="texto" rows="6" placeholder="Describe tu visión nocturna..." required class="input-estilo"></textarea>
-        </div>
 
-        <div>
-          <label for="imagen">✦ URL de imagen (opcional)</label>
-          <input id="imagen" name="imagen" type="url" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
-        </div>
 
-        <div>
-          <label for="categoria">✦ Categoría</label>
-          <select id="categoria" name="categoria" required class="input-estilo">
-            <option value="Pesadilla">Pesadilla</option>
-            <option value="Recurrente">Recurrente</option>
-            <option value="Absurdo">Absurdo</option>
-            <option value="Sensorial">Sensorial</option>
-            <option value="Lúcido">Lúcido</option>
-            <option value="Inquietante">Inquietante</option>
-          </select>
-        </div>
+  <script>
+    document.getElementById("btn-post").addEventListener("click", async () => {
 
-        <button type="submit" class="atrapasueños-btn" style="margin-top:10px;">
-          Publicar Sueño ✦
-        </button>
+      const content = document.getElementById("content").value;
+      const image = document.getElementById("image").value;
+      const category_id = document.getElementById("category").value;
 
-      </form>
+      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+  
+      if (!loggedUser) {
+        alert("Necesitas estar logueado");
+        return;
+      }
 
-      <br><br>
-    </section>
-  </main>
+      const user_id = loggedUser.user_id;
+
+      const postData = {
+        user_id,
+        content,
+        image,
+        category_id
+      };
+
+      const response = await fetch("/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(postData),
+      });
+
+      const result = await response.json();
+      console.log("Post creado:", result);
+      alert("Publicación exitosa!");
+
+      window.location.href = "/inicio";
+    });
+
+
+  </script>
 
 </body>
 </html>
