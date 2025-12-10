@@ -27,65 +27,6 @@
   <div class="search-bar">
     <input type="text" id="search-input" placeholder="Buscar sueños o #símbolos...">
   </div>
-  <script>
-    const frases = [
-      "Explorá tus símbolos nocturnos…",
-      "Buscá tus sueños o señales ocultas…",
-      "Descubrí patrones en tus noches…",
-      "Cada búsqueda es un viaje dentro de tu mente…",
-      "¿Qué misterios te visitaron hoy?"
-    ];
-    const input = document.getElementById("search-input");
-    let fraseIndex = 0;
-    let typingActive = true;
-    let userStartedTyping = false; // nuevo flag
-
-    // Si el usuario empieza a escribir, se pausa definitivamente el efecto
-    input.addEventListener("input", () => {
-      if (input.value.trim() !== "") {
-        userStartedTyping = true;
-        typingActive = false;
-        input.style.setProperty("--placeholder-opacity", 1);
-        input.placeholder = ""; // limpiar cualquier texto anterior
-      }
-    });
-
-    // Función para escribir letra por letra
-    function escribirFrase(frase, i = 0) {
-      if (!typingActive || userStartedTyping) return;
-
-      input.style.setProperty("--placeholder-opacity", 1);
-
-      if (i <= frase.length) {
-        input.placeholder = frase.substring(0, i);
-        setTimeout(() => escribirFrase(frase, i + 1), 100);
-      } else {
-        setTimeout(() => puffDesaparecer(), 3000);
-      }
-    }
-    // Efecto de desvanecimiento
-    function puffDesaparecer() {
-      if (!typingActive || userStartedTyping) return;
-      let opacity = 1;
-      const step = 0.05;
-      const fade = setInterval(() => {
-        opacity -= step;
-        input.style.setProperty("--placeholder-opacity", opacity);
-        if (opacity <= 0) {
-          clearInterval(fade);
-          input.placeholder = "";
-          fraseIndex = (fraseIndex + 1) % frases.length;
-          setTimeout(() => escribirFrase(frases[fraseIndex]), 500);
-        }
-      }, 60);
-    }
-    // Iniciar animación
-    escribirFrase(frases[fraseIndex]);
-  </script>
-
-
-
-
 
 
 
@@ -106,7 +47,7 @@
     }
     loadPosts();
   </script>
-
+  <script src="./js/home.js"></script>
 
 
 

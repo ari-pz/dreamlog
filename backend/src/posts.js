@@ -73,6 +73,27 @@ async function getPostsCount(user_id) {
   return parseInt(rows[0].count, 10);
 }
 
+async function getPostsByCategory(categoria) {
+  const query = `
+    SELECT 
+      posts.post_id,
+      posts.user_id,
+      posts.content,
+      posts.image,
+      posts.created_at,
+      users.username,
+      users.pfp,
+      categories.name AS category_name
+    FROM posts
+    JOIN users ON posts.user_id = users.user_id
+    LEFT JOIN categories ON posts.category_id = categories.category_id
+    WHERE LOWER(categories.name) = $1
+    ORDER BY posts.created_at DESC;
+  `;
+  
+  const { rows } = await dbClient.query(query, [categoria]);
+  return rows;
+}
 
 
 
@@ -83,5 +104,6 @@ module.exports = {
   getAllPosts,
   getPostsByUserId,
   getPostsCount,
-  getCategories
+  getCategories,
+  getPostsByCategory
 };

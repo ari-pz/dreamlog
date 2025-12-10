@@ -36,7 +36,8 @@ const {
   getAllPosts,
   getPostsByUserId,
   getPostsCount,
-  getCategories
+  getCategories,
+  getPostsByCategory
 } = require("./posts");
 
 
@@ -242,6 +243,24 @@ app.get("/api/categories", async (req, res) => {
 });
 
 
+// GET para buscar posts por categoría
+app.get('/api/posts/categories/:categorie', async (req, res) => {
+    const categoriaBuscada = req.params.categorie.toLowerCase();
+
+    try {
+        const posts = await getPostsByCategory(categoriaBuscada);
+
+        if (posts.length === 0) {
+            return res.json({ message: 'No hay posts en esta categoría' });
+        }
+
+        res.json(posts);
+        
+    } catch (error) {
+        console.error('Error buscando posts por categoría:', error);
+        res.status(500).json({ error: 'Error al buscar posts' });
+    }
+});
 
 // =======================================
 // LOGIN

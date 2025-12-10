@@ -89,6 +89,22 @@ transition: {color 1s ease, transform 1s ease;
   box-shadow: 0 0 10px rgba(234, 163, 255, 0.4);
 }
 
+
+.mensaje-busqueda {
+    text-align: center;
+    padding: 2rem;
+    color: #c4a9ff;
+    font-size: 1.8rem;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.post-category {
+    color: #b892ff;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
 /* CONTENIDO */
 .main-content {
   text-align: center;
