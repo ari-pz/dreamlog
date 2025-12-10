@@ -37,7 +37,8 @@ const {
   getPostsByUserId,
   getPostsCount,
   getCategories,
-  createPost
+  createPost,
+  getPostsByCategory
 } = require("./posts");
 
 
