@@ -3,10 +3,26 @@
    ============================ */
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background: #1a102b; /* violeta profundo */
-  color: #f5eaff;
-  padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-image: url('../img/fondo-perfil.jpeg');
+    background-size: cover;
+    animation: slowPan 120s linear infinite;
+    min-height: 100vh;
+}
+
+@keyframes slowPan {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.button {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  padding: 1em 1.5em;
 }
 
 h3.titulo-posts {
@@ -53,7 +69,7 @@ h3.titulo-posts {
    ============================ */
 
 .perfil {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 2rem;
   margin: 30px;
@@ -73,6 +89,7 @@ h3.titulo-posts {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 /* Info del usuario */
@@ -118,10 +135,100 @@ h3.titulo-posts {
   transition: 0.2s ease;
 }
 
+.media-content{
+  color: white;
+  font-size: 20px;
+}
+
+-media-content h5{
+  font-size: 20px;
+}
+
+
+#nombre-usuario strong{
+  color: white;
+  font-size: 30px;
+}
+
+#boton-eliminar{
+  background-color: #310440e2 ;
+}
+
+#boton-editar{
+  background-color: #42064e;
+}
+
+
 .perfil-btn:hover,
 #boton-eliminar:hover,
 #boton-editar:hover {
   transform: scale(1.05);
+}
+
+/* ===== MODAL ===== */
+.modal-card {
+  border: 4px solid rgba(74, 52, 114, 0.8);  
+  border-radius: 0;
+  box-shadow: 6px 6px 0px rgba(45, 27, 78, 0.5);
+  background: rgba(45, 27, 78, 0.95);
+}
+
+.modal-card-head {
+  font-family: 'Cormorant Garamond', serif; 
+  background: rgba(106, 79, 150, 0.9);
+  border-bottom: 3px solid rgba(45, 27, 78, 0.6);
+  border-radius: 0;
+  padding: 12px 20px;
+}
+
+.modal-card-title {
+  color: rgba(255, 212, 229, 1);  
+  font-size: 28px;
+  text-shadow: 2px 2px 0px rgba(164, 81, 222, 0.503);
+}
+
+.modal-card-body {
+  font-family: 'Cormorant Garamond', serif; 
+  background: rgba(252, 229, 241, 0.95);  
+  color: rgba(59, 3, 61, 0.95);
+  font-size: 23px;
+  padding: 40px;
+  text-align: center;
+  border-left: 3px solid rgba(106, 79, 150, 0.4);
+  border-right: 3px solid rgba(106, 79, 150, 0.4);
+}
+
+.modal-card-foot {
+  background: rgba(106, 79, 150, 0.8);  
+  border-top: 3px solid rgba(74, 52, 114, 0.6);
+  border-radius: 0;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-card-foot .button {
+  font-size: medium;
+  border: 3px solid rgba(45, 27, 78, 0.7);
+  border-radius: 0;
+  box-shadow: 4px 4px 0px rgba(26, 16, 70, 0.4);
+  background: rgba(252, 229, 241, 0.95);
+  color: rgba(45, 27, 78, 1);
+  font-size: 12px;
+  padding: 15px 30px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+
+.modal-card-foot .button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px rgba(26, 16, 70, 0.3);
+  background: rgba(45, 27, 78, 1);
+  color: rgba(252, 229, 241, 0.95);
+}
+
+.modal-background {
+  background-color: rgba(26, 16, 70, 0.7); 
 }
 
 
