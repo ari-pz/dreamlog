@@ -36,7 +36,8 @@ const {
   getAllPosts,
   getPostsByUserId,
   getPostsCount,
-  getCategories
+  getCategories,
+  createPost
 } = require("./posts");
 
 
@@ -224,6 +225,23 @@ app.get("/api/posts/count/:user_id", async (req, res) => {
 });
 
 
+// POST nuevo post
+app.post("/api/posts", async (req, res) => {
+  try {
+    const { user_id, content, image, category_id } = req.body;
+
+    if (!user_id || !content) {
+      return res.status(400).json({ error: "user_id y content son obligatorios" });
+    }
+
+    const newPost = await createPost(user_id, content, image, category_id);
+    res.json(newPost);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error creando post" });
+  }
+});
 
 
 // =======================================
