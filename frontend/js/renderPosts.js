@@ -36,7 +36,11 @@ function renderPosts(posts) {
         </div>
 
         <div class="post-content">${post.content}</div>
-
+        ${
+          post.image
+          ? `<img src="${post.image}" class="post-img">`
+          : ""
+        }
         <div class="post-footer">
           <span class="category">${post.category_name}</span>
           <span>0 LUNAS</span>
