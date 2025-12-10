@@ -1,9 +1,15 @@
 -- Eliminamos tablas durante el desarrollo
-DROP TABLE users;
-DROP TABLE categories;
-DROP TABLE posts;
-DROP TABLE pets;
+DROP TABLE IF EXISTS users, categories, posts, pets CASCADE;
 
+-- MASCOTAS
+CREATE TABLE IF NOT EXISTS pets (
+    pet_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+INSERT INTO pets (name) VALUES
+('Gato'),
+('Perezoso'),
+('Panda');
 
 -- USUARIOS
 CREATE TABLE IF NOT EXISTS users (
@@ -30,37 +36,22 @@ INSERT INTO categories (name) VALUES
 ('Inquietante');
 
 -- LUNAS
-
 -- COMENTARIOS
-
 
 -- POSTS
 CREATE TABLE IF NOT EXISTS posts (
     post_id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
+    user_id INT NOT NULL REFERENCES users(user_id),
     content VARCHAR(255) NOT NULL,
     image VARCHAR(255),
-    category_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (category_id) REFERENCES categories(category_id)
-);
-
--- MASCOTAS
-CREATE TABLE IF NOT EXISTS pets (
-    pet_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
+    category_id INT REFERENCES categories(category_id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
-INSERT INTO pets (name) VALUES
-('Gato'),
-('Perezoso'),
-('Panda');
+-- TRUNCATE PARA REINICIAR DATOS
+TRUNCATE TABLE posts, users, categories, pets RESTART IDENTITY CASCADE;
 
-
--- INSERT DREAMLOG
-TRUNCATE TABLE posts, users RESTART IDENTITY CASCADE;
 
 INSERT INTO users (username, password, bio, pfp, pet_id) VALUES
 ('ari-dreamlog', '1234', 'im always sleeping Zzz', 'https://i.pinimg.com/736x/e6/a2/39/e6a239754826cc9ea0000eaf4c72cc02.jpg', 1),
@@ -71,12 +62,4 @@ INSERT INTO posts (user_id, content, image, category_id) VALUES
 (1, 'sigo soñando con ascensores wtf', null, 2),
 (2, 'soñe que estaba dentro de un videojuego y perdia mis tres vidas', null, 3),
 (3, 'soñe que despertaba pero seguia durmiendo, esa cosa me seguia persiguiendo', null, 6);
-
-
-
-
-
-
-
-
 
