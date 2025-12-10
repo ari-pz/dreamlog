@@ -39,17 +39,32 @@ header h1 {
   gap: 1.5rem;
 }
 
-a {
+.nav-left a {
   color: #e4e4e4;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
-a:hover {
+.nav-rigth a {
+  color: #e4e4e4;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+
+
+.nav-right a:hover {
   color: #ffe8a3;
   text-shadow: 0 0 5px rgba(255,232,163,0.6);
 }
+
+.nav-left a:hover {
+  color: #ffe8a3;
+  text-shadow: 0 0 5px rgba(255,232,163,0.6);
+}
+
 
 /* BARRA DE BÚSQUEDA */
 .search-bar {

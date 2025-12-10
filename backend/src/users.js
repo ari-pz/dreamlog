@@ -71,7 +71,7 @@ async function getLoggedUserProfile() {
 
 
 //MODIFICAR Datos del Usuario
-async function updateUsers(user_id, username, password, bio, pfp) {
+async function updateUser(user_id, username, password, bio, pfp) {
     try {
         let campos = [];
         let valores = [];
@@ -181,7 +181,7 @@ module.exports = {
     getUserById,
     getUserByUsername,
     createUser,
-    updateUsers,
+    updateUser,
     nameInUse, 
     deleteUser
 };

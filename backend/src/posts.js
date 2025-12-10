@@ -23,6 +23,7 @@ async function getAllPosts() {
       posts.image,
       posts.created_at,
       users.username,
+      users.pfp,
       categories.name AS category_name
     FROM posts
     JOIN users ON posts.user_id = users.user_id
@@ -72,18 +73,6 @@ async function getPostsCount(user_id) {
   return parseInt(rows[0].count, 10);
 }
 
-// POST: crear post
-async function createPost(user_id, content, image, category_id) {
-  const query = `
-    INSERT INTO posts (user_id, content, image, category_id)
-    VALUES ($1, $2, $3, $4)
-    RETURNING *;
-  `;
-  const values = [user_id, content, image, category_id];
-  const result = await dbClient.query(query, values);
-  return result.rows[0];
-}
-
 
 
 
@@ -93,7 +82,6 @@ async function createPost(user_id, content, image, category_id) {
 module.exports = {
   getAllPosts,
   getPostsByUserId,
-  createPost,
   getPostsCount,
   getCategories
 };
