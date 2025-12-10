@@ -38,61 +38,83 @@ async function cargarMisPosts() {
 cargarMisPosts(); 
 
 
-// FUNCIONALIDAD BTN ELIMINAR
+
+// ========== FUNCIONES DEL MODAL ==========
+const modal = document.getElementById('modal-resultado');
+const modalTitulo = document.getElementById('modal-titulo');
+const modalMensaje = document.getElementById('modal-mensaje');
+const btnAceptar = document.getElementById('btn-aceptar');
+const btnCancelar = document.getElementById('btn-cancelar');
+
+function mostrarModal(titulo, mensaje, soloAceptar = false) {
+  modalTitulo.textContent = titulo;
+  modalMensaje.textContent = mensaje;
+  
+  if (soloAceptar) {
+    btnAceptar.style.display = 'inline-block';
+    btnCancelar.style.display = 'none';
+  } else {
+    btnAceptar.style.display = 'inline-block';
+    btnCancelar.style.display = 'inline-block';
+  }
+
+  modal.classList.add('is-active');
+}
+
+function cerrarModal() {
+  modal.classList.remove('is-active');
+}
+
+btnCancelar.addEventListener('click', cerrarModal);
+
+
+
+// ========== FUNCIONALIDAD BTN ELIMINAR ==========
 const botonEliminar = document.getElementById('boton-eliminar');
 
-botonEliminar.addEventListener('click', async function() {
-    const confirmacion = confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción NO se puede deshacer.');
+botonEliminar.addEventListener('click', function() {
+    mostrarModal(
+        '⚠️ Eliminar Cuenta',
+        '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción NO se puede deshacer. Se borrarán todos tus datos permanentemente.',
+        false  // Mostrar ambos botones (Aceptar y Cancelar)
+    );
+
     
-    if (!confirmacion) {
-        return; 
-    }
-    
-    const segundaConfirmacion = confirm('¿REALMENTE estás seguro? Se borrarán todos tus datos permanentemente.');
-    
-    if (!segundaConfirmacion) {
-        return;
-    }
-    
-    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-    
-    if (!loggedUser) {
-        alert('No estás logueado');
-        window.location.href = '/login.html';
-        return;
-    }
-    
-    const user_id = loggedUser.user_id;
-    
-    console.log('Eliminando usuario:', user_id);
-    
-    try {
-        const response = await fetch(`http://localhost:3000/api/users/${user_id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
+    btnAceptar.onclick = async function() {
+        cerrarModal();
+        
+        const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+        const user_id = loggedUser.user_id;
+        
+        console.log('Eliminando usuario:', user_id);
+        
+        try {
+            const response = await fetch(`http://localhost:3000/api/users/${user_id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            const data = await response.json();
+            
+            console.log('Respuesta del servidor:', data);
+            
+            if (response.ok) {
+                mostrarModal('Que lastima que te vayas, volve pronto', 'Cuenta eliminada exitosamente. Serás redirigido al inicio.', true);
+                
+                btnAceptar.onclick = function() {
+                    localStorage.removeItem('loggedUser');
+                    window.location.href = '/login.html';
+                };
+                
+            } else {
+                mostrarModal('Error', data.error || 'No se pudo eliminar la cuenta', true);
             }
-        });
-        
-        const data = await response.json();
-        
-        console.log('Respuesta del servidor:', data);
-        
-        if (response.ok) {
-            alert('Cuenta eliminada exitosamente. Serás redirigido al inicio.');
             
-            // Limpiar localStorage
-            localStorage.removeItem('loggedUser');
-            
-            // Redirigir al login
-            window.location.href = '/login.html';
-            
-        } else {
-            alert('Error: ' + data.error);
+        } catch (error) {
+            console.error('Error completo:', error);
+            mostrarModal('Error', 'No se pudo conectar con el servidor', true);
         }
-        
-    } catch (error) {
-        console.error('Error completo:', error);
-        alert('Error: No se pudo conectar con el servidor');
-    }
+    };
 });
