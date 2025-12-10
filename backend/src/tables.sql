@@ -52,10 +52,12 @@ CREATE TABLE IF NOT EXISTS pets (
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
+
 INSERT INTO pets (name) VALUES
 ('Gato'),
 ('Perezoso'),
 ('Panda');
+
 
 -- INSERT DREAMLOG
 TRUNCATE TABLE posts, users RESTART IDENTITY CASCADE;
