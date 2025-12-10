@@ -35,8 +35,9 @@ const { getAllUsers,
 
 const {
   getAllPosts,
-  getPostsByUserId
-} = require("./dream");
+  getPostsByUserId,
+  getCategories
+} = require("./posts");
 
 
 // =======================================
@@ -204,8 +205,13 @@ app.delete('/api/users/:id', async (req, res) => {
 
 // GET posts
 app.get("/api/posts", async (req, res) => {
-  const posts = await getAllPosts();
-  res.json(posts);
+  try {
+    const posts = await getAllPosts();
+    res.json(posts);
+  } catch (error) {
+    console.error("Error en GET /api/posts", error);
+    res.status(500).json({ error: "Error al obtener posts" });
+  }
 });
 
 // GET post by user_id
@@ -217,7 +223,38 @@ app.get("/api/posts/:id", async (req, res) => {
   res.json(post);
 });
 
+// CREATE new post
+app.post("/api/posts", async (req, res) => {
+  const { user_id, content, image, category_id } = req.body;
 
+  if (!user_id || !content || !category_id) {
+    return res.status(400).json({ error: "Faltan campos obligatorios" });
+  }
+
+  try {
+    const newPost = await createPost(user_id, content, image, category_id);
+    res.status(201).json(newPost);
+  } catch (err) {
+    console.error("Error creando post:", err);
+    res.status(500).json({ error: "Error creando post" });
+  }
+});
+
+
+// =======================================
+// CATEGORIES
+// =======================================
+
+// GET all categories
+app.get("/api/categories", async (req, res) => {
+  try {
+    const categories = await getCategories();
+    res.json(categories);
+  } catch (err) {
+    console.error("Error obteniendo categorías:", err);
+    res.status(500).json({ error: "Error obteniendo categorías" });
+  }
+});
 
 
 
