@@ -16,7 +16,7 @@
 
   <!----- Navbar ----->
   <div id="navbar"></div>
-  <script src="/js/navbar.js"></script>
+  <script src="js/navbar.js"></script>
 
   <!-- ===== CONTENEDOR DE DOS COLUMNAS ===== -->
   <div class="perfil-contenedor">
@@ -110,77 +110,46 @@
       console.error(err);
     }
   });
+  </script> 
+  <script src="js/profile.js"></script>
+
+
+
+
+  <!-- POSTS DEL USUARIO LOGUEADO -->
+
+  <div id="posts-container"></div>
+
+  <script src="js/renderPosts.js"></script>
+  <script>
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+
+    if (!loggedUser) {
+      window.location.href = "/";
+    }
+
+    // Traer posts del usuario
+    fetch(`/api/posts/${loggedUser.user_id}`)
+      .then(res => res.json())
+      .then(posts => {
+        console.log("posts del usuario:", posts);
+        renderPosts(posts);
+      });
   </script>
 
 
 
-  <!-- ======================= POSTS DEL USUARIO ======================= -->
-  <script src="./js/profile.js"></script>
 
 
 
-  <!-- ======================= MASCOTA DINÁMICA ======================= -->
+  <!-- MASCOTA PANDA-->
   <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-
-    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-    if (!loggedUser) return;
-
-    const res = await fetch(`/api/users/${loggedUser.user_id}`);
-    const user = await res.json();
-    const petId = user.pet_id;
-
-    const mascotas = {
-      1: { 
-        imagenes: [
-          "./img_mascotas/gato1.png",
-          "./img_mascotas/gato2.png",
-          "./img_mascotas/gato3.png",
-          "./img_mascotas/gato4.png"
-        ],
-        frases: [
-          "Hoy es un buen día para soñar fuerte 🌙",
-          "Estoy orgulloso de vos, pequeño soñador.",
-          "Respirá... todo va a estar bien 🐼✨",
-          "Tu sueño tiene más poder del que imaginás.",
-          "Recordá: un paso a la vez."
-        ]
-      },
-
-      2: {
-        imagenes: [
-          "./img_mascotas/panda1.png",
-          "./img_mascotas/panda2.png",
-          "./img_mascotas/panda3.png",
-          "./img_mascotas/panda4.png"
-        ],
-        frases: [
-          "Miau... soñemos juntos 💜",
-          "Estoy vigilando tus sueños.",
-          "Las noches brillan más con vos.",
-          "Si dudás, ronroneá profundo.",
-          "Te cuido mientras descansás 🌙🐈‍⬛"
-        ]
-      },
-
-      3: {
-        imagenes: [
-          "./img_mascotas/perezoso1.png",
-          "./img_mascotas/perezoso2.png",
-          "./img_mascotas/perezoso3.png",
-          "./img_mascotas/perezoso4.png"
-        ],
-        frases: [
-          "Todo a su propio ritmo 💤✨",
-          "Respirá lento, soñá fuerte.",
-          "Estoy acá, acompañándote siempre.",
-          "Dormir también es avanzar.",
-          "Tu calma es tu superpoder."
-        ]
-      }
-    };
-
-    const mascota = mascotas[petId] || mascotas[1];
+    const imagenesPanda = [
+      "imagenes-mascotas/panda1.png",
+      "imagenes-mascotas/panda2.png",
+      "imagenes-mascotas/panda3.png",
+      "imagenes-mascotas/panda4.png"
+    ];
 
     const imgMascota = document.getElementById("imagen-mascota");
     const fraseCaja = document.getElementById("frase-mascota");

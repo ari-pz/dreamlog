@@ -1,43 +1,123 @@
-/* POSTS */
-#posts {
+/* Contenedor de todos los posts */
+#posts-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 30px;
+  align-items: center; /* centra los posts */
+  gap: 15px; /* espacio entre posts */
+  padding: 20px;
 }
 
-#my-posts {
+.post-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 100%;
-  margin-top: 10px;
+  justify-content: space-between;
+}
+.post-user {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
+/* Categoría con fondo y color */
+.post-footer .category {
+  padding: 2px 8px;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.85em;
+}
 
+.category {
+  background-color: #542b66;
+}
 
+/* Contenedor de cada post */
 .post {
-  width: 500px;
-  background-color: #160c2b;  
-  border: 1px solid #5a506b;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 10px 0;
+  width: 100%;
+  max-width: 600px;
+  background: #1e132e;
+  border-radius: 10px;
+  padding: 15px;
+  color: white;
   font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
-.post-username {
-  color: violet;
+
+/* HEADER */
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Foto de perfil */
+.pfp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Nombre de usuario */
+.post-header .username,
+.post-header span {
   font-weight: bold;
-  font-size: 15px;
 }
-.post-content {
-  font-size: 15px;
-  margin: 8px 0;
+
+/* Contenedor del menu de opciones */
+.menu {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Puntos para desplegable */
+.dots {
+  font-weight: bold;
+  font-size: 18px;
   color: white;
 }
-.post-date {
-  font-size: 13px;
-  color: #657786;
+
+/* Dropdown */
+.dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  padding: 5px 0;
+  min-width: 120px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+/* Links dentro del dropdown */
+.dropdown a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: black;
+}
+
+/* Links que deben ir en rojo */
+.dropdown a.style-red {
+  color: red;
+}
+
+/* Mostrar dropdown al hover (puede cambiar a click con JS) */
+.menu:hover .dropdown {
+  display: block;
+}
+
+/* Contenido del post */
+.post-content {
+  margin: 10px 0;
+}
+
+/* Footer: categoría, lunas, comentarios */
+.post-footer {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9em;
+  color: #ccc;
 }
 
