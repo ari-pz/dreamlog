@@ -74,6 +74,22 @@ async function getPostsCount(user_id) {
 }
 
 
+// INSERT post
+async function createPost(user_id, content, image, category_id) {
+  const query = `
+    INSERT INTO posts (user_id, content, image, category_id)
+    VALUES ($1, $2, $3, $4)
+    RETURNING *;
+  `;
+  const values = [user_id, content, image, category_id];
+  const result = await dbClient.query(query, values);
+  return result.rows[0];
+}
+
+module.exports = { createPost };
+
+
+
 
 
 // ===================================================
@@ -83,5 +99,6 @@ module.exports = {
   getAllPosts,
   getPostsByUserId,
   getPostsCount,
-  getCategories
+  getCategories,
+  createPost
 };
