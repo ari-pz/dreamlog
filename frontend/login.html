@@ -55,7 +55,14 @@
 
       if (res.status === 200) {
         const data = await res.json();
-        localStorage.setItem("loggedUser", JSON.stringify(data.user));        
+    
+        // Guardar usuario en LocalStorage
+        localStorage.setItem("loggedUser", JSON.stringify({
+          user_id: data.user.user_id,
+          username: data.user.username,
+          pfp: data.user.pfp
+        }));
+
         window.location.href = "/inicio";
       
       } else {

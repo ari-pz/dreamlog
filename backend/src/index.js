@@ -27,8 +27,7 @@ app.listen(PORT, () => {
 const { getAllUsers,
         getUserById,
         getUserByUsername,
-        createUser,
-        updateUsers,
+        updateUser,
         nameInUse,
         deleteUser
 } = require("./users");
@@ -69,21 +68,6 @@ app.get("/api/users/:id", async (req, res) => {
   }
 });
 
-// POST user
-app.post("/api/users", async (req, res) => {
-  const { username, password, bio, pfp } = req.body;
-  try {
-    const newUser = await createUser(username, password, bio, pfp);
-    res.status(201).json(newUser);
-
-  } catch (err) {
-    if (err.code == '23505'){
-      res.status(400).json({error: "El nombre de usuario ya existe"});
-    } else {
-      res.status(500).json({error: "Error al crear el usuario"})
-    }
-  }
-});
 
 //UPDATE profile
 app.put('/api/users/:id', async (req, res) => {
@@ -226,22 +210,6 @@ app.get("/api/posts/:id", async (req, res) => {
   }
 });
 
-// CREATE new post
-app.post("/api/posts", async (req, res) => {
-  const { user_id, content, image, category_id } = req.body;
-
-  if (!user_id || !content || !category_id) {
-    return res.status(400).json({ error: "Faltan campos obligatorios" });
-  }
-
-  try {
-    const newPost = await createPost(user_id, content, image, category_id);
-    res.status(201).json(newPost);
-  } catch (err) {
-    console.error("Error creando post:", err);
-    res.status(500).json({ error: "Error creando post" });
-  }
-});
 
 // GET cantidad de posts 
 app.get("/api/posts/count/:user_id", async (req, res) => {
