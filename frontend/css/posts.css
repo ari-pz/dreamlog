@@ -130,3 +130,81 @@
   color: #ccc;
 }
 
+
+/* CONTENEDOR DEL POST */
+/*.post {
+  position: relative;
+  padding: 15px;
+  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+}*/
+
+
+/* TEXTAREA DE EDICIÓN */
+.edit-area {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 90px;
+  resize: none; 
+  padding: 10px;
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  outline: none;
+}
+
+.edit-area:focus {
+  border-color: #9e6fff;
+  box-shadow: 0 0 3px rgba(158, 111, 255, 0.4);
+}
+
+/* INPUT PARA LA URL DE LA IMAGEN */
+.edit-img {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+  font-size: 14px;
+  font-family: inherit;
+  margin-bottom: 12px;
+}
+
+.edit-img:focus {
+  border-color: #9e6fff;
+  box-shadow: 0 0 3px rgba(158, 111, 255, 0.4);
+}
+
+/* BOTONES DE GUARDAR / CANCELAR */
+.edit-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.save-edit,
+.cancel-edit {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+}
+
+/* Botón Guardar */
+.save-edit {
+  background: black;
+  color: white;
+}
+
+
+/* Botón Cancelar */
+.cancel-edit {
+  background: #eee;
+}
+
