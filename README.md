@@ -1,15 +1,18 @@
 # 🌙 Dreamlog
-**Dreamlog** es una plataforma para registrar y organizar tus sueños recientes. Funciona como un diario personal de sueños, permitiendo mantener un historial, clasificarlos mediante etiquetas y consultarlos cuando quieras. 
+**Dreamlog** es una plataforma para registrar y organizar tus sueños recientes. Funciona como un diario personal de sueños, permitiendo mantener un historial, clasificarlos mediante categorias y consultarlos cuando quieras. 
 
 
 
 ## 📖 Descripción 
 Dreamlog permite a los usuarios:
+- Crear una cuenta personal y elegir un animal espiritual de compañia.
 - Registrar sueños recientes de forma rápida y sencilla.  
 - Mantener un historial personal de sueños.  
-- Clasificar y organizar los sueños mediante etiquetas. 
+- Clasificar y organizar los sueños mediante categorias. 
 - Consultar y reflexionar sobre los sueños anteriores.
-Es ideal para quienes quieren llevar un diario de sueños, reflexionar sobre ellos o simplemente no olvidarlos.
+- Recibir "Lunas" de parte de otros usuarios.
+- Un atrapasueños personalizado para cada usuario en el cual poodrá ver su pogreso en la página.
+**Dreamlog** es ideal para quienes quieren llevar un diario de sueños, reflexionar sobre ellos o simplemente no olvidarlos.
 
 
 ## 👤 Integrantes
@@ -42,27 +45,21 @@ cd ..
 make dev
 ```
 
-**Otros comandos útiles**
-```bash
-# Detener los contenedores de Docker
-make stop-db
-
-# Reiniciar la base de datos y volver a levantar todo
-make restart-db
-
-# Limpiar la base de datos completamente (borra volúmenes)
-make clean-db-volumes
-
-# Correr solo el backend sin nodemon
-make start-backend
-```
-
-
----
-
 ## 📸 Capturas de pantalla
-- Iniciar Sesión / Registrarse
-- Pantalla de Inicio
-- Perfil de Usuario
+
+**Ingresar/Registrarse**
+![login](./assets/login.png)
+
+**Inicio**
+![home](./assets/home.png)
+
+**Atrapasueños**
+![dreamcatcher](./assets/dreamcatcher.png)
+
+**Perfil de Usuario**
+![profile](./assets/profile.png)
+
+**Nuevo Sueño**
+![newpost](./assets/newpost.png)
 
 
