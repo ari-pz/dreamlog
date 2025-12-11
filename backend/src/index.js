@@ -43,7 +43,8 @@ const {
   addMoon,
   removeMoon,
   getMoonCount,
-  deletePost
+  deletePost,
+  updatePost
 } = require("./posts");
 
 
@@ -194,6 +195,20 @@ app.delete('/api/users/:id', async (req, res) => {
 // =======================================
 // POSTS
 // =======================================
+
+app.put('/api/posts/:id', async (req, res) => {
+  const postId = req.params.id;
+  const { content, image } = req.body;
+
+  try {
+    const updatedPost = await updatePost(postId, content, image);
+    res.json({ message: 'Post actualizado correctamente', post: updatedPost });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Error al actualizar el post' });
+  }
+});
+
+
 
 // DELETE post
 app.delete("/api/posts/:id", async (req, res) => {

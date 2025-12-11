@@ -163,6 +163,32 @@ async function deletePost(post_id) {
 }
 
 
+//UPDATE post
+
+async function updatePost(postId, content, image) {
+  try {
+    const query = `
+      UPDATE posts
+      SET content = $1,
+          image = $2
+      WHERE post_id = $3
+      RETURNING *;
+    `;
+    const values = [content, image, postId];
+    const result = await dbClient.query(query, values);
+
+    if (result.rowCount === 0) {
+      throw new Error('Post no encontrado');
+    }
+
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error actualizando post:', error);
+    throw error;
+  }
+}
+
+
 // ===================================================
 // EXPORTAR FUNCIONES
 // ===================================================
@@ -174,6 +200,7 @@ module.exports = {
   getPostsByCategory,
   createPost,
   deletePost,
+  updatePost,
   addMoon,
   removeMoon,
   getMoonCount,

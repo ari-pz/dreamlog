@@ -1,17 +1,19 @@
-// puede ir en home.js
+// --- En main.js o home.js ---
+
+// 1. Obtener y parsear el usuario logueado
+const loggedUser = JSON.parse(localStorage.getItem("loggedUser")) || null;
+const currentUserId = loggedUser?.user_id || null;
+
+// 2. Obtener los posts
 async function loadPosts() {
-  try {
-      const res = await fetch("/api/posts");
-      const posts = await res.json();
-      renderPosts(posts);
-  } catch (error) {
-      console.error("Error al cargar posts", error);
-  }
+    // ... lógica para obtener tus posts (fetch, etc.)
+    const posts = await fetch('/api/posts').then(res => res.json());
+
+    // 3. Llamar a la función, PASANDO el ID
+    renderPosts(posts, currentUserId); 
 }
 
-// Cargar posts al inicio
 loadPosts();
-
 
 
 
