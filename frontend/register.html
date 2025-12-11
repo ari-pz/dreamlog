@@ -28,17 +28,17 @@
       <h3 class="titulo-mascota">Elige a tu guía nocturno</h3>
       <div class="mascotas-container">
         <label class="mascota-item">
-          <input type="radio" name="pet_id" value="gato" class="pet-radio">
+          <input type="radio" name="pet_id" value="1" class="pet-radio">
           <img src="img_mascotas/gato1.png" alt="Gato guía">
         </label>
 
         <label class="mascota-item">
-          <input type="radio" name="pet_id" value="panda" class="pet-radio">
+          <input type="radio" name="pet_id" value="2" class="pet-radio">
           <img src="img_mascotas/panda1.png" alt="Panda guía">
         </label>
 
         <label class="mascota-item">
-          <input type="radio" name="pet_id" value="perezoso" class="pet-radio">
+          <input type="radio" name="pet_id" value="3" class="pet-radio">
           <img src="img_mascotas/perezoso1.png" alt="Perezoso guía">
         </label>
       </div>
@@ -63,11 +63,20 @@
       const bio = document.getElementById("bio").value || null;
       const pfp = document.getElementById("pfp").value || null;
 
+      // Obtener mascota elegida
+      const pet_id = document.querySelector('input[name="pet_id"]:checked')?.value || null;
+
+      // Validación obligatoria
+      if (!pet_id) {
+        alert("Debes elegir un guía nocturno antes de crear tu cuenta.");
+        return;
+      }
+
       try {
         const res = await fetch("/api/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password, bio, pfp})
+          body: JSON.stringify({ username, password, bio, pfp, pet_id})
         });
         const data = await res.json();
 
