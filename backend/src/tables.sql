@@ -43,7 +43,7 @@ INSERT INTO categories (name) VALUES
 -- POSTS
 CREATE TABLE IF NOT EXISTS posts (
     post_id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL REFERENCES users(user_id),
+    user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     content VARCHAR(255) NOT NULL,
     image VARCHAR(255),
     category_id INT REFERENCES categories(category_id),
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS posts (
 -- LUNAS
 CREATE TABLE IF NOT EXISTS lunas (
   luna_id SERIAL PRIMARY KEY,
-  user_id INT NOT NULL REFERENCES users(user_id),
+  user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
   post_id INT NOT NULL REFERENCES posts(post_id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(user_id, post_id)
@@ -63,8 +63,9 @@ CREATE TABLE IF NOT EXISTS lunas (
 -- COMENTARIOS
 CREATE TABLE IF NOT EXISTS comments (
     comment_id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL REFERENCES users(user_id),
+    user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     post_id INT NOT NULL REFERENCES posts(post_id) ON DELETE CASCADE,
     content VARCHAR(255) NOT NULL,
+    url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
