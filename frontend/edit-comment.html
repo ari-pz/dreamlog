@@ -30,63 +30,73 @@
 
 
   <script>
-    // 1. Obtener comment_id de la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const commentId = urlParams.get('comment_id');
+  document.addEventListener("DOMContentLoaded", () => {
+    // 1. Obtener datos de la memoria (LocalStorage)
+    // Esto lo guardamos desde home.js o profile.js antes de venir aquí
+    const commentId = localStorage.getItem("edit_comment_id");
+    const oldContent = localStorage.getItem("edit_comment_content");
+    // Nota: Como no guardamos la URL en home.js, el campo URL aparecerá vacío al principio. 
+    // Si quieres editar la URL, tendrías que guardarla también en home.js.
 
-    // 2. Seleccionar los inputs
+    // Seleccionar inputs
     const contentInput = document.getElementById('content');
     const urlInput = document.getElementById('url');
     const btnComment = document.getElementById('btn-comment');
 
-    // 3. Función para traer el comentario desde el backend
-    async function loadComment() {
-      try {
-        const res = await fetch(`/api/comments/${commentId}`);
-        const comments = await res.json();
-        if (comments.length === 0) {
-          alert('Comentario no encontrado');
-          return;
-        }
-        const comment = comments[0];
-
-        // 4. Pre-cargar valores en el form
-        contentInput.value = comment.content || '';
-        urlInput.value = comment.url || '';
-
-      } catch (error) {
-        console.error('Error al cargar el comentario:', error);
-      }
+    // 2. Validación de seguridad
+    if (!commentId) {
+      alert("No se seleccionó ningún comentario.");
+      window.location.href = "/inicio"; // Volver al home si entraron directo
+      return;
     }
 
-    // 5. Llamar a la función al cargar la página
-    loadComment();
+    // 3. Pre-cargar el texto en el formulario
+    contentInput.value = oldContent || '';
 
-    // 6. Función para enviar cambios (solo content y url)
-    btnComment.addEventListener('click', async () => {
+    // 4. Función para GUARDAR cambios (PUT)
+    btnComment.addEventListener('click', async (e) => {
+      e.preventDefault(); // Evitar que el botón recargue la página
+
+      const updatedContent = contentInput.value.trim();
+      const updatedUrl = urlInput.value.trim(); // Opcional
+
+      if (!updatedContent) {
+        alert("El comentario no puede estar vacío");
+        return;
+      }
+
       const updatedComment = {
-        content: contentInput.value,
-        url: urlInput.value
+        content: updatedContent,
+        url: updatedUrl
       };
 
       try {
         const res = await fetch(`/api/comments/${commentId}`, {
-          method: 'PUT',
+          method: 'PUT', // Asegúrate de que en index.js sea app.put
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updatedComment)
         });
 
-      if (res.ok) {
-        alert('¡Comentario editado correctamente!');
-        window.location.href = "/inicio";
-      } else {
-        const data = await res.json();
-        alert('Error al editar: ' + data.error);
-      }
+        if (res.ok) {
+          // Limpiamos la memoria
+          localStorage.removeItem("edit_comment_id");
+          localStorage.removeItem("edit_comment_content");
+          
+          alert('¡Comentario editado correctamente!');
+          window.location.href = "/inicio"; // Volver al home
+        } else {
+          const data = await res.json();
+          alert('Error al editar: ' + (data.error || "Error desconocido"));
+        }
 
       } catch (error) {
         console.error('Error al editar el comentario:', error);
+        alert("Error de conexión con el servidor");
       }
     });
-  </script>
+
+    // Cancelar (Opcional, si quisieras agregar un botón de volver)
+    // ...
+  });
+</script>
 
