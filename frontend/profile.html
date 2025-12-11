@@ -26,11 +26,8 @@
 
       <!-- Perfil del usuario -->
       <div class="usuario-card">
+        <figure class="image is-128x128" id="img-usuario"><img id="profile-pic" class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png" /></figure>
         <article class="media">
-          <figure class="image is-128x128" id="img-usuario">
-            <img id="profile-pic" class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png" />
-          </figure>
-
           <div class="media-content">
             <p id="profile-username">
               <strong>username</strong>
@@ -47,10 +44,6 @@
         </article>
       </div>
 
-      <!-- Título de los posts -->
-      <h3 class="titulo-posts">Mis sueños tejidos</h3>
-
-
     </div>
 
 
@@ -60,11 +53,9 @@
       <div class="mascota-card">
         <img id="imagen-mascota" src="" style="width:100%; border-radius:20px; transition: opacity .6s; cursor:pointer;">
         <p id="frase-mascota" style="margin-top:1rem; opacity:1; transition: opacity .4s; color:#c4a9ff;"></p>
-        <p class="texto-mascota">Tocá tu guía nocturno para recibir un mensaje ✨</p>
       </div>
-
+      <p class="texto-mascota">¿Y si tocás a tu guía espiritual?</p>
     </div>
-
   </div>
   <!-- ===== FIN DEL CONTENEDOR DE DOS COLUMNAS ===== -->
 
@@ -112,10 +103,11 @@
   <script src="js/profile.js"></script>
 
 
+  <!-- Título de los posts -->
+  <h3 class="titulo-posts">Mis sueños tejidos</h3>
 
 
   <!-- POSTS DEL USUARIO LOGUEADO -->
-
   <div id="posts-container"></div>
 
   <script src="js/renderPosts.js"></script>
