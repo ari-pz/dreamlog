@@ -9,6 +9,17 @@ const dbClient = new Pool ({
 });
 
 
+
+
+// GET all USERS
+async function getAllMoons() {
+  const response = await dbClient.query("SELECT * FROM lunas");
+  return response.rows;
+}
+
+
+
+
 // ===================================================
 // FUNCIONES PARA POSTS
 // ===================================================
@@ -108,6 +119,11 @@ async function createPost(user_id, content, image, category_id) {
   return result.rows[0];
 }
 
+
+
+
+
+
 // Verificar si es usuario dio 'like'
 async function hasMoon(user_id, post_id) {
   const query = `
@@ -204,5 +220,6 @@ module.exports = {
   addMoon,
   removeMoon,
   getMoonCount,
-  hasMoon
+  hasMoon,
+  getAllMoons
 };

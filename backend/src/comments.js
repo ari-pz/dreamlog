@@ -7,6 +7,35 @@ const dbClient = new Pool ({
   database: "dreamlog",
 });
 
+
+
+async function getAllComments() {
+  const response = await dbClient.query("SELECT * FROM comments");
+  return response.rows;
+}
+
+
+// Obtener comentarios de un post
+async function getCommentsByPostId(post_id) {
+  const query = `
+    SELECT 
+      comments.comment_id,
+      comments.user_id,
+      comments.content,
+      comments.url,
+      comments.created_at,
+      users.username
+    FROM comments
+    INNER JOIN users ON comments.user_id = users.user_id
+    WHERE comments.post_id = $1
+    ORDER BY comments.created_at ASC
+  `;
+  const { rows } = await dbClient.query(query, [post_id]);
+  return rows;
+}
+
+
+
 // Obtener comentarios de un post
 async function getCommentsByPostId(post_id) {
   const query = `
@@ -38,6 +67,7 @@ async function insertComment(user_id, post_id, content, url) {
 }
 
 module.exports = {
+  getAllComments,
   getCommentsByPostId,
   insertComment
 };

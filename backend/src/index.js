@@ -17,10 +17,6 @@ app.get("/inicio", (req, res) => {
 });
 
 
-// SERVIDOR
-app.listen(PORT, () => {
-  console.log('Servidor corriendo en http://localhost:' + PORT);
-});
 
 
 //IMPORTAR FUNCIONES
@@ -45,10 +41,12 @@ const {
   removeMoon,
   getMoonCount,
   deletePost,
-  updatePost
+  updatePost,
+  getAllMoons
 } = require("./posts");
 
 const {
+  getAllComments,
   getCommentsByPostId,
   insertComment
 } = require("./comments");
@@ -278,6 +276,21 @@ app.get("/api/posts", async (req, res) => {
   }
 });
 
+
+
+// GET posts
+app.get("/api/lunas", async (req, res) => {
+  try {
+    const lunas = await getAllMoons();
+    res.json(lunas);
+  } catch (error) {
+    console.error("Error en GET /api/moons", error);
+    res.status(500).json({ error: "Error al obtener posts" });
+  }
+});
+
+
+
 // GET post by user_id
 app.get("/api/posts/:id", async (req, res) => {
   try {
@@ -326,6 +339,19 @@ app.post("/api/posts", async (req, res) => {
 // COMENTARIOS
 // =======================================
 // Obtener los comentarios
+
+
+app.get('/api/comments', async (req, res) => {
+  try {
+    const comments = await getAllComments();
+    res.json(comments);
+  } catch (error) {
+    console.error("Error en GET /api/comments", error);
+    res.status(500).json({ error: "Error al obtener comments" });
+  }
+});
+
+
 app.get('/api/comments/:post_id', async (req, res) => {
   const post_id = req.params.post_id;
   try {
@@ -540,4 +566,14 @@ app.post("/api/logout", (req, res) => {
   console.log(`Usuario "${username}" ha cerrado sesión desde el navegador`);
   res.json({ message: "Logout registrado en el servidor" });
 });
+
+
+
+
+// SERVIDOR
+app.listen(PORT, () => {
+  console.log('Servidor corriendo en http://localhost:' + PORT);
+});
+
+
 
