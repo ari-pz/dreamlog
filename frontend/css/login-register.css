@@ -26,8 +26,6 @@ body {
     font-weight: bold;
 }
 
-
-
 /* FORM */
 .form-container {
     border: none; 
@@ -38,7 +36,7 @@ body {
 
 .form-input input {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
@@ -68,3 +66,64 @@ body {
   font-weight: bold;
 }
 
+/* TÍTULO DE GUÍA NOCTURNO */
+.titulo-mascota {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-family: 'Cormorant Garamond', serif;
+  color: #d8c0ff;
+  text-shadow: 0 0 8px rgba(200,150,255,0.6);
+}
+
+
+/* CONTENEDOR DE MASCOTAS */
+.mascotas-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+
+/* CADA MASCOTA */
+.mascota-item {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.mascota-item img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  border-radius: 12px;
+  transition: transform 0.25s, box-shadow 0.25s;
+  border: 2px solid transparent;
+}
+
+/* HOVER */
+.mascota-item:hover img {
+  transform: scale(1.12);
+  box-shadow: 0 0 12px #b892ff;
+  border-color: #b892ff;
+}
+
+/* OCULTAR RADIO BUTTON REAL */
+.pet-radio {
+  position: absolute;
+  opacity: 0;
+}
+
+/* CUANDO ESTÁ SELECCIONADO */
+.pet-radio:checked + img {
+  transform: scale(1.17);
+  border-color: #e6c7ff;
+  box-shadow: 0 0 15px #d9b4ff;
+}
+
+/* Que el botón esté más separado y centrado */
+#submit {
+  margin-top: 10px;
+}
