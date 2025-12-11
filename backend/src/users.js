@@ -42,12 +42,12 @@ async function getUserByUsername(username) {
 }
 
 // POST USER
-async function createUser({ username, password, bio, pfp }) {
+async function createUser({ username, password, bio, pfp, pet_id }) {
   const result = await dbClient.query( 
-    `INSERT INTO users (username, password, bio, pfp)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO users (username, password, bio, pfp, pet_id)
+     VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
-    [username, password, bio, pfp]
+    [username, password, bio, pfp, pet_id]
   );
   return result.rows[0];
 }

@@ -56,11 +56,17 @@ const {
 // POST create new user
 app.post("/api/users", async (req, res) => {
   try {
-    const { username, password, bio, pfp } = req.body;
+    const { username, password, bio, pfp, pet_id } = req.body;
 
     if (!username || !password) {
       return res.status(400).json({ error: "Es necesario que completes los campos de Usuario y Contraseña"});
     }
+    
+    // Validación de mascota obligatoria
+    if (!pet_id) {
+      return res.status(400).json({ error: "Debes elegir un guía nocturno" });
+    }
+    
     const newUser = await createUser({ username, password, bio, pfp });
     res.status(201).json({
       message: "Usuario creado con éxito",
