@@ -56,7 +56,6 @@ escribirFrase(frases[fraseIndex]);
 const searchInput = document.getElementById('search-input');
 const categoriasValidas = ['pesadilla', 'absurdo', 'lucido', 'sensorial', 'recurrente', 'inquietante'];
 
-// Función para buscar posts por categoría
 async function buscarPorCategoria(categoria) {
     categoria = categoria.trim().toLowerCase();
     
@@ -67,7 +66,6 @@ async function buscarPorCategoria(categoria) {
     }
     
     try {
-        // Llamar al backend para buscar posts por categoría
         const response = await fetch(`http://localhost:3000/api/posts/categories/${categoria}`);
         const data = await response.json();
         
@@ -76,7 +74,6 @@ async function buscarPorCategoria(categoria) {
             return;
         }
         
-        // ✅ Usar tu función renderPosts que ya existe
         renderPosts(data);
         
     } catch (error) {
@@ -96,7 +93,6 @@ async function cargarTodosLosPosts() {
             return;
         }
         
-        // ✅ Usar tu función renderPosts que ya existe
         renderPosts(posts);
         
     } catch (error) {
@@ -105,7 +101,7 @@ async function cargarTodosLosPosts() {
     }
 }
 
-// Función para mostrar mensajes de error/info
+// Fc Mostrar mensajes de error/info
 function mostrarMensaje(mensaje) {
     const container = document.getElementById('posts-container');
     container.innerHTML = `<p class="mensaje-busqueda">${mensaje}</p>`;
@@ -117,7 +113,6 @@ searchInput.addEventListener('keypress', function(event) {
         const query = this.value.trim();
         
         if (query === '') {
-            // Si está vacío, mostrar todos los posts
             cargarTodosLosPosts();
             return;
         }
@@ -126,23 +121,62 @@ searchInput.addEventListener('keypress', function(event) {
     }
 });
 
+async function CambiarLuna(icon, post_id, user_id, counter) {
+  const isMooned = icon.classList.contains("fa-solid");
 
-// Opcional: Buscar mientras escribe (con delay)
-/*let timeoutBusqueda;
-searchInput.addEventListener('input', function() {
-    clearTimeout(timeoutBusqueda);
-    
-    const query = this.value.trim();
-    
-    if (query.length === 0) {
-        // Si borra todo, volver a mostrar todos los posts
-        cargarTodosLosPosts(); // Función que ya tengas
-        return;
-    }
-    
-    // Esperar 500ms después de que deje de escribir
-    timeoutBusqueda = setTimeout(() => {
-        buscarPorCategoria(query);
-    }, 500);
-});
-*/
+  if (isMooned) {
+    await fetch("/api/moon", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id, post_id })
+    });
+
+    icon.classList.remove("fa-solid");
+    icon.classList.add("fa-regular");
+  } else {
+    // DAR LUNA
+    await fetch("/api/moon", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id, post_id })
+    });
+
+    icon.classList.remove("fa-regular");
+    icon.classList.add("fa-solid");
+  }
+
+  // Actualizar contador
+  const resCount = await fetch(`/api/moon/count/${post_id}`);
+  const dataCount = await resCount.json();
+
+  counter.textContent = dataCount.count;
+}
+
+
+
+async function iniciarConLunas(post_id, user_id) {
+  const icon = document.querySelector(`.moon-icon[data-post-id="${post_id}"]`);
+  const counter = document.querySelector(`.moon-count[data-post-id="${post_id}"]`);
+
+  // Traer si el user ya dio luna
+  const resHas = await fetch(`/api/moon/${user_id}/${post_id}`);
+  const dataHas = await resHas.json();
+
+  // Traer contador
+  const resCount = await fetch(`/api/moon/count/${post_id}`);
+  const dataCount = await resCount.json();
+
+  // Setear contador
+  counter.textContent = dataCount.count;
+
+  if (dataHas.hasMoon) {
+    icon.classList.remove("fa-regular");
+    icon.classList.add("fa-solid");
+  } else {
+    icon.classList.remove("fa-solid");
+    icon.classList.add("fa-regular");
+  }
+
+  // Agregar el evento click para cambiar las lunas
+  icon.onclick = () => CambiarLuna(icon, post_id, user_id, counter);
+}

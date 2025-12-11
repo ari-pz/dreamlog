@@ -1,41 +1,143 @@
+//POSTS del Usuario 
 async function cargarMisPosts() {
+  const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
-    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-
-    if (!loggedUser) {
+  if (!loggedUser) {
     document.getElementById("my-posts").innerHTML =
-        "<p>No estás logueado</p>";
+      "<p>No estás logueado</p>";
     return;
-    }
+  }
 
-    const USER_ID = loggedUser.user_id;
+  const USER_ID = loggedUser.user_id;
 
-    const res = await fetch(`http://localhost:3000/api/posts/${USER_ID}`);
+  try {
+    const res = await fetch(`/api/posts/${USER_ID}`);
     const posts = await res.json();
 
-    const container = document.getElementById("my-posts");
+    const container = document.getElementById("posts-container");
 
-    // Por si el usuario no tiene posts
-    if (posts.message) {
-    container.innerHTML = `<p>${posts.message}</p>`;
-    return;
+    if (posts.message || posts.length === 0) {
+      container.innerHTML = `<p>${posts.message || "No tienes posts aún"}</p>`;
+      return;
     }
 
-    posts.forEach(post => {
-    const div = document.createElement("div");
-    div.classList.add("post");
+    container.innerHTML = ""; 
 
-    div.innerHTML = `
-        <div class="post-username">@${post.username}</div>
+    for (const post of posts) {
+      const div = document.createElement("div");
+      div.classList.add("post");
+
+      const isOwner = post.user_id === USER_ID;
+
+      div.innerHTML = `
+        <div class="post-header">
+          <div class="post-user">
+            <img src="${post.pfp}" class="pfp">
+            <span class="username">@${post.username}</span>
+          </div>
+
+          <div class="menu">
+            <span class="dots">...</span>
+            <div class="dropdown">
+              ${
+                isOwner
+                  ? `<a href="#">Editar Sueño</a>
+                     <a href="#" class="style-red">Eliminar Sueño</a>`
+                  : `<a href="#" class="style-red">Reportar Sueño</a>
+                     <a href="#" class="style-red">Bloquear Usuario</a>`
+              }
+            </div>
+          </div>
+        </div>
+
         <div class="post-content">${post.content}</div>
-        <div class="post-date">${new Date(post.created_at).toLocaleString()}</div>
-    `;
+        ${post.image ? `<img src="${post.image}" class="post-img">` : ""}
 
-    container.appendChild(div);
-    });
+        <div class="post-footer">
+          <span class="category">${post.category_name || ""}</span>
+          <i class="fa-regular fa-moon moon-icon"
+             data-post-id="${post.post_id}"
+             style="cursor:pointer;"></i>
+          <span class="moon-count" data-post-id="${post.post_id}"></span>
+          <span>0 COMENTARIOS</span>
+        </div>
+      `;
+
+      container.appendChild(div);
+
+      // Inicializar estado de luna y contador
+      await iniciarConLunas(post.post_id, USER_ID);
+    }
+
+  } catch (error) {
+    console.error("Error al cargar posts:", error);
+    document.getElementById("my-posts").innerHTML = "<p>Error al cargar tus posts</p>";
+  }
 }
 
-cargarMisPosts(); 
+
+async function CambiarLuna(icon, post_id, user_id, counter) {
+  const isMooned = icon.classList.contains("fa-solid");
+
+  if (isMooned) {
+    await fetch("/api/moon", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id, post_id })
+    });
+
+    icon.classList.remove("fa-solid");
+    icon.classList.add("fa-regular");
+  } else {
+    await fetch("/api/moon", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id, post_id })
+    });
+
+    icon.classList.remove("fa-regular");
+    icon.classList.add("fa-solid");
+  }
+
+  // Actualizar contador
+  const resCount = await fetch(`/api/moon/count/${post_id}`);
+  const dataCount = await resCount.json();
+  counter.textContent = dataCount.count;
+}
+
+async function iniciarConLunas(post_id, user_id) {
+  const icon = document.querySelector(`.moon-icon[data-post-id="${post_id}"]`);
+  const counter = document.querySelector(`.moon-count[data-post-id="${post_id}"]`);
+
+  if (!icon || !counter) return;
+
+  // Traer si el user ya dio luna
+  const resHas = await fetch(`/api/moon/${user_id}/${post_id}`);
+  const dataHas = await resHas.json();
+
+  // Traer contador
+  const resCount = await fetch(`/api/moon/count/${post_id}`);
+  const dataCount = await resCount.json();
+
+  // Setear contador
+  counter.textContent = dataCount.count;
+
+  if (dataHas.hasMoon) {
+    icon.classList.remove("fa-regular");
+    icon.classList.add("fa-solid");
+  } else {
+    icon.classList.remove("fa-solid");
+    icon.classList.add("fa-regular");
+  }
+
+  // Agregar click para togglear la luna
+  icon.onclick = () => CambiarLuna(icon, post_id, user_id, counter);
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  cargarMisPosts();
+});
 
 
 

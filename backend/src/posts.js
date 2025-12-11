@@ -107,7 +107,41 @@ async function createPost(user_id, content, image, category_id) {
   return result.rows[0];
 }
 
-module.exports = { createPost };
+// Verificar si es usuario dio 'like'
+async function hasMoon(user_id, post_id) {
+  const query = `
+    SELECT 1 FROM lunas WHERE user_id = $1 AND post_id = $2
+  `;
+  const result = await dbClient.query(query, [user_id, post_id]);
+  return result.rowCount > 0;
+}
+
+// Agregar luna 
+async function addMoon(user_id, post_id) {
+  const query = `
+    INSERT INTO lunas (user_id, post_id)
+    VALUES ($1, $2)
+    ON CONFLICT DO NOTHING; 
+  `;
+  await dbClient.query(query, [user_id, post_id]);
+}
+
+// REMOVE moon
+async function removeMoon(user_id, post_id) {
+  const query = `
+    DELETE FROM lunas WHERE user_id = $1 AND post_id = $2
+  `;
+  await dbClient.query(query, [user_id, post_id]);
+}
+
+// COUNT moons
+async function getMoonCount(post_id) {
+  const query = `
+    SELECT COUNT(*) FROM lunas WHERE post_id = $1
+  `;
+  const { rows } = await dbClient.query(query, [post_id]);
+  return parseInt(rows[0].count, 10);
+}
 
 
 
@@ -122,5 +156,9 @@ module.exports = {
   getPostsCount,
   getCategories,
   getPostsByCategory,
-  createPost
+  createPost,
+  addMoon,
+  removeMoon,
+  getMoonCount,
+  hasMoon
 };
