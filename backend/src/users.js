@@ -177,8 +177,8 @@ async function deleteUser(user_id) {
 }
 
 module.exports = {
-    getAllUsers,
     getLoggedUserProfile,
+    getAllUsers,
     getUserById,
     getUserByUsername,
     createUser,

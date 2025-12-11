@@ -27,7 +27,7 @@ app.listen(PORT, () => {
 const { getAllUsers,
         getUserById,
         getUserByUsername,
-        updateUsers,
+        updateUser,
         nameInUse,
         deleteUser
 } = require("./users");
@@ -128,7 +128,7 @@ app.put('/api/users/:id', async (req, res) => {
         return res.status(400).json({ error: 'La biografía no puede tener más de 225 caracteres' });
     }
 
-    const resultado = await updateUsers(user_id, username, password, bio, pfp);
+    const resultado = await updateUser(user_id, username, password, bio, pfp);
 
     if (!resultado) {
         return res.status(500).json({ error: 'Error al actualizar el perfil' });
