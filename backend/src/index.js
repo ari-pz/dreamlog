@@ -42,7 +42,8 @@ const {
   hasMoon,
   addMoon,
   removeMoon,
-  getMoonCount
+  getMoonCount,
+  deletePost
 } = require("./posts");
 
 
@@ -193,6 +194,29 @@ app.delete('/api/users/:id', async (req, res) => {
 // =======================================
 // POSTS
 // =======================================
+
+// DELETE post
+app.delete("/api/posts/:id", async (req, res) => {
+  const postId = parseInt(req.params.id, 10);
+
+  if (isNaN(postId)) {
+    return res.status(400).json({ error: "ID de post inválido" });
+  }
+
+  try {
+    const deleted = await deletePost(postId);
+
+    if (!deleted.success) {
+      return res.status(404).json({ error: deleted.message });
+    }
+
+    res.json(deleted);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Hubo un error al eliminar el post" });
+  }
+});
+
 
 // GET posts
 app.get("/api/posts", async (req, res) => {

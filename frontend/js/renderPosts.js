@@ -64,4 +64,33 @@ function renderPosts(posts) {
 
     await iniciarConLunas(post.post_id, currentUserId);
   });
+
+  // ELIMINAR SUEÑO
+  const deleteLinks = document.querySelectorAll(".delete-post");
+  deleteLinks.forEach(link => {
+    link.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const postDiv = e.target.closest(".post");
+      const postId = postDiv.getAttribute("data-post-id");
+
+      if (confirm("¿Estás seguro que quieres eliminar este post?")) {
+        try {
+          const res = await fetch(`/api/posts/${postId}`, {
+            method: "DELETE"
+          });
+          const data = await res.json();
+
+          if (data.success) {
+            alert("Post eliminado correctamente");
+            loadPosts(); // recargar posts
+          } else {
+            alert(data.message || "No se pudo eliminar el post");
+          }
+        } catch (err) {
+          console.error("Error eliminando post:", err);
+          alert("Hubo un error al eliminar el post");
+        }
+      }
+    });
+  });
 }

@@ -9,8 +9,8 @@ const endpoints = [
   "/users",
   "/posts",
   "/categories"
-//  "/lunas",
-//  "/comments"
+  "/lunas",
+  "/comments"
 ];
 
 

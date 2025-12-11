@@ -21,7 +21,6 @@
   <script src="js/navbar.js"></script>
 
 
-
   <!-- Barra de búsqueda: busca a partir de hashtags/etiquetas -->
   <div class="search-bar">
     <input type="text" id="search-input" placeholder="Buscar sueños o #símbolos...">
@@ -31,22 +30,11 @@
 
   <!-- SECCION  POSTS -->
   <div id="posts-container"></div>
+  <script src="/js/renderPosts.js"></script>
 
-  <script src="js/renderPosts.js"></script>
 
-  <script>
-    async function loadPosts() {
-      try {
-        const res = await fetch("/api/posts");
-        const posts = await res.json();
-        renderPosts(posts);
-      } catch (err) {
-        console.error("Error cargando posts:", err);
-      }
-    }
-    loadPosts();
-  </script>
-  <script src="./js/home.js"></script>
+
+  <script src="/js/home.js"></script>
 
 </body>
 </html>

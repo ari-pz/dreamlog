@@ -95,6 +95,7 @@ async function getPostsByCategory(categoria) {
   return rows;
 }
 
+
 // INSERT post
 async function createPost(user_id, content, image, category_id) {
   const query = `
@@ -143,8 +144,23 @@ async function getMoonCount(post_id) {
   return parseInt(rows[0].count, 10);
 }
 
+// DELETE post
+async function deletePost(post_id) {
+  try {
+    const result = await dbClient.query(
+      "DELETE FROM posts WHERE post_id = $1 RETURNING *",
+      [post_id]
+    );
 
-
+    if (result.rowCount === 0) {
+      return { success: false, message: "No se encontró el post con ese ID." };
+    }
+    return { success: true, message: "Post eliminado correctamente.", post: result.rows[0] };
+  } catch (err) {
+    console.error("Error eliminando post:", err);
+    return { success: false, message: "Error eliminando post." };
+  }
+}
 
 
 // ===================================================
@@ -157,6 +173,7 @@ module.exports = {
   getCategories,
   getPostsByCategory,
   createPost,
+  deletePost,
   addMoon,
   removeMoon,
   getMoonCount,
