@@ -32,6 +32,7 @@ const { getAllUsers,
 const {
   getAllPosts,
   getPostsByUserId,
+  getPostById,
   getPostsCount,
   getCategories,
   createPost,
@@ -54,6 +55,28 @@ const {
 // =======================================
 // USERS
 // =======================================
+
+
+// Endpoint para OBTENER UN SOLO POST por su post_id
+app.get('/api/posts/:id', async (req, res) => {
+  const postId = req.params.id; // Ahora, esto DEBE ser el post_id
+
+  try {
+    // Usa la nueva función que busca por POST ID
+    const post = await getPostById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post no encontrado.' });
+    }
+
+    // Devuelve UN SOLO objeto, no un array
+    res.json(post);
+  } catch (err) {
+    console.error('Error al obtener post:', err);
+    res.status(500).json({ error: 'Error interno del servidor al obtener el post.' });
+  }
+});
+
 
 // POST create new user
 app.post("/api/users", async (req, res) => {
@@ -228,6 +251,8 @@ app.delete('/api/users/:id', async (req, res) => {
 // POSTS
 // =======================================
 
+
+// UPDATE post
 app.put('/api/posts/:id', async (req, res) => {
   const postId = req.params.id;
   const { content, image } = req.body;

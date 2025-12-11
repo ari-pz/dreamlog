@@ -9,20 +9,39 @@ const dbClient = new Pool ({
 });
 
 
-
-
-// GET all USERS
+// GET all MOON
 async function getAllMoons() {
   const response = await dbClient.query("SELECT * FROM lunas");
   return response.rows;
 }
 
-
-
-
 // ===================================================
 // FUNCIONES PARA POSTS
 // ===================================================
+
+
+
+// Función para obtener UN SOLO post por su ID
+async function getPostById(postId) {
+  try {
+    const query = `
+      SELECT p.*, u.username, u.pfp, c.name as category_name
+      FROM posts p
+      JOIN users u ON p.user_id = u.user_id
+      JOIN categories c ON p.category_id = c.category_id -- Asumiendo que tienes una tabla de categorías
+      WHERE p.post_id = $1;
+    `;
+    const values = [postId];
+    const result = await dbClient.query(query, values);
+
+    // Devuelve el primer elemento (el post único) o null si no existe
+    return result.rows[0] || null;
+  } catch (error) {
+    console.error('Error obteniendo post por ID:', error);
+    throw error;
+  }
+}
+
 
 // GET: GET all POSTS
 async function getAllPosts() {
@@ -180,7 +199,6 @@ async function deletePost(post_id) {
 
 
 //UPDATE post
-
 async function updatePost(postId, content, image) {
   try {
     const query = `
@@ -211,6 +229,7 @@ async function updatePost(postId, content, image) {
 module.exports = {
   getAllPosts,
   getPostsByUserId,
+  getPostById,
   getPostsCount,
   getCategories,
   getPostsByCategory,
