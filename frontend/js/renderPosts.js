@@ -78,6 +78,34 @@ function renderPosts(posts) {
 
     container.appendChild(postDiv);
     
+    const btnEliminar = postDiv.querySelector(".delete-post");
+    
+    if (btnEliminar) {
+        btnEliminar.addEventListener("click", async (e) => {
+            e.preventDefault();
+            
+            if (confirm("¿Estás seguro que quieres eliminar este post?")) {
+                try {
+                    const res = await fetch(`/api/posts/${post.post_id}`, {
+                        method: "DELETE"
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        alert("Post eliminado correctamente");
+                        postDiv.remove(); // Borramos el post de la pantalla al instante
+                    } else {
+                        alert(data.message || "No se pudo eliminar el post");
+                    }
+                } catch (err) {
+                    console.error("Error eliminando post:", err);
+                    alert("Hubo un error al eliminar el post");
+                }
+            }
+        });
+    }
+
+
     //cargar comentarios
     try {
       const res = await fetch(`/api/comments/${post.post_id}`);
@@ -117,7 +145,7 @@ function renderPosts(posts) {
   });
 };
 
-  // ELIMINAR SUEÑO
+  // ELIMINAR SUEÑO ---hay q borralo
   const deleteLinks = document.querySelectorAll(".delete-post");
   deleteLinks.forEach(link => {
     link.addEventListener("click", async (e) => {
