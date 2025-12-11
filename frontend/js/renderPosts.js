@@ -1,16 +1,15 @@
-function renderPosts(posts) {
-  const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-  const currentUserId = loggedUser?.user_id;
-
+function renderPosts(posts, currentUserId) {
   const container = document.getElementById("posts-container");
   container.innerHTML = ""; // vaciar
 
   posts.forEach(async post => {
-    const isOwner = (post.user_id === currentUserId);
+    const postUserIdAsNumber = parseInt(post.user_id);
+    const isOwner = (postUserIdAsNumber === currentUserId); 
 
     // Crear DIV contenedor
     const postDiv = document.createElement("div");
     postDiv.classList.add("post");
+    postDiv.setAttribute("data-post-id", post.post_id);
 
     // Insertar HTML interno
     postDiv.innerHTML = `
@@ -26,8 +25,8 @@ function renderPosts(posts) {
             ${
               isOwner
               ? `
-                  <a href="#">Editar Sueño</a>
-                  <a href="#" class="style-red">Eliminar Sueño</a>
+                  <a href="edit-post.html?post_id=${post.post_id}">Editar Sueño</a>
+                  <a href="#" class="style-red delete-post">Eliminar Sueño</a>
                 `
               : `
                   <a href="#" class="style-red">Reportar Sueño</a>
@@ -65,6 +64,7 @@ function renderPosts(posts) {
     await iniciarConLunas(post.post_id, currentUserId);
   });
 
+
   // ELIMINAR SUEÑO
   const deleteLinks = document.querySelectorAll(".delete-post");
   deleteLinks.forEach(link => {
@@ -82,7 +82,8 @@ function renderPosts(posts) {
 
           if (data.success) {
             alert("Post eliminado correctamente");
-            loadPosts(); // recargar posts
+            loadPosts();
+
           } else {
             alert(data.message || "No se pudo eliminar el post");
           }

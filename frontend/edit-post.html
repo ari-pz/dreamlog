@@ -11,8 +11,6 @@
 </head>
 <body>
 
-
-
   <!----- Navbar ----->
   <div id="navbar"></div>
   <script src="/js/navbar.js"></script>
@@ -20,21 +18,84 @@
 
 
   <!-----Principal----->
-  <h2 class="new-dream">Nuevo Sueño</h2>
+  <h2 class="new-dream">Editar Sueño</h2>
+
   <div class="newpost-container">
-    <label>✦ Rescribe tu sueño</label>
+    <label for="content">✦ Modifica tu sueño</label>
     <textarea id="content" placeholder="Escribe tu sueño aquí..." required class="input-estilo"></textarea>
 
-    <label>✦ Podes cambiar la URL</label>
+    <label for="image">✦ Cambia la URL de la imagen</label>
     <input id="image" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
 
-    <label>✦ Tu categoria es:</label>
-      <button id="btn-post" type="submit" class="atrapasueños-btn">Editar Sueño</button>
+    <label for="category">✦ Tu categoría se mantiene</label>
+    <input id="category" class="input-estilo" disabled>
+
+    <button id="btn-post" type="submit" class="atrapasueños-btn">Guardar Cambios</button>
   </div>
-  
-    
+
+  <script>
+    // 1. Obtener post_id de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('post_id');
+
+    // 2. Seleccionar los inputs
+    const contentInput = document.getElementById('content');
+    const imageInput = document.getElementById('image');
+    const categoryInput = document.getElementById('category');
+    const btnPost = document.getElementById('btn-post');
+
+    // 3. Función para traer el post desde el backend
+    async function loadPost() {
+      try {
+        const res = await fetch(`/api/posts/${postId}`);
+        const posts = await res.json();
+        if (posts.length === 0) {
+          alert('Post no encontrado');
+          return;
+        }
+        const post = posts[0];
+
+        // 4. Pre-cargar valores en el form
+        contentInput.value = post.content || '';
+        imageInput.value = post.image || '';
+        categoryInput.value = post.category_name || '';
+
+      } catch (error) {
+        console.error('Error al cargar el post:', error);
+      }
+    }
+
+    // 5. Llamar a la función al cargar la página
+    loadPost();
+
+    // 6. Función para enviar cambios (solo content e image)
+    btnPost.addEventListener('click', async () => {
+      const updatedPost = {
+        content: contentInput.value,
+        image: imageInput.value
+      };
+
+      try {
+        const res = await fetch(`/api/posts/${postId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedPost)
+        });
+
+        if (res.ok) {
+          alert('¡Sueño editado correctamente!');
+          window.location.href = "/inicio";
+        } else {
+          const data = await res.json();
+          alert('Error al editar: ' + data.error);
+        }
+
+      } catch (error) {
+        console.error('Error al editar el post:', error);
+      }
+    });
+  </script>
 
 </body>
 </html>
-
 
