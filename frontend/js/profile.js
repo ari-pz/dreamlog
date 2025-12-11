@@ -59,7 +59,11 @@ async function cargarMisPosts() {
              data-post-id="${post.post_id}"
              style="cursor:pointer;"></i>
           <span class="moon-count" data-post-id="${post.post_id}"></span>
-          <span>0 COMENTARIOS</span>
+          <i class="fa-regular fa-comment comment-icon" 
+            data-post-id="${post.post_id}" 
+            style="cursor:pointer; margin-left: 1rem;"></i>
+          <span class="comment-count" data-post-id="${post.post_id}">${post.comment_count || 0}</span>
+      </div>
         </div>
       `;
 
