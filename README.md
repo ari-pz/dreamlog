@@ -49,6 +49,7 @@ make dev
 
 **Ingresar/Registrarse**
 ![login](./assets/login.png)
+![Texto alternativo](./assets/register.png)
 
 **Inicio**
 ![home](./assets/home.png)
