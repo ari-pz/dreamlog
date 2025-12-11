@@ -31,34 +31,29 @@
 
   <script>
   document.addEventListener("DOMContentLoaded", () => {
-    // 1. Obtener datos de la memoria (LocalStorage)
-    // Esto lo guardamos desde home.js o profile.js antes de venir aquí
+    //  Obtener datos de la memoria
     const commentId = localStorage.getItem("edit_comment_id");
     const oldContent = localStorage.getItem("edit_comment_content");
-    // Nota: Como no guardamos la URL en home.js, el campo URL aparecerá vacío al principio. 
-    // Si quieres editar la URL, tendrías que guardarla también en home.js.
-
-    // Seleccionar inputs
     const contentInput = document.getElementById('content');
     const urlInput = document.getElementById('url');
     const btnComment = document.getElementById('btn-comment');
 
-    // 2. Validación de seguridad
+    // Validación de seguridad
     if (!commentId) {
       alert("No se seleccionó ningún comentario.");
-      window.location.href = "/inicio"; // Volver al home si entraron directo
+      window.location.href = "/inicio"; 
       return;
     }
 
-    // 3. Pre-cargar el texto en el formulario
+  
     contentInput.value = oldContent || '';
 
     // 4. Función para GUARDAR cambios (PUT)
     btnComment.addEventListener('click', async (e) => {
-      e.preventDefault(); // Evitar que el botón recargue la página
+      e.preventDefault(); 
 
       const updatedContent = contentInput.value.trim();
-      const updatedUrl = urlInput.value.trim(); // Opcional
+      const updatedUrl = urlInput.value.trim(); 
 
       if (!updatedContent) {
         alert("El comentario no puede estar vacío");
@@ -72,18 +67,18 @@
 
       try {
         const res = await fetch(`/api/comments/${commentId}`, {
-          method: 'PUT', // Asegúrate de que en index.js sea app.put
+          method: 'PUT', 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updatedComment)
         });
 
         if (res.ok) {
-          // Limpiamos la memoria
+          // Limpiamos la memori
           localStorage.removeItem("edit_comment_id");
           localStorage.removeItem("edit_comment_content");
           
           alert('¡Comentario editado correctamente!');
-          window.location.href = "/inicio"; // Volver al home
+          window.location.href = "/inicio"; 
         } else {
           const data = await res.json();
           alert('Error al editar: ' + (data.error || "Error desconocido"));
