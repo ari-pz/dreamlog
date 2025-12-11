@@ -208,3 +208,118 @@
   background: #eee;
 }
 
+/* ============================================
+   SECCIÓN DE COMENTARIOS 
+   ============================================ */
+.comments-wrapper {
+  background: #2a1f3d; 
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.no-comments {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+  font-style: italic;
+}
+
+.comment {
+  position: relative; 
+  padding: 10px;
+  padding-right: 35px; 
+  border-bottom: 1px solid #542b66;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  color: #e0e0e0;
+  word-wrap: break-word;
+}
+
+.comment-menu {
+  position: absolute;
+  top: 10px;          
+  right: 10px;        
+  z-index: 10;
+}
+
+.comment-menu .dots {
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff; 
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.comment-menu .dots:hover {
+  color: #b794f4; 
+}
+
+.comment-menu .dropdown-comment {
+  display: none;      
+  position: absolute;
+  right: 0;
+  top: 100%;          
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  min-width: 100px;
+  z-index: 1001;      
+  overflow: hidden;
+}
+
+.comment-menu .dropdown-comment a {
+  display: block;
+  padding: 8px 12px;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.comment-menu .dropdown-comment a:hover {
+  background: #f0f0f0;
+  color: #000;
+}
+
+.add-comment {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.add-comment-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: #1e132e; /* Fondo Violeta Oscuro */
+  color: white;
+  font-size: 0.9em;
+  outline: none;
+}
+
+.add-comment-input::placeholder {
+  color: #999;
+}
+
+.add-comment-btn {
+  padding: 10px 20px;
+  background: #542b66; 
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.add-comment-btn:hover {
+  background: #6b3580;
+}
+
+.add-comment-btn:active {
+  transform: scale(0.98);
+}
