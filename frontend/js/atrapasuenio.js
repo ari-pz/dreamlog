@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     quoteElement.textContent = frases[fraseIndex];
   }, 10000);
 
-  // Progreso del atrapasueños (Plumas) 
+  // Obtener usuario logueado
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
   let cantidadPosts = 0;
 
@@ -69,46 +69,4 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarPlumas();
   }
 
-  // CATEGORÍAS MÁGICAS (COLORES + ANIMACIÓN)
-
-  const categoryColors = {
-    "Pesadilla": "cat-pesadilla",
-    "Recurrente": "cat-recurrente",
-    "Absurdo": "cat-absurdo",
-    "Sensorial": "cat-sensorial",
-    "Lúcido": "cat-lucido",
-    "Inquietante": "cat-inquietante",
-  };
-
-  // buscamos si el usuario existe
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  if (!storedUser) return;
-
-  try {
-    const res = await fetch(`/api/users/${storedUser.user_id}/top-categories`);
-    const data = await res.json();
-
-    const boxes = document.querySelectorAll("#category-boxes .cat-box");
-
-    // resetear cajas
-    boxes.forEach(b => {
-      b.className = "cat-box empty";
-      b.textContent = "";
-    });
-
-    // cargar categorías
-    data.forEach((cat, i) => {
-      if (!boxes[i]) return;
-
-      boxes[i].classList.remove("empty");
-      boxes[i].textContent = cat.name;
-
-      // aplicar color mágico
-      const classColor = categoryColors[cat.name];
-      if (classColor) boxes[i].classList.add(classColor);
-    });
-
-  } catch (err) {
-    console.error("Error cargando categorías:", err);
-  }
 });
