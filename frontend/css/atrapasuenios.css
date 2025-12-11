@@ -238,3 +238,27 @@
 .fade-out {
   opacity: 0;
 }
+
+/* Animación de brillo suave */
+
+@keyframes dreamGlow {
+  0% {
+    box-shadow: 0 0 6px rgba(255,255,255,0.12);
+    transform: translateY(0px);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255,255,255,0.35);
+    transform: translateY(-3px);
+  }
+  100% {
+    box-shadow: 0 0 6px rgba(255,255,255,0.12);
+    transform: translateY(0px);
+  }
+}
+
+/* La animación se aplica solo a las cajas llenas */
+.cat-box:not(.empty) {
+  animation: dreamGlow 4s ease-in-out infinite;
+}
+
+
