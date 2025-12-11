@@ -27,6 +27,7 @@ app.listen(PORT, () => {
 const { getAllUsers,
         getUserById,
         getUserByUsername,
+        createUser,
         updateUser,
         nameInUse,
         deleteUser
@@ -51,6 +52,27 @@ const {
 // =======================================
 // USERS
 // =======================================
+
+// POST create new user
+app.post("/api/users", async (req, res) => {
+  try {
+    const { username, password, bio, pfp } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ error: "Es necesario que completes los campos de Usuario y Contraseña"});
+    }
+    const newUser = await createUser({ username, password, bio, pfp });
+    res.status(201).json({
+      message: "Usuario creado con éxito",
+      user: newUser
+    });
+  } catch (error) {
+    console.error("Error creando usuario:", error);
+    res.status(500).json({ error: "Error al crear usuario" });
+  }
+});
+
+
 
 // GET users
 app.get("/api/users", async (req, res) => {

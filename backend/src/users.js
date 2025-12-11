@@ -42,7 +42,7 @@ async function getUserByUsername(username) {
 }
 
 // POST USER
-async function createUser(username, password, bio, pfp) {
+async function createUser({ username, password, bio, pfp }) {
   const result = await dbClient.query( 
     `INSERT INTO users (username, password, bio, pfp)
      VALUES ($1, $2, $3, $4)

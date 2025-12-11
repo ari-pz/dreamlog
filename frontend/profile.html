@@ -26,15 +26,11 @@
 
       <!-- Perfil del usuario -->
       <div class="usuario-card">
-        <figure class="image is-128x128" id="img-usuario"><img id="profile-pic" class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png" /></figure>
+        <figure class="image is-128x128" id="img-usuario"><img id="profile-pic" class="is-rounded" src="https://bulma.io/assets/images/placeholders/128x128.png"/></figure>
         <article class="media">
           <div class="media-content">
-            <p id="profile-username">
-              <strong>username</strong>
-            </p>
-            
+            <p id="profile-username"></p>
             <p id="profile-bio"></p>
-
             <div class="buttons"> 
               <a class="button is-primary" id="boton-editar" href="profile-editar.html">Editar</a>
               <a class="button is-danger" id="boton-eliminar">Eliminar</a>
@@ -94,7 +90,7 @@
 
       document.getElementById("profile-username").textContent = `@${user.username}`;
       document.getElementById("profile-bio").textContent = user.bio || "Sin bio";
-      document.getElementById("profile-pic").src = user.pfp || "/imagenes/icon_default.png";
+      document.getElementById("profile-pic").src = user.pfp || "/img/icon_default.png";
     } catch (err) {
       console.error(err);
     }

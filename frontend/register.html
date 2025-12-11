@@ -53,9 +53,8 @@
 
         if (res.ok) {
           localStorage.setItem("loggedUser", JSON.stringify({
-            user_id: data.user_id,
-            username: data.username,
-            pfp: data.pfp
+            user_id: data.user.user_id,
+            username: data.user.username
           }));
           window.location.href = "/inicio";
         } else {
