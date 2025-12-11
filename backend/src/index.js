@@ -344,6 +344,35 @@ app.get('/api/posts/categories/:categorie', async (req, res) => {
 });
 
 // =======================================
+// Estadísticas del usuario
+// =======================================
+
+// GET stats de sueños y lunas de un usuario
+app.get("/api/users/:user_id/stats", async (req, res) => {
+  const user_id = parseInt(req.params.user_id);
+
+  try {
+    // Traemos todos los posts del usuario
+    const posts = await getPostsByUserId(user_id);
+
+    // Cantidad de posts
+    const totalPosts = posts.length;
+
+    // Sumamos las lunas de cada post
+    let totalLunas = 0;
+    for (const post of posts) {
+      const count = await getMoonCount(post.post_id);
+      totalLunas += count;
+    }
+
+    res.json({ totalPosts, totalLunas });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener estadísticas del usuario" });
+  }
+});
+
+// =======================================
 // LOGIN
 // =======================================
 
