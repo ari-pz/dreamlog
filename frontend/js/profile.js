@@ -1,85 +1,41 @@
-//POSTS del Usuario 
+// ==========================================
+// CARGA INICIAL Y POSTS
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+  cargarMisPosts();
+});
+
 async function cargarMisPosts() {
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
   if (!loggedUser) {
-    document.getElementById("my-posts").innerHTML =
-      "<p>No estás logueado</p>";
+    window.location.href = "/login.html";
     return;
   }
 
   const USER_ID = loggedUser.user_id;
 
   try {
+    // 1. Buscamos los posts de este usuario específico
     const res = await fetch(`/api/posts/${USER_ID}`);
     const posts = await res.json();
-
     const container = document.getElementById("posts-container");
 
     if (posts.message || posts.length === 0) {
-      container.innerHTML = `<p>${posts.message || "No tienes posts aún"}</p>`;
+      container.innerHTML = `<p style="text-align:center; color:white; margin-top:2rem;">Aún no has publicado ningún sueño.</p>`;
       return;
     }
-
-    container.innerHTML = ""; 
-
-    for (const post of posts) {
-      const div = document.createElement("div");
-      div.classList.add("post");
-
-      const isOwner = post.user_id === USER_ID;
-
-      div.innerHTML = `
-        <div class="post-header">
-          <div class="post-user">
-            <img src="${post.pfp}" class="pfp">
-            <span class="username">@${post.username}</span>
-          </div>
-
-          <div class="menu">
-            <span class="dots">...</span>
-            <div class="dropdown">
-              ${
-                isOwner
-                  ? `<a href="#">Editar Sueño</a>
-                     <a href="#" class="style-red">Eliminar Sueño</a>`
-                  : `<a href="#" class="style-red">Reportar Sueño</a>
-                     <a href="#" class="style-red">Bloquear Usuario</a>`
-              }
-            </div>
-          </div>
-        </div>
-
-        <div class="post-content">${post.content}</div>
-        ${post.image ? `<img src="${post.image}" class="post-img">` : ""}
-
-        <div class="post-footer">
-          <span class="category">${post.category_name || ""}</span>
-          <i class="fa-regular fa-moon moon-icon"
-             data-post-id="${post.post_id}"
-             style="cursor:pointer;"></i>
-          <span class="moon-count" data-post-id="${post.post_id}"></span>
-          <i class="fa-regular fa-comment comment-icon" 
-            data-post-id="${post.post_id}" 
-            style="cursor:pointer; margin-left: 1rem;"></i>
-          <span class="comment-count" data-post-id="${post.post_id}">${post.comment_count || 0}</span>
-      </div>
-        </div>
-      `;
-
-      container.appendChild(div);
-
-      // Inicializar estado de luna y contador
-      await iniciarConLunas(post.post_id, USER_ID);
-    }
+    renderPosts(posts);
 
   } catch (error) {
     console.error("Error al cargar posts:", error);
-    document.getElementById("my-posts").innerHTML = "<p>Error al cargar tus posts</p>";
+    document.getElementById("posts-container").innerHTML = "<p>Error al cargar tus posts</p>";
   }
 }
 
-
+// ==========================================
+//    LUNNAS
+// ==========================================
 async function CambiarLuna(icon, post_id, user_id, counter) {
   const isMooned = icon.classList.contains("fa-solid");
 
@@ -89,7 +45,6 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, post_id })
     });
-
     icon.classList.remove("fa-solid");
     icon.classList.add("fa-regular");
   } else {
@@ -98,12 +53,10 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, post_id })
     });
-
     icon.classList.remove("fa-regular");
     icon.classList.add("fa-solid");
   }
 
-  // Actualizar contador
   const resCount = await fetch(`/api/moon/count/${post_id}`);
   const dataCount = await resCount.json();
   counter.textContent = dataCount.count;
@@ -115,15 +68,11 @@ async function iniciarConLunas(post_id, user_id) {
 
   if (!icon || !counter) return;
 
-  // Traer si el user ya dio luna
   const resHas = await fetch(`/api/moon/${user_id}/${post_id}`);
   const dataHas = await resHas.json();
-
-  // Traer contador
   const resCount = await fetch(`/api/moon/count/${post_id}`);
   const dataCount = await resCount.json();
 
-  // Setear contador
   counter.textContent = dataCount.count;
 
   if (dataHas.hasMoon) {
@@ -133,24 +82,89 @@ async function iniciarConLunas(post_id, user_id) {
     icon.classList.remove("fa-solid");
     icon.classList.add("fa-regular");
   }
-
-  // Agregar click para togglear la luna
   icon.onclick = () => CambiarLuna(icon, post_id, user_id, counter);
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
-  cargarMisPosts();
-});
+// ==========================================
+//       COMENTARIOS 
+// ==========================================
+document.addEventListener("click", async function(evento) {
+
+    // A) Abrir/Cerrar lista de comentarios
+    if (evento.target.classList.contains("comment-icon") || evento.target.closest(".comment-icon")) {
+      const icono = evento.target.classList.contains("comment-icon") ? evento.target : evento.target.closest(".comment-icon");
+      const postId = icono.dataset.postId;
+      const wrapper = document.querySelector(`.comments-wrapper[data-post-id="${postId}"]`);
+      
+      if (!wrapper) return;
+  
+      if (wrapper.style.display === "block") {
+        wrapper.style.display = "none";
+        icono.classList.remove("fa-solid");
+        icono.classList.add("fa-regular");
+      } else {
+        wrapper.style.display = "block";
+        icono.classList.remove("fa-regular");
+        icono.classList.add("fa-solid");
+        
+      }
+      return;
+    }
+  
+
+    if (evento.target.classList.contains("add-comment-btn")) {
+      const btn = evento.target;
+      const wrapper = btn.closest(".comments-wrapper");
+      const postId = wrapper.dataset.postId;
+      const input = wrapper.querySelector(".add-comment-input");
+      const content = input.value.trim();
+      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+  
+      if (!content) return;
+  
+      try {
+        const res = await fetch("/api/comments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: loggedUser.user_id, post_id: postId, content: content })
+        });
+        const newComment = await res.json();
+  
+        /
+        const lista = wrapper.querySelector(".comments-list");
+        lista.insertAdjacentHTML("beforeend", `
+          <div class="comment" data-comment-id="${newComment.comment_id}">
+             <span class="comment-text"><strong>@${loggedUser.username}</strong> ${content}</span>
+             <div class="comment-menu"><span class="dots">...</span></div>
+          </div>
+        `);
+        input.value = "";
+        
+        // Actualizar contador
+        const countSpan = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
+        if(countSpan) countSpan.textContent = parseInt(countSpan.textContent || 0) + 1;
+  
+      } catch (e) { console.error(e); }
+    }
+    
+    // C) Dropdown de comentarios
+    if (evento.target.closest(".comment-menu")) {
+        // Lógica simple para abrir menú si quisieras editar desde perfil
+        // (Puedes copiar la lógica completa de home.js si quieres editar desde aquí)
+    }
+  });
 
 
-
-// ========== FUNCIONES DEL MODAL ==========
+// ==========================================
+//  ELIMINAR CUENTA 
+// ==========================================
 const modal = document.getElementById('modal-resultado');
 const modalTitulo = document.getElementById('modal-titulo');
 const modalMensaje = document.getElementById('modal-mensaje');
 const btnAceptar = document.getElementById('btn-aceptar');
 const btnCancelar = document.getElementById('btn-cancelar');
+const botonEliminar = document.getElementById('boton-eliminar');
 
 function mostrarModal(titulo, mensaje, soloAceptar = false) {
   modalTitulo.textContent = titulo;
@@ -163,7 +177,6 @@ function mostrarModal(titulo, mensaje, soloAceptar = false) {
     btnAceptar.style.display = 'inline-block';
     btnCancelar.style.display = 'inline-block';
   }
-
   modal.classList.add('is-active');
 }
 
@@ -171,56 +184,39 @@ function cerrarModal() {
   modal.classList.remove('is-active');
 }
 
-btnCancelar.addEventListener('click', cerrarModal);
+if(btnCancelar) btnCancelar.addEventListener('click', cerrarModal);
 
+if(botonEliminar) {
+    botonEliminar.addEventListener('click', function() {
+        mostrarModal(
+            '⚠️ Eliminar Cuenta',
+            '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción NO se puede deshacer.',
+            false
+        );
 
+        btnAceptar.onclick = async function() {
+            cerrarModal();
+            const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+            if(!loggedUser) return;
 
-// ========== FUNCIONALIDAD BTN ELIMINAR ==========
-const botonEliminar = document.getElementById('boton-eliminar');
-
-botonEliminar.addEventListener('click', function() {
-    mostrarModal(
-        '⚠️ Eliminar Cuenta',
-        '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción NO se puede deshacer. Se borrarán todos tus datos permanentemente.',
-        false  // Mostrar ambos botones (Aceptar y Cancelar)
-    );
-
-    
-    btnAceptar.onclick = async function() {
-        cerrarModal();
-        
-        const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-        const user_id = loggedUser.user_id;
-        
-        console.log('Eliminando usuario:', user_id);
-        
-        try {
-            const response = await fetch(`http://localhost:3000/api/users/${user_id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
+            try {
+                const response = await fetch(`http://localhost:3000/api/users/${loggedUser.user_id}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    mostrarModal('Adiós', 'Cuenta eliminada exitosamente.', true);
+                    btnAceptar.onclick = function() {
+                        localStorage.removeItem('loggedUser');
+                        window.location.href = '/login.html';
+                    };
+                } else {
+                    mostrarModal('Error', 'No se pudo eliminar la cuenta', true);
                 }
-            });
-            
-            const data = await response.json();
-            
-            console.log('Respuesta del servidor:', data);
-            
-            if (response.ok) {
-                mostrarModal('Que lastima que te vayas, volve pronto', 'Cuenta eliminada exitosamente. Serás redirigido al inicio.', true);
-                
-                btnAceptar.onclick = function() {
-                    localStorage.removeItem('loggedUser');
-                    window.location.href = '/login.html';
-                };
-                
-            } else {
-                mostrarModal('Error', data.error || 'No se pudo eliminar la cuenta', true);
+            } catch (error) {
+                mostrarModal('Error', 'Error de conexión', true);
             }
-            
-        } catch (error) {
-            console.error('Error completo:', error);
-            mostrarModal('Error', 'No se pudo conectar con el servidor', true);
-        }
-    };
-});
+        };
+    });
+}
