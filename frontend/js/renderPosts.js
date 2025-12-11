@@ -85,6 +85,7 @@ function renderPosts(posts) {
       const listaComentarios = postDiv.querySelector(".comments-list");
 
       listaComentarios.innerHTML = comentarios.map(c => { `
+        return
         <div class="comment" data-comment-id="${c.comment_id}">
           <span class="comment-text"><strong>@${c.username}</strong> ${c.content}</span>
           
@@ -115,56 +116,6 @@ function renderPosts(posts) {
 
   });
 };
-
-  // Comentarios
-  document.addEventListener("click", async (e) => {
-  // Mostrar/Ocultar menú de comentarios
-  if (e.target.classList.contains("dots") && e.target.closest(".comment-menu")) {
-    const menu = e.target.closest(".comment-menu").querySelector(".dropdown");
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
-    return;
-  }
-
-  // Editar comentario
-  if (e.target.classList.contains("edit-comment")) {
-    e.preventDefault();
-    const comentarioDiv = e.target.closest(".comment");
-    const texto = comentarioDiv.querySelector(".comment-text");
-    const nuevoTexto = prompt("Edita tu comentario:", texto.textContent);
-    if (!nuevoTexto) return;
-
-    const commentId = comentarioDiv.dataset.commentId;
-    try {
-      await fetch("/api/comments", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ comment_id: commentId, content: nuevoTexto })
-      });
-      texto.innerHTML = nuevoTexto;
-    } catch (err) {
-      console.error("Error editando comentario:", err);
-      alert("No se pudo editar el comentario.");
-    }
-    return;
-  }
-
-  // Eliminar comentario
-  if (e.target.classList.contains("delete-comment")) {
-    e.preventDefault();
-    const comentarioDiv = e.target.closest(".comment");
-    const commentId = comentarioDiv.dataset.commentId;
-    if (!confirm("¿Eliminar este comentario?")) return;
-
-    try {
-      await fetch(`/api/comments/${commentId}`, { method: "DELETE" });
-      comentarioDiv.remove();
-    } catch (err) {
-      console.error("Error eliminando comentario:", err);
-      alert("No se pudo eliminar el comentario.");
-    }
-    return;
-  }
-});
 
   // ELIMINAR SUEÑO
   const deleteLinks = document.querySelectorAll(".delete-post");
