@@ -1,13 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // --- Frases oníricas ---
+  // Frases oníricas que cambian cada 10 segundos
   const frases = [
-    "Cada hilo guarda un recuerdo invisible.",
-    "Tu mente descansa, pero tu alma sigue viajando.",
-    "Algunos sueños no quieren ser olvidados.",
-    "Lo que tejés de noche, te protege de día.",
-    "El tiempo se disuelve en tus visiones."
+    "“Cada hilo guarda un recuerdo invisible.”",
+    "“Tu mente descansa, pero tu alma sigue viajando.”",
+    "“Algunos sueños no quieren ser olvidados.”",
+    "“Lo que tejés de noche, te protege de día.”",
+    "“El tiempo se disuelve en tus visiones.”"
   ];
+
   let fraseIndex = 0;
   const quoteElement = document.getElementById("quote");
 
@@ -16,104 +17,98 @@ document.addEventListener("DOMContentLoaded", () => {
     quoteElement.textContent = frases[fraseIndex];
   }, 10000);
 
-  // --- Progreso de plumas ---
+  // Progreso del atrapasueños (Plumas) 
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
   let cantidadPosts = 0;
 
   function calcularPlumasActivas(posts) {
-    if (posts >= 100) return 12;
-    if (posts >= 70) return 11;
-    if (posts >= 50) return 9;
-    if (posts >= 20) return 6;
-    if (posts >= 5) return 3;
-    return 0;
+      let plumasActivas = 0;
+      if (posts >= 5) plumasActivas = 3;
+      if (posts >= 20) plumasActivas = 6;
+      if (posts >= 50) plumasActivas = 9;
+      if (posts >= 70) plumasActivas = 11;
+      if (posts >= 100) plumasActivas = 12;
+      return plumasActivas;
   }
 
   function actualizarPlumas() {
     const plumas = document.querySelectorAll('.pluma');
-    const plumasActivas = calcularPlumasActivas(cantidadPosts);
-    plumas.forEach((pluma, i) => {
-      pluma.classList.toggle('active', i < plumasActivas);
+    const plumasQueDebenEstarActivas = calcularPlumasActivas(cantidadPosts);
+
+    plumas.forEach((pluma, index) => {
+      if (index < plumasQueDebenEstarActivas) pluma.classList.add('active');
+      else pluma.classList.remove('active');
     });
   }
 
-  // --- Traer stats ---
-  async function cargarStats() {
-    if (!loggedUser) return;
-    try {
-      const res = await fetch(`/api/users/${loggedUser.user_id}/stats`);
-      const stats = await res.json();
-      cantidadPosts = stats.totalPosts;
-      actualizarPlumas();
+  // Traer stats del usuario
+  if (loggedUser) {
+    const userId = loggedUser.user_id;
 
-      const statsDiv = document.querySelector(".dream-stats");
-      if (statsDiv) {
+    fetch(`/api/users/${userId}/stats`)
+      .then(res => res.json())
+      .then(stats => {
+        // stats = { totalPosts, totalLunas }
+        cantidadPosts = stats.totalPosts;
+
+        // Actualizar plumas
+        actualizarPlumas();
+
+        // Actualizar dream-stats
+        const statsDiv = document.querySelector(".dream-stats");
         statsDiv.innerHTML = `
           <p>✦ ${stats.totalPosts} sueños tejidos</p>
-          <p>✦ ${stats.totalLunas} lunas salientes</p>
+          <p>✦ ${stats.totalLunas} lunas salientes </p>
         `;
-      }
-    } catch (err) {
-      console.error("Error cargando stats:", err);
-      actualizarPlumas();
-    }
-  }
-
-  cargarStats();
-
-  // --- Cargar categorías ---
-  async function renderCategoryCounts() {
-    if (!loggedUser) return;
-    try {
-      const [postsRes, catsRes] = await Promise.all([
-        fetch(`/api/posts/${loggedUser.user_id}`),
-        fetch(`/api/categories`)
-      ]);
-      const posts = await postsRes.json();
-      const categories = await catsRes.json();
-
-      const orderedCats = [...categories].sort((a,b) => a.category_id - b.category_id);
-
-      const boxes = Array.from(document.querySelectorAll("#category-boxes .cat-box"));
-
-      boxes.forEach((box, i) => {
-        const cat = orderedCats[i];
-        const nameNode = box.querySelector(".cat-name");
-        const countNode = box.querySelector(".cat-count");
-
-        if (!cat) {
-          nameNode.textContent = "";
-          countNode.textContent = "";
-          box.classList.add("empty");
-          return;
-        }
-
-        // Solo mostramos el nombre de la categoría
-        nameNode.textContent = cat.name;
-        countNode.textContent = ""; // <-- aquí ocultamos la cantidad de sueños
-
-        box.classList.remove("empty","cat-pesadilla","cat-recurrente","cat-absurdo","cat-sensorial","cat-lucido","cat-inquietante");
-
-        switch(cat.name.toLowerCase()) {
-          case "pesadilla": box.classList.add("cat-pesadilla"); break;
-          case "recurrente": box.classList.add("cat-recurrente"); break;
-          case "absurdo": box.classList.add("cat-absurdo"); break;
-          case "sensorial": box.classList.add("cat-sensorial"); break;
-          case "lúcido": 
-          case "lucido": box.classList.add("cat-lucido"); break;
-          case "inquietante": box.classList.add("cat-inquietante"); break;
-        }
-
-        // Si quieres animaciones de estilo aunque no muestre cantidad:
-        const hasPosts = posts.some(p => Number(p.category_id) === cat.category_id);
-        box.classList.toggle("has-count", hasPosts);
+      })
+      .catch(error => {
+        console.error("Error cargando estadísticas:", error);
+        actualizarPlumas();
       });
-
-    } catch(err) {
-      console.error("Error cargando categorías:", err);
-    }
+  } else {
+    actualizarPlumas();
   }
 
-  renderCategoryCounts();
+  // CATEGORÍAS MÁGICAS (COLORES + ANIMACIÓN)
 
+  const categoryColors = {
+    "Pesadilla": "cat-pesadilla",
+    "Recurrente": "cat-recurrente",
+    "Absurdo": "cat-absurdo",
+    "Sensorial": "cat-sensorial",
+    "Lúcido": "cat-lucido",
+    "Inquietante": "cat-inquietante",
+  };
+
+  // buscamos si el usuario existe
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  if (!storedUser) return;
+
+  try {
+    const res = await fetch(`/api/users/${storedUser.user_id}/top-categories`);
+    const data = await res.json();
+
+    const boxes = document.querySelectorAll("#category-boxes .cat-box");
+
+    // resetear cajas
+    boxes.forEach(b => {
+      b.className = "cat-box empty";
+      b.textContent = "";
+    });
+
+    // cargar categorías
+    data.forEach((cat, i) => {
+      if (!boxes[i]) return;
+
+      boxes[i].classList.remove("empty");
+      boxes[i].textContent = cat.name;
+
+      // aplicar color mágico
+      const classColor = categoryColors[cat.name];
+      if (classColor) boxes[i].classList.add(classColor);
+    });
+
+  } catch (err) {
+    console.error("Error cargando categorías:", err);
+  }
 });
