@@ -84,8 +84,8 @@ function renderPosts(posts) {
       const comentarios = await res.json();
       const listaComentarios = postDiv.querySelector(".comments-list");
 
-      listaComentarios.innerHTML = comentarios.map(c => { `
-        return
+      listaComentarios.innerHTML = comentarios.map(c => { 
+        return `
         <div class="comment" data-comment-id="${c.comment_id}">
           <span class="comment-text"><strong>@${c.username}</strong> ${c.content}</span>
           
