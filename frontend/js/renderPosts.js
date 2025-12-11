@@ -1,15 +1,17 @@
-function renderPosts(posts, currentUserId) {
+function renderPosts(posts) {
+  const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+  const currentUserId = loggedUser?.user_id;
   const container = document.getElementById("posts-container");
-  container.innerHTML = ""; // vaciar
+  container.innerHTML = ""; 
 
-  posts.forEach(async post => {
-    const postUserIdAsNumber = parseInt(post.user_id);
-    const isOwner = (postUserIdAsNumber === currentUserId); 
+  posts.forEach( async post => {
+    const isOwner = (post.user_id === currentUserId);
 
     // Crear DIV contenedor
     const postDiv = document.createElement("div");
     postDiv.classList.add("post");
-    postDiv.setAttribute("data-post-id", post.post_id);
+    postDiv.dataset.postId = post.post_id;
+
 
     // Insertar HTML interno
     postDiv.innerHTML = `
@@ -25,8 +27,8 @@ function renderPosts(posts, currentUserId) {
             ${
               isOwner
               ? `
-                  <a href="edit-post.html?post_id=${post.post_id}">Editar Sueño</a>
-                  <a href="#" class="style-red delete-post">Eliminar Sueño</a>
+                  <a href="#">Editar Sueño</a>
+                  <a href="#" class="style-red">Eliminar Sueño</a>
                 `
               : `
                   <a href="#" class="style-red">Reportar Sueño</a>
@@ -60,13 +62,109 @@ function renderPosts(posts, currentUserId) {
           style="cursor:pointer; margin-left: 1rem;"></i>
         <span class="comment-count" data-post-id="${post.post_id}">${post.comment_count || 0}</span>
       </div>
+
+      <div class="comments-wrapper" 
+        data-post-id="${post.post_id}" 
+        style="display:none;">
+        
+        <div class="comments-list"></div>
+         <div class="add-comment">
+          <input type="text" class="add-comment-input" placeholder="Escribí un comentario..." />
+          <button class="add-comment-btn">Enviar</button>
+        </div>
+      </div>
+
     `;
 
     container.appendChild(postDiv);
+    
+    //cargar comentarios
+    try {
+      const res = await fetch(`/api/comments/${post.post_id}`);
+      const comentarios = await res.json();
+      const listaComentarios = postDiv.querySelector(".comments-list");
 
-    await iniciarConLunas(post.post_id, currentUserId);
+      listaComentarios.innerHTML = comentarios.map(c => { `
+        <div class="comment" data-comment-id="${c.comment_id}">
+          <span class="comment-text"><strong>@${c.username}</strong> ${c.content}</span>
+          
+          ${
+            c.user_id === currentUserId 
+            ? `<div class="comment-menu">
+                 <span class="dots">...</span>
+                 <div class="dropdown-comment">
+                   <a href="#" class="edit-comment">Editar</a>
+                   <a href="#" class="delete-comment">Eliminar</a>
+                 </div>
+               </div>`
+            : ""
+          }
+        </div>
+
+      `;}).join("");
+
+      
+      // actualizar contador
+      const contadorSpan = postDiv.querySelector(`.comment-count[data-post-id="${post.post_id}"]`);
+      contadorSpan.textContent = comentarios.length;
+    } catch(error){
+      console.error("Error cargando comentarios:", error);
+    }
+
+    iniciarConLunas(post.post_id, currentUserId);
+
   });
+};
 
+  // Comentarios
+  document.addEventListener("click", async (e) => {
+  // Mostrar/Ocultar menú de comentarios
+  if (e.target.classList.contains("dots") && e.target.closest(".comment-menu")) {
+    const menu = e.target.closest(".comment-menu").querySelector(".dropdown");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+    return;
+  }
+
+  // Editar comentario
+  if (e.target.classList.contains("edit-comment")) {
+    e.preventDefault();
+    const comentarioDiv = e.target.closest(".comment");
+    const texto = comentarioDiv.querySelector(".comment-text");
+    const nuevoTexto = prompt("Edita tu comentario:", texto.textContent);
+    if (!nuevoTexto) return;
+
+    const commentId = comentarioDiv.dataset.commentId;
+    try {
+      await fetch("/api/comments", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ comment_id: commentId, content: nuevoTexto })
+      });
+      texto.innerHTML = nuevoTexto;
+    } catch (err) {
+      console.error("Error editando comentario:", err);
+      alert("No se pudo editar el comentario.");
+    }
+    return;
+  }
+
+  // Eliminar comentario
+  if (e.target.classList.contains("delete-comment")) {
+    e.preventDefault();
+    const comentarioDiv = e.target.closest(".comment");
+    const commentId = comentarioDiv.dataset.commentId;
+    if (!confirm("¿Eliminar este comentario?")) return;
+
+    try {
+      await fetch(`/api/comments/${commentId}`, { method: "DELETE" });
+      comentarioDiv.remove();
+    } catch (err) {
+      console.error("Error eliminando comentario:", err);
+      alert("No se pudo eliminar el comentario.");
+    }
+    return;
+  }
+});
 
   // ELIMINAR SUEÑO
   const deleteLinks = document.querySelectorAll(".delete-post");
@@ -85,8 +183,7 @@ function renderPosts(posts, currentUserId) {
 
           if (data.success) {
             alert("Post eliminado correctamente");
-            loadPosts();
-
+            loadPosts(); // recargar posts
           } else {
             alert(data.message || "No se pudo eliminar el post");
           }
@@ -96,5 +193,4 @@ function renderPosts(posts, currentUserId) {
         }
       }
     });
-  });
-}
+});
