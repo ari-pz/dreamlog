@@ -38,6 +38,17 @@
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('post_id');
 
+    if (!postId) {
+      alert('Error: No se encontró el ID del post en la URL.');
+      console.error('No se pudo obtener el postId de la URL.');
+      // Si no hay ID, no tiene sentido continuar
+      // Podrías redirigir o simplemente detener la ejecución de loadPost
+      // Pero si quieres que el botón no funcione:
+      btnPost.disabled = true; // Deshabilita el botón si no hay ID
+      throw new Error('Post ID es requerido.');
+    }
+
+
     // 2. Seleccionar los inputs
     const contentInput = document.getElementById('content');
     const imageInput = document.getElementById('image');
@@ -48,12 +59,11 @@
     async function loadPost() {
       try {
         const res = await fetch(`/api/posts/${postId}`);
-        const posts = await res.json();
-        if (posts.length === 0) {
+        if (res.status === 404) {
           alert('Post no encontrado');
           return;
         }
-        const post = posts[0];
+        const post = await res.json();
 
         // 4. Pre-cargar valores en el form
         contentInput.value = post.content || '';

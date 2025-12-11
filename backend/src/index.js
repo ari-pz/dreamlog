@@ -17,10 +17,6 @@ app.get("/inicio", (req, res) => {
 });
 
 
-// SERVIDOR
-app.listen(PORT, () => {
-  console.log('Servidor corriendo en http://localhost:' + PORT);
-});
 
 
 //IMPORTAR FUNCIONES
@@ -36,6 +32,7 @@ const { getAllUsers,
 const {
   getAllPosts,
   getPostsByUserId,
+  getPostById,
   getPostsCount,
   getCategories,
   createPost,
@@ -45,10 +42,12 @@ const {
   removeMoon,
   getMoonCount,
   deletePost,
-  updatePost
+  updatePost,
+  getAllMoons
 } = require("./posts");
 
 const {
+  getAllComments,
   getCommentsByPostId,
   insertComment
 } = require("./comments");
@@ -56,6 +55,28 @@ const {
 // =======================================
 // USERS
 // =======================================
+
+
+// Endpoint para OBTENER UN SOLO POST por su post_id
+app.get('/api/posts/:id', async (req, res) => {
+  const postId = req.params.id; // Ahora, esto DEBE ser el post_id
+
+  try {
+    // Usa la nueva función que busca por POST ID
+    const post = await getPostById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post no encontrado.' });
+    }
+
+    // Devuelve UN SOLO objeto, no un array
+    res.json(post);
+  } catch (err) {
+    console.error('Error al obtener post:', err);
+    res.status(500).json({ error: 'Error interno del servidor al obtener el post.' });
+  }
+});
+
 
 // POST create new user
 app.post("/api/users", async (req, res) => {
@@ -230,6 +251,8 @@ app.delete('/api/users/:id', async (req, res) => {
 // POSTS
 // =======================================
 
+
+// UPDATE post
 app.put('/api/posts/:id', async (req, res) => {
   const postId = req.params.id;
   const { content, image } = req.body;
@@ -277,6 +300,21 @@ app.get("/api/posts", async (req, res) => {
     res.status(500).json({ error: "Error al obtener posts" });
   }
 });
+
+
+
+// GET posts
+app.get("/api/lunas", async (req, res) => {
+  try {
+    const lunas = await getAllMoons();
+    res.json(lunas);
+  } catch (error) {
+    console.error("Error en GET /api/moons", error);
+    res.status(500).json({ error: "Error al obtener posts" });
+  }
+});
+
+
 
 // GET post by user_id
 app.get("/api/posts/:id", async (req, res) => {
@@ -326,6 +364,19 @@ app.post("/api/posts", async (req, res) => {
 // COMENTARIOS
 // =======================================
 // Obtener los comentarios
+
+
+app.get('/api/comments', async (req, res) => {
+  try {
+    const comments = await getAllComments();
+    res.json(comments);
+  } catch (error) {
+    console.error("Error en GET /api/comments", error);
+    res.status(500).json({ error: "Error al obtener comments" });
+  }
+});
+
+
 app.get('/api/comments/:post_id', async (req, res) => {
   const post_id = req.params.post_id;
   try {
@@ -540,4 +591,14 @@ app.post("/api/logout", (req, res) => {
   console.log(`Usuario "${username}" ha cerrado sesión desde el navegador`);
   res.json({ message: "Logout registrado en el servidor" });
 });
+
+
+
+
+// SERVIDOR
+app.listen(PORT, () => {
+  console.log('Servidor corriendo en http://localhost:' + PORT);
+});
+
+
 

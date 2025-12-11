@@ -27,7 +27,7 @@ function renderPosts(posts) {
             ${
               isOwner
               ? `
-                  <a href="edit-post.html">Editar Sueño</a>
+                  <a href="edit-post.html?post_id=${post.post_id}">Editar Sueño</a>
                   <a href="#" class="style-red delete-post">Eliminar Sueño</a>
                 `
               : `
