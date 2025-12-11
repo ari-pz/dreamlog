@@ -48,6 +48,10 @@ const {
   updatePost
 } = require("./posts");
 
+const {
+  getCommentsByPostId,
+  insertComment
+} = require("./comments");
 
 // =======================================
 // USERS
@@ -321,43 +325,28 @@ app.post("/api/posts", async (req, res) => {
 // =======================================
 // COMENTARIOS
 // =======================================
-// GET comentarios por post_id
+// Obtener los comentarios
 app.get('/api/comments/:post_id', async (req, res) => {
-    const post_id = parseInt(req.params.post_id);
-    try {
-        const result = await dbClient.query(
-            `SELECT c.comment_id, c.content, u.username
-             FROM comments c
-             JOIN users u ON c.user_id = u.user_id
-             WHERE c.post_id = $1
-             ORDER BY c.comment_id ASC`,
-            [post_id]
-        );
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Error al obtener comentarios" });
-    }
+  const post_id = req.params.post_id;
+  try {
+    const comments = await getCommentsByPostId(post_id);
+    res.json(comments);
+  } catch (err) {
+    console.error("Error obteniendo comentarios:", err);
+    res.status(500).json({ error: "Error al obtener comentarios" });
+  }
 });
 
-//Agregar un comentario
-app.post('/api/comments/:post_id', async (req, res) => {
-    const post_id = parseInt(req.params.post_id);
-    const user_id = req.body.user_id; 
-    const content = req.body.content;
-
-    try {
-        const result = await dbClient.query(
-            `INSERT INTO comments (user_id, post_id, content)
-             VALUES ($1, $2, $3)
-             RETURNING *`,
-            [user_id, post_id, content]
-        );
-        res.json(result.rows[0]);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "No se pudo crear el comentario" });
-    }
+//Agrego Comentario 
+app.post('/api/comments', async (req, res) => {
+  const { user_id, post_id, content, url } = req.body;
+  try {
+    const comment = await insertComment(user_id, post_id, content, url);
+    res.json(comment);
+  } catch (err) {
+    console.error("Error creando comentario:", err);
+    res.status(500).json({ error: "Error al crear comentario" });
+  }
 });
 
 
