@@ -421,6 +421,51 @@ app.get('/api/posts/categories/:categorie', async (req, res) => {
     }
 });
 
+// GET: top categorías usadas por un usuario
+app.get("/api/users/:user_id/top-categories", async (req, res) => {
+  const user_id = parseInt(req.params.user_id);
+
+  try {
+    const posts = await getPostsByUserId(user_id);
+
+    if (!posts || posts.length === 0) {
+      return res.json([]);
+    }
+
+    // Contamos las categorías
+    const counts = {};
+
+    posts.forEach(p => {
+      if (p.category_id) {
+        counts[p.category_id] = (counts[p.category_id] || 0) + 1;
+      }
+    });
+
+    // Ordenamos de más a menos usadas
+    const sorted = Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3);
+
+    // Traemos los nombres de categorías
+    const allCategories = await getCategories();
+
+    const result = sorted.map(([catId, total]) => {
+      const found = allCategories.find(c => c.category_id == catId);
+      return {
+        category_id: catId,
+        name: found ? found.name : "Desconocida",
+        count: total
+      };
+    });
+
+    res.json(result);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error obteniendo top categorías" });
+  }
+});
+
 // =======================================
 // Estadísticas del usuario
 // =======================================
