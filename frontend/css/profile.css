@@ -18,7 +18,9 @@ body {
     background-position: 100% 100%;
   }
 }
-
+.media {
+  padding-top: 24px;
+}
 .button {
   font-family: 'Cormorant Garamond', serif;
   font-size: 17px;
@@ -27,10 +29,10 @@ body {
 
 h3.titulo-posts {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
+  font-size: 30px;
   color: #c4a9ff;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  padding: 15px;
+  text-align: center;
   text-shadow: 0 0 10px rgba(196, 169, 255, 0.7);
 }
 
@@ -41,28 +43,29 @@ h3.titulo-posts {
 
 .perfil-contenedor {
   display: flex;
-  gap: 2.5rem;
-  margin-top: 2rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  gap: 75px;
 
-  padding: 0 2rem; /* ← evita que toque bordes laterales */
-}
 
-/* Columna izquierda: usuario + posts */
-.col-izquierda {
-  width: 60%;
-}
 
 /* Columna derecha: mascota */
-.col-derecha {
+/*.col-derecha {
   width: 40%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-
   padding-right: 2rem; /* ← evita que toque borde derecho */
-  padding-bottom: 2rem; /* ← evita tocar borde inferior */
-}
 
+
+.col-derecha {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 /* ============================
    TARJETA DEL USUARIO
@@ -238,21 +241,20 @@ h3.titulo-posts {
 
 .mascota-card {
   background: rgba(255, 255, 255, 0.07);
-  padding: 1.8rem;
+  padding: 16px;
   border-radius: 25px;
-  width: 100%;
   text-align: center;
   backdrop-filter: blur(4px);
   box-shadow: 0 0 18px rgba(140, 110, 255, 0.25);
-
-  height: 480px;  /* tamaño fijo */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-
   box-sizing: border-box; /* ← evita líneas blancas */
   overflow: hidden;       /* ← evita desbordes */
+  height: 366px;
+  width: 300px;
+
 }
 
 /* Imagen fija */
@@ -279,10 +281,9 @@ h3.titulo-posts {
 
 /* Texto auxiliar */
 .texto-mascota {
-  margin-top: 0.7rem;
-  font-size: 0.9rem;
+  margin-top: 10px;
+  font-size: 16px;
   color: #bfa7ff;
-  opacity: 0.8;
 }
 
 
