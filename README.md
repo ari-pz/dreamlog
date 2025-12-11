@@ -65,10 +65,4 @@ make start-backend
 - Pantalla de Inicio
 - Perfil de Usuario
 
-**Usar solo 1 vez**
-cd backend
-docker compose down -v
-docker volume rm dreamlog-db || true
-docker compose up -d
-
 
