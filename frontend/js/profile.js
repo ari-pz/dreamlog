@@ -131,7 +131,7 @@ document.addEventListener("click", async function(evento) {
         });
         const newComment = await res.json();
   
-        /
+        
         const lista = wrapper.querySelector(".comments-list");
         lista.insertAdjacentHTML("beforeend", `
           <div class="comment" data-comment-id="${newComment.comment_id}">
