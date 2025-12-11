@@ -27,7 +27,7 @@ app.listen(PORT, () => {
 const { getAllUsers,
         getUserById,
         getUserByUsername,
-        updateUser,
+        updateUsers,
         nameInUse,
         deleteUser
 } = require("./users");
@@ -39,6 +39,10 @@ const {
   getCategories,
   createPost,
   getPostsByCategory,
+  hasMoon,
+  addMoon,
+  removeMoon,
+  getMoonCount,
   deletePost
 } = require("./posts");
 
@@ -267,6 +271,41 @@ app.post("/api/posts", async (req, res) => {
     res.status(500).json({ error: "Error creando post" });
   }
 });
+
+// =======================================
+// LUNAS
+// =======================================
+// CONTAR lunas
+app.get("/api/moon/count/:post_id", async (req, res) => {
+  const { post_id } = req.params;
+  const count = await getMoonCount(post_id);
+  res.json({ count });
+});
+
+// CHECK luna
+app.get("/api/moon/:user_id/:post_id", async (req, res) => {
+  console.log("user_id:", req.params.user_id);
+  console.log("post_id:", req.params.post_id);
+
+  const { user_id, post_id } = req.params;
+  const result = await hasMoon(user_id, post_id);
+  res.json({ hasMoon: result });
+});
+
+// DAR luna
+app.post("/api/moon", async (req, res) => {
+  const { user_id, post_id } = req.body;
+  await addMoon(user_id, post_id);
+  res.json({ success: true });
+});
+
+// QUITAR luna
+app.delete("/api/moon", async (req, res) => {
+  const { user_id, post_id } = req.body;
+  await removeMoon(user_id, post_id);
+  res.json({ success: true });
+});
+
 
 
 // =======================================
