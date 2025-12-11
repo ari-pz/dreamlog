@@ -1,6 +1,4 @@
-// --- En main.js o home.js ---
-
-// 1. Obtener y parsear el usuario logueado
+// 1. Obtener usuario logueado
 const loggedUser = JSON.parse(localStorage.getItem("loggedUser")) || null;
 const currentUserId = loggedUser?.user_id || null;
 
@@ -199,4 +197,218 @@ async function iniciarConLunas(post_id, user_id) {
   // Agregar el evento click para cambiar las lunas
   icon.onclick = () => CambiarLuna(icon, post_id, user_id, counter);
 }
+
+// ==========================================
+// COMENTARIOS
+// ==========================================
+// Abrir/Cerrar desplegable
+document.addEventListener("click", (e) => {
+  const menu = e.target.closest(".comment-menu"); 
+  
+  document.querySelectorAll(".dropdown-comment").forEach(d => {
+    if (!menu || !menu.contains(d)) {
+        d.style.display = "none";
+    }
+  });
+
+  if (menu) {
+    const dropdown = menu.querySelector(".dropdown-comment");    
+    if (!dropdown) return; 
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+});
+
+// 2. EDITAR Y ELIMINAR 
+document.addEventListener("click", async (e) => {
+  const editar = e.target.closest(".edit-comment");
+  const eliminar = e.target.closest(".delete-comment");
+
+  if (editar) {
+    e.preventDefault();
+    const comentarioDiv = editar.closest(".comment");
+    const commentId = comentarioDiv.dataset.commentId;
+    
+    // Obtenemos el texto limpio (sin el usuario)
+    const spanTexto = comentarioDiv.querySelector(".comment-text");
+    const textoCompleto = spanTexto.innerText; 
+    const textoLimpio = textoCompleto.replace(/^@\S+\s/, ""); 
+
+    localStorage.setItem("edit_comment_id", commentId);
+    localStorage.setItem("edit_comment_content", textoLimpio);
+
+    window.location.href = "/edit-comment.html";
+    return;
+  }
+  
+  if (eliminar) {
+    e.preventDefault();
+    const comentarioDiv = eliminar.closest(".comment");
+    const commentId = comentarioDiv.dataset.commentId;
+    
+    if (confirm("¿Eliminar este comentario?")) {
+      try {
+        await fetch(`/api/comments/${commentId}`, {method:"DELETE"});
+        comentarioDiv.remove();
+      } catch (err) {
+        console.error(err);
+        alert("No se pudo eliminar el comentario.");
+      }
+    }
+  }
+});
+
+
+// Escapar HTML para seguridad
+function escaparHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+
+document.addEventListener("click", async function(evento) {
+
+  // --------------------------
+  // Abrir/Cerrar lista de comentarios
+  // --------------------------
+  if (evento.target.classList.contains("comment-icon") || evento.target.closest(".comment-icon")) {
+    const iconoComentario = evento.target.classList.contains("comment-icon") ? evento.target : evento.target.closest(".comment-icon");
+    const postId = iconoComentario.dataset.postId;
+    const contenedorComentarios = document.querySelector(".comments-wrapper[data-post-id='" + postId + "']");
+
+    if (!contenedorComentarios) return;
+
+
+    if (contenedorComentarios.style.display === "block") {
+      contenedorComentarios.style.display = "none";
+      iconoComentario.classList.remove("fa-solid");
+      iconoComentario.classList.add("fa-regular");
+      return;
+    }
+
+    // Abrir
+    contenedorComentarios.style.display = "block";
+    iconoComentario.classList.remove("fa-regular");
+    iconoComentario.classList.add("fa-solid");
+
+    try {
+      const respuesta = await fetch("/api/comments/" + postId);
+      if (!respuesta.ok) throw new Error("Error al obtener comentarios");
+
+      const comentarios = await respuesta.json();
+      const listaComentarios = contenedorComentarios.querySelector(".comments-list");
+      
+      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+      const currentUserId = loggedUser ? loggedUser.user_id : null;
+
+      if (Array.isArray(comentarios) && comentarios.length > 0) {
+        // Renderizamos cada comentario
+        listaComentarios.innerHTML = comentarios.map(c => {
+            const esMio = (c.user_id === currentUserId);
+            
+            return `
+            <div class="comment" data-comment-id="${c.comment_id}">
+                <span class="comment-text"><strong>@${escaparHtml(c.username)}</strong> ${escaparHtml(c.content)}</span>
+                
+                ${esMio ? `
+                <div class="comment-menu">
+                    <span class="dots" style="cursor:pointer; font-weight:bold;">...</span>
+                    <div class="dropdown-comment" style="display:none; position:absolute; background:#fff; border:1px solid #ccc;">
+                        <a href="#" class="edit-comment">Editar</a>
+                        <a href="#" class="delete-comment">Eliminar</a>
+                    </div>
+                </div>
+                ` : ''}
+            </div>`;
+        }).join("");
+      } else {
+        listaComentarios.innerHTML = "<div class='no-comments'>No hay comentarios aún.</div>";
+      }
+      
+      // Actualizar contador
+      const spanContador = document.querySelector(".comment-count[data-post-id='" + postId + "']");
+      if (spanContador) spanContador.textContent = comentarios.length;
+
+    } catch (error) {
+      console.error("Error cargando comentarios:", error);
+    }
+    return;
+  }
+
+  // --------------------------
+  // 2) Enviar comentario
+  // --------------------------
+  if (evento.target.classList.contains("add-comment-btn") || evento.target.closest(".add-comment-btn")) {
+    const botonEnviar = evento.target.classList.contains("add-comment-btn") ? evento.target : evento.target.closest(".add-comment-btn");
+    const contenedorComentario = botonEnviar.closest(".comments-wrapper");
+    const postId = contenedorComentario.dataset.postId;
+
+    const inputComentario = contenedorComentario.querySelector(".add-comment-input");
+    const contenido = (inputComentario.value || "").trim();
+
+    if (!contenido) {
+      alert("Escribí un comentario antes de enviar.");
+      return;
+    }
+
+    const usuarioLogueado = JSON.parse(localStorage.getItem("loggedUser"));
+    if (!usuarioLogueado) {
+      alert("Tenés que estar logueado para comentar.");
+      return;
+    }
+
+    try {
+      // Guardar comentario en backend
+      const respuesta = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: usuarioLogueado.user_id,
+          post_id: parseInt(postId),
+          content: contenido,
+          url: null
+        })
+      });
+
+      if (!respuesta.ok) throw new Error("Error enviando comentario");
+      
+      const nuevoComentario = await respuesta.json(); 
+
+      const htmlNuevoComentario = `
+        <div class='comment' data-comment-id='${nuevoComentario.comment_id}'> 
+           <span class="comment-text"><strong>@${escaparHtml(usuarioLogueado.username)}</strong> ${escaparHtml(contenido)}</span>
+           <div class="comment-menu">
+               <span class="dots" style="cursor:pointer; font-weight:bold;">...</span>
+               <div class="dropdown-comment" style="display:none; position:absolute; background:#fff; border:1px solid #ccc;">
+                   <a href="#" class="edit-comment">Editar</a>
+                   <a href="#" class="delete-comment">Eliminar</a>
+               </div>
+           </div>
+        </div>
+      `;
+      
+      const listaComentarios = contenedorComentario.querySelector(".comments-list");
+      
+      // Si dice "no hay comentarios", lo borramos
+      const noCommentsMsg = listaComentarios.querySelector(".no-comments");
+      if(noCommentsMsg) noCommentsMsg.remove();
+
+      listaComentarios.insertAdjacentHTML("beforeend", htmlNuevoComentario);
+
+      inputComentario.value = "";
+
+      // Actualizar contador visualmente
+      const spanContador = document.querySelector(".comment-count[data-post-id='" + postId + "']");
+      if (spanContador) {
+        let count = parseInt(spanContador.textContent || "0");
+        spanContador.textContent = count + 1;
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error al enviar comentario.");
+    }
+    return;
+  }
 
