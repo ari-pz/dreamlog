@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dreamlog - Editar Sueño</title>
+  <link rel="stylesheet" href="css/newpost.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!----- Navbar ----->
+  <div id="navbar"></div>
+  <script src="/js/navbar.js"></script>
+
+  <!-----Principal----->
+  <h2 class="new-dream">Editar Comentario</h2>
+
+  <div class="newpost-container">
+    <label for="content">✦ Modifica tu comentario</label>
+    <textarea id="content" placeholder="Escribe tu comentario aquí..." required class="input-estilo"></textarea>
+
+    <label for="url">✦ Cambia la URL de multimedia</label>
+    <input id="url" placeholder="https://example.com/mi-multimedia.jpg" class="input-estilo">
+
+    <button id="btn-comment" type="submit" class="atrapasueños-btn">Guardar Cambios</button>
+  </div>
+
+
+  <script>
+    // 1. Obtener comment_id de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const commentId = urlParams.get('comment_id');
+
+    // 2. Seleccionar los inputs
+    const contentInput = document.getElementById('content');
+    const urlInput = document.getElementById('url');
+    const btnComment = document.getElementById('btn-comment');
+
+    // 3. Función para traer el comentario desde el backend
+    async function loadComment() {
+      try {
+        const res = await fetch(`/api/comments/${commentId}`);
+        const comments = await res.json();
+        if (comments.length === 0) {
+          alert('Comentario no encontrado');
+          return;
+        }
+        const comment = comments[0];
+
+        // 4. Pre-cargar valores en el form
+        contentInput.value = comment.content || '';
+        urlInput.value = comment.url || '';
+
+      } catch (error) {
+        console.error('Error al cargar el comentario:', error);
+      }
+    }
+
+    // 5. Llamar a la función al cargar la página
+    loadComment();
+
+    // 6. Función para enviar cambios (solo content y url)
+    btnComment.addEventListener('click', async () => {
+      const updatedComment = {
+        content: contentInput.value,
+        url: urlInput.value
+      };
+
+      try {
+        const res = await fetch(`/api/comments/${commentId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedComment)
+        });
+
+      if (res.ok) {
+        alert('¡Comentario editado correctamente!');
+        window.location.href = "/inicio";
+      } else {
+        const data = await res.json();
+        alert('Error al editar: ' + data.error);
+      }
+
+      } catch (error) {
+        console.error('Error al editar el comentario:', error);
+      }
+    });
+  </script>
+
