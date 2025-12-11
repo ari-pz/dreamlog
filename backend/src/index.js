@@ -67,7 +67,7 @@ app.post("/api/users", async (req, res) => {
       return res.status(400).json({ error: "Debes elegir un guía nocturno" });
     }
     
-    const newUser = await createUser({ username, password, bio, pfp });
+    const newUser = await createUser({ username, password, bio, pfp, pet_id });
     res.status(201).json({
       message: "Usuario creado con éxito",
       user: newUser
