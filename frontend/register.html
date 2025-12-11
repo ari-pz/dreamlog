@@ -31,12 +31,10 @@
           <input type="radio" name="pet_id" value="1" class="pet-radio">
           <img src="img_mascotas/gato1.png" alt="Gato guía">
         </label>
-
         <label class="mascota-item">
           <input type="radio" name="pet_id" value="2" class="pet-radio">
           <img src="img_mascotas/panda1.png" alt="Panda guía">
         </label>
-
         <label class="mascota-item">
           <input type="radio" name="pet_id" value="3" class="pet-radio">
           <img src="img_mascotas/perezoso1.png" alt="Perezoso guía">
@@ -65,26 +63,27 @@
 
       // Obtener mascota elegida
       const pet_id = document.querySelector('input[name="pet_id"]:checked')?.value || null;
-
       // Validación obligatoria
       if (!pet_id) {
         alert("Debes elegir un guía nocturno antes de crear tu cuenta.");
         return;
       }
 
+
       try {
         const res = await fetch("/api/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password, bio, pfp, pet_id})
+          body: JSON.stringify({ username, password, bio, pfp, pet_id })
         });
+
         const data = await res.json();
 
         if (res.ok) {
           localStorage.setItem("loggedUser", JSON.stringify({
-            user_id: data.user_id,
-            username: data.username,
-            pfp: data.pfp
+            user_id: data.user.user_id,
+            username: data.user.username,
+            pfp: data.user.pfp
           }));
           window.location.href = "/inicio";
         } else {
@@ -98,8 +97,6 @@
   });
   </script>
 
-</body>
-</html>
 
 </body>
 </html>

@@ -59,8 +59,7 @@
         // Guardar usuario en LocalStorage
         localStorage.setItem("loggedUser", JSON.stringify({
           user_id: data.user.user_id,
-          username: data.user.username,
-          pfp: data.user.pfp
+          username: data.user.username
         }));
 
         window.location.href = "/inicio";

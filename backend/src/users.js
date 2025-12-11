@@ -167,7 +167,6 @@ async function deleteUser(user_id) {
         if (result.rowCount === 0) {
             return false; 
         }
-        
         return true;
         
     } catch (error) {
