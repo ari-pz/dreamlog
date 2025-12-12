@@ -144,6 +144,21 @@ document.addEventListener("click", async function(evento) {
       } catch (e) { console.error(e); }
     }
     
+    // Abrir desplegable
+    if (evento.target.closest(".comment-menu")) {
+        const menu = evento.target.closest(".comment-menu");
+        const dropdown = menu.querySelector(".dropdown-comment");
+        
+       
+        document.querySelectorAll(".dropdown-comment").forEach(d => {
+            if(d !== dropdown) d.style.display = 'none';
+        });
+
+        if(dropdown) {
+            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+        }
+    }
+
     // eliminar comentarios
     if (evento.target.closest(".delete-comment")) {
         evento.preventDefault();

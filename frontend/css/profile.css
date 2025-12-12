@@ -219,6 +219,9 @@ h3.titulo-posts {
   background-color: rgba(26, 16, 70, 0.7); 
 }
 
+.comment strong {
+  color: #ffffff !important; 
+}
 
 /* ============================
    MASCOTA
