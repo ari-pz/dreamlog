@@ -337,7 +337,7 @@ document.addEventListener("click", async function(evento) {
   }
 
   // --------------------------
-  // 2) Enviar comentario
+  // Enviar comentario
   // --------------------------
   if (evento.target.classList.contains("add-comment-btn") || evento.target.closest(".add-comment-btn")) {
     const botonEnviar = evento.target.classList.contains("add-comment-btn") ? evento.target : evento.target.closest(".add-comment-btn");

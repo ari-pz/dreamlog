@@ -1,6 +1,3 @@
-// ==========================================
-// CARGA INICIAL Y POSTS
-// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
   cargarMisPosts();
 });
@@ -16,8 +13,7 @@ async function cargarMisPosts() {
   const USER_ID = loggedUser.user_id;
 
   try {
-    // 1. Buscamos los posts de este usuario específico
-    const res = await fetch(`/api/posts/${USER_ID}`);
+    const res = await fetch(`/api/posts/user/${USER_ID}`);
     const posts = await res.json();
     const container = document.getElementById("posts-container");
 
@@ -91,7 +87,7 @@ async function iniciarConLunas(post_id, user_id) {
 // ==========================================
 document.addEventListener("click", async function(evento) {
 
-    // A) Abrir/Cerrar lista de comentarios
+    // Abrir/Cerrar lista de comentarios
     if (evento.target.classList.contains("comment-icon") || evento.target.closest(".comment-icon")) {
       const icono = evento.target.classList.contains("comment-icon") ? evento.target : evento.target.closest(".comment-icon");
       const postId = icono.dataset.postId;
@@ -148,12 +144,16 @@ document.addEventListener("click", async function(evento) {
       } catch (e) { console.error(e); }
     }
     
-    // C) Dropdown de comentarios
-    if (evento.target.closest(".comment-menu")) {
-        // Lógica simple para abrir menú si quisieras editar desde perfil
-        // (Puedes copiar la lógica completa de home.js si quieres editar desde aquí)
-    }
-  });
+    // eliminar comentarios
+    if (evento.target.closest(".delete-comment")) {
+        evento.preventDefault();
+        const div = evento.target.closest(".comment");
+        if(confirm("¿Eliminar comentario?")) {
+            await fetch(`/api/comments/${div.dataset.commentId}`, { method: "DELETE" });
+            div.remove();
+        }
+      }
+});
 
 
 // ==========================================

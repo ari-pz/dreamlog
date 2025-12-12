@@ -4,7 +4,7 @@ function renderPosts(posts) {
   const container = document.getElementById("posts-container");
   container.innerHTML = ""; 
 
-  posts.forEach( async post => {
+  posts.forEach(async post => {
     const isOwner = (post.user_id === currentUserId);
 
     // Crear DIV contenedor
@@ -93,7 +93,7 @@ function renderPosts(posts) {
 
                     if (data.success) {
                         alert("Post eliminado correctamente");
-                        postDiv.remove(); // Borramos el post de la pantalla al instante
+                        postDiv.remove(); 
                     } else {
                         alert(data.message || "No se pudo eliminar el post");
                     }
@@ -141,35 +141,5 @@ function renderPosts(posts) {
     }
 
     iniciarConLunas(post.post_id, currentUserId);
-
   });
-};
-
-  // ELIMINAR SUEÑO ---hay q borralo
-  const deleteLinks = document.querySelectorAll(".delete-post");
-  deleteLinks.forEach(link => {
-    link.addEventListener("click", async (e) => {
-      e.preventDefault();
-      const postDiv = e.target.closest(".post");
-      const postId = postDiv.getAttribute("data-post-id");
-
-      if (confirm("¿Estás seguro que quieres eliminar este post?")) {
-        try {
-          const res = await fetch(`/api/posts/${postId}`, {
-            method: "DELETE"
-          });
-          const data = await res.json();
-
-          if (data.success) {
-            alert("Post eliminado correctamente");
-            loadPosts(); // recargar posts
-          } else {
-            alert(data.message || "No se pudo eliminar el post");
-          }
-        } catch (err) {
-          console.error("Error eliminando post:", err);
-          alert("Hubo un error al eliminar el post");
-        }
-      }
-    });
-});
+}

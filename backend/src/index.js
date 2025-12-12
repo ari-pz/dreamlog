@@ -56,29 +56,7 @@ const {
 // USERS
 // =======================================
 
-
-// Endpoint para OBTENER UN SOLO POST por su post_id
-app.get('/api/posts/:id', async (req, res) => {
-  const postId = req.params.id; // Ahora, esto DEBE ser el post_id
-
-  try {
-    // Usa la nueva función que busca por POST ID
-    const post = await getPostById(postId);
-
-    if (!post) {
-      return res.status(404).json({ error: 'Post no encontrado.' });
-    }
-
-    // Devuelve UN SOLO objeto, no un array
-    res.json(post);
-  } catch (err) {
-    console.error('Error al obtener post:', err);
-    res.status(500).json({ error: 'Error interno del servidor al obtener el post.' });
-  }
-});
-
-
-// POST create new user
+// Crear nuevo user
 app.post("/api/users", async (req, res) => {
   try {
     const { username, password, bio, pfp, pet_id } = req.body;
@@ -250,6 +228,23 @@ app.delete('/api/users/:id', async (req, res) => {
 // =======================================
 // POSTS
 // =======================================
+// OBTENER POST por id
+app.get('/api/posts/:id', async (req, res) => {
+  const postId = req.params.id; 
+
+  try {
+    const post = await getPostById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post no encontrado.' });
+    }
+
+    res.json(post);
+  } catch (err) {
+    console.error('Error al obtener post:', err);
+    res.status(500).json({ error: 'Error interno del servidor al obtener el post.' });
+  }
+});
 
 
 // UPDATE post
@@ -303,24 +298,11 @@ app.get("/api/posts", async (req, res) => {
 
 
 
-// GET posts
-app.get("/api/lunas", async (req, res) => {
-  try {
-    const lunas = await getAllMoons();
-    res.json(lunas);
-  } catch (error) {
-    console.error("Error en GET /api/moons", error);
-    res.status(500).json({ error: "Error al obtener posts" });
-  }
-});
-
-
-
 // GET post by user_id
-app.get("/api/posts/:id", async (req, res) => {
+app.get("/api/posts/user/:id", async (req, res) => {
   try {
     const posts = await getPostsByUserId(req.params.id);
-    res.json(posts); // siempre devuelve array
+    res.json(posts); 
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error al obtener posts del usuario" });
@@ -364,8 +346,6 @@ app.post("/api/posts", async (req, res) => {
 // COMENTARIOS
 // =======================================
 // Obtener los comentarios
-
-
 app.get('/api/comments', async (req, res) => {
   try {
     const comments = await getAllComments();
@@ -404,6 +384,18 @@ app.post('/api/comments', async (req, res) => {
 // =======================================
 // LUNAS
 // =======================================
+// GET Lunas
+app.get("/api/lunas", async (req, res) => {
+  try {
+    const lunas = await getAllMoons();
+    res.json(lunas);
+  } catch (error) {
+    console.error("Error en GET /api/moons", error);
+    res.status(500).json({ error: "Error al obtener posts" });
+  }
+});
+
+
 // CONTAR lunas
 app.get("/api/moon/count/:post_id", async (req, res) => {
   const { post_id } = req.params;
@@ -483,7 +475,6 @@ app.get("/api/users/:user_id/top-categories", async (req, res) => {
       return res.json([]);
     }
 
-    // Contamos las categorías
     const counts = {};
 
     posts.forEach(p => {
@@ -526,13 +517,9 @@ app.get("/api/users/:user_id/stats", async (req, res) => {
   const user_id = parseInt(req.params.user_id);
 
   try {
-    // Traemos todos los posts del usuario
     const posts = await getPostsByUserId(user_id);
-
-    // Cantidad de posts
     const totalPosts = posts.length;
 
-    // Sumamos las lunas de cada post
     let totalLunas = 0;
     for (const post of posts) {
       const count = await getMoonCount(post.post_id);
