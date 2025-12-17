@@ -2,15 +2,10 @@
 const loggedUser = JSON.parse(localStorage.getItem("loggedUser")) || null;
 const currentUserId = loggedUser?.user_id || null;
 
-// 2. Obtener los posts
 async function loadPosts() {
-    // ... lógica para obtener tus posts (fetch, etc.)
     const posts = await fetch('/api/posts').then(res => res.json());
-
-    // 3. Llamar a la función, PASANDO el ID
     renderPosts(posts, currentUserId); 
 }
-
 loadPosts();
 
 
@@ -33,7 +28,7 @@ input.addEventListener("input", () => {
     userStartedTyping = true;
     typingActive = false;
     input.style.setProperty("--placeholder-opacity", 1);
-    input.placeholder = ""; // limpiar cualquier texto anterior
+    input.placeholder = ""; 
     }
 });
 
@@ -118,7 +113,7 @@ async function cargarTodosLosPosts() {
     }
 }
 
-// Fc Mostrar mensajes de error/info
+// Fc Mostrar mensajes de error
 function mostrarMensaje(mensaje) {
     const container = document.getElementById('posts-container');
     container.innerHTML = `<p class="mensaje-busqueda">${mensaje}</p>`;
@@ -170,7 +165,6 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
 }
 
 
-
 async function iniciarConLunas(post_id, user_id) {
   const icon = document.querySelector(`.moon-icon[data-post-id="${post_id}"]`);
   const counter = document.querySelector(`.moon-count[data-post-id="${post_id}"]`);
@@ -218,17 +212,43 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// 2. EDITAR Y ELIMINAR 
-document.addEventListener("click", async (e) => {
-  const editar = e.target.closest(".edit-comment");
-  const eliminar = e.target.closest(".delete-comment");
+//Modal
+const modal = document.getElementById('modal-resultado');
+const modalTitulo = document.getElementById('modal-titulo');
+const modalMensaje = document.getElementById('modal-mensaje');
+const btnAceptar = document.getElementById('btn-aceptar');
+const btnCancelar = document.getElementById('btn-cancelar');
+
+function mostrarModal(titulo, mensaje, soloAceptar = false) {
+  if (modalTitulo) modalTitulo.textContent = titulo;
+  if (modalMensaje) modalMensaje.textContent = mensaje;
+  
+  if (soloAceptar) {
+    if(btnAceptar) btnAceptar.style.display = 'inline-block';
+    if(btnCancelar) btnCancelar.style.display = 'none';
+  } else {
+    if(btnAceptar) btnAceptar.style.display = 'inline-block';
+    if(btnCancelar) btnCancelar.style.display = 'inline-block';
+  }
+  if(modal) modal.classList.add('is-active');
+}
+
+function cerrarModal() {
+  if(modal) modal.classList.remove('is-active');
+}
+
+if(btnCancelar) btnCancelar.addEventListener('click', cerrarModal);
+
+// EDITAR Y ELIMINAR 
+document.addEventListener("click", async (evento) => {
+  const editar = evento.target.closest(".edit-comment");
+  const eliminar = evento.target.closest(".delete-comment");
 
   if (editar) {
-    e.preventDefault();
+    evento.preventDefault();
     const comentarioDiv = editar.closest(".comment");
     const commentId = comentarioDiv.dataset.commentId;
     
-    // Obtenemos el texto limpio (sin el usuario)
     const spanTexto = comentarioDiv.querySelector(".comment-text");
     const textoCompleto = spanTexto.innerText; 
     const textoLimpio = textoCompleto.replace(/^@\S+\s/, ""); 
@@ -240,23 +260,51 @@ document.addEventListener("click", async (e) => {
     return;
   }
   
+
   if (eliminar) {
-    e.preventDefault();
+    evento.preventDefault();
+    
     const comentarioDiv = eliminar.closest(".comment");
     const commentId = comentarioDiv.dataset.commentId;
+    const wrapper = comentarioDiv.closest(".comments-wrapper");
+    const postId = wrapper.dataset.postId;
+    const contador = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
     
-    if (confirm("¿Eliminar este comentario?")) {
-      try {
-        await fetch(`/api/comments/${commentId}`, {method:"DELETE"});
-        comentarioDiv.remove();
-      } catch (err) {
-        console.error(err);
-        alert("No se pudo eliminar el comentario.");
-      }
+    mostrarModal(
+        "Eliminar Comentario", 
+        "¿Estás Seguro? No hay vuelta atrás...", 
+        false
+    );
+
+    if(btnAceptar) {
+        btnAceptar.onclick = async function() {
+            cerrarModal();
+
+            comentarioDiv.remove();
+
+            if (contador) {
+                let numeroActual = parseInt(contador.textContent || 0);
+                contador.textContent = Math.max(0, numeroActual - 1);
+            }
+
+            try {
+                await fetch(`/api/comments/${commentId}`, {method:"DELETE"});
+            } catch (err) {
+                console.error(err);
+            }
+        };
     }
   }
 });
 
+document.addEventListener("keydown", function(evento) {
+    if (evento.key === "Enter" && evento.target.classList.contains("add-comment-input")) {        
+        evento.preventDefault(); 
+        const wrapper = evento.target.closest(".comments-wrapper");
+        const btn = wrapper.querySelector(".add-comment-btn");
+        if (btn) btn.click();
+    }
+});
 
 // Escapar HTML para seguridad
 function escaparHtml(str) {
@@ -268,10 +316,7 @@ function escaparHtml(str) {
 
 
 document.addEventListener("click", async function(evento) {
-
-  // --------------------------
   // Abrir/Cerrar lista de comentarios
-  // --------------------------
   if (evento.target.classList.contains("comment-icon") || evento.target.closest(".comment-icon")) {
     const iconoComentario = evento.target.classList.contains("comment-icon") ? evento.target : evento.target.closest(".comment-icon");
     const postId = iconoComentario.dataset.postId;
@@ -327,12 +372,26 @@ document.addEventListener("click", async function(evento) {
       }
       
       // Actualizar contador
-      const spanContador = document.querySelector(".comment-count[data-post-id='" + postId + "']");
-      if (spanContador) spanContador.textContent = comentarios.length;
+      const contador = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
+      if(contador) {
+        // Sumamos 1 visualmente al instante
+        contador.textContent = parseInt(contador.textContent || 0) + 1;
+      }
 
-    } catch (error) {
+      try {
+          const res = await fetch("/api/comments", { /* ... */ });
+        
+      } catch (e) { 
+          console.error(e); 
+          if(contador) contador.textContent = parseInt(contador.textContent) - 1;
+          alert("Error al enviar");
+      }
+
+      const contadorComm = document.querySelector(".comment-count[data-post-id='" + postId + "']");
+      if (contadorComm) contadorComm.textContent = comentarios.length;
+      } catch (error) {
       console.error("Error cargando comentarios:", error);
-    }
+      }
     return;
   }
 
@@ -359,7 +418,6 @@ document.addEventListener("click", async function(evento) {
     }
 
     try {
-      // Guardar comentario en backend
       const respuesta = await fetch("/api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

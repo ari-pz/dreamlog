@@ -64,7 +64,6 @@ h3.titulo-posts {
   color: white !important;
 }
 
-/* Foto circular */
 #img-usuario {
   flex-shrink: 0;
   width: 220px;
@@ -80,7 +79,6 @@ h3.titulo-posts {
   object-position: center;
 }
 
-/* Info del usuario */
 .perfil-info {
   display: flex;
   flex-direction: column;
@@ -88,7 +86,6 @@ h3.titulo-posts {
   color: white;
 }
 
-/* Nombre */
 .perfil-info h5,
 #nombre-usuario strong {
   font-size: 32px;
@@ -98,7 +95,6 @@ h3.titulo-posts {
   color: white;
 }
 
-/* Biografía */
 .perfil-bio {
   font-size: 20px;
   line-height: 1.4;
@@ -106,7 +102,6 @@ h3.titulo-posts {
   color: white;
 }
 
-/* Botones */
 .perfil-acciones {
   display: flex;
   gap: 1rem;
@@ -221,6 +216,29 @@ h3.titulo-posts {
 
 .comment strong {
   color: #ffffff !important; 
+}
+
+
+/* borrar comentario */
+.modal.modal-pequeno {
+  justify-content: center; 
+  align-items: flex-start;
+  padding-top: 0.5vh;       
+}
+
+.modal.modal-pequeno .modal-card {
+  width: 600px; 
+}
+
+.modal.modal-pequeno .modal-card-body {
+  font-size: 20px;
+  padding: 20px 25px;
+}
+
+
+.modal.modal-pequeno .modal-background {
+  background-color: transparent !important; 
+  backdrop-filter: none !important;         
 }
 
 /* ============================

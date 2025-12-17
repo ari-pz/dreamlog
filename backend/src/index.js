@@ -49,7 +49,8 @@ const {
 const {
   getAllComments,
   getCommentsByPostId,
-  insertComment
+  insertComment,
+  deleteComment
 } = require("./comments");
 
 // =======================================
@@ -173,7 +174,7 @@ app.put('/api/users/:id', async (req, res) => {
 });
 
 
-// Endpoint para verificar si un nombre está disponible
+// Verificar si un nombre está disponible
 app.get('/api/username/:username/:user_id', async (req, res) => {
     const username = req.params.username;
     let user_id;
@@ -380,6 +381,23 @@ app.post('/api/comments', async (req, res) => {
   }
 });
 
+// BORRAR Comentario
+app.delete('/api/comments/:id', async (req, res) => {
+  const commentId = req.params.id;
+
+  try {
+    const fueBorrado = await deleteComment(commentId);
+
+    if (fueBorrado) {
+      res.json({ success: true, message: "Comentario eliminado" });
+    } else {
+      res.status(404).json({ error: "Comentario no encontrado" });
+    }
+  } catch (err) {
+    console.error("Error borrando comentario:", err);
+    res.status(500).json({ error: "Error al borrar comentario" });
+  }
+});
 
 // =======================================
 // LUNAS

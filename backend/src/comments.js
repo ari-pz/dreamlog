@@ -66,8 +66,16 @@ async function insertComment(user_id, post_id, content, url) {
   return rows[0];
 }
 
+async function deleteComment(comment_id) {
+  const query = "DELETE FROM comments WHERE comment_id = $1 RETURNING *";
+  const result = await dbClient.query(query, [comment_id]);
+  // Retorna true si borró algo, false si no encontró nada
+  return result.rowCount > 0;
+}
+
 module.exports = {
   getAllComments,
   getCommentsByPostId,
-  insertComment
+  insertComment,
+  deleteComment
 };

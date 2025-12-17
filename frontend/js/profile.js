@@ -138,8 +138,8 @@ document.addEventListener("click", async function(evento) {
         input.value = "";
         
         // Actualizar contador
-        const countSpan = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
-        if(countSpan) countSpan.textContent = parseInt(countSpan.textContent || 0) + 1;
+        const contadorComm = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
+        if(contadorComm) contadorComm.textContent = parseInt(contadorComm.textContent || 0) + 1;
   
       } catch (e) { console.error(e); }
     }
@@ -160,14 +160,73 @@ document.addEventListener("click", async function(evento) {
     }
 
     // eliminar comentarios
-    if (evento.target.closest(".delete-comment")) {
-        evento.preventDefault();
-        const div = evento.target.closest(".comment");
-        if(confirm("¿Eliminar comentario?")) {
-            await fetch(`/api/comments/${div.dataset.commentId}`, { method: "DELETE" });
-            div.remove();
-        }
+    const eliminar = evento.target.closest(".delete-comment"); 
+    if (eliminar) {
+      evento.preventDefault();
+      
+      const comentarioDiv = eliminar.closest(".comment");
+      const commentId = comentarioDiv.dataset.commentId;
+      const wrapper = comentarioDiv.closest(".comments-wrapper");
+      const postId = wrapper.dataset.postId;
+      const contador = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
+
+      if(modal) modal.classList.add('modal-pequeno')
+      mostrarModal(
+          "Eliminar Comentario", 
+          "¿Estás seguro? No hay vuelta atrás.", 
+          false 
+      );
+
+      if(btnAceptar) {
+          btnAceptar.onclick = async function() {
+              cerrarModal();
+            
+              comentarioDiv.remove();
+              
+              if (contador) {
+                  let numeroActual = parseInt(contador.textContent || 0);
+                  contador.textContent = Math.max(0, numeroActual - 1);
+              }
+
+              try {
+                  await fetch(`/api/comments/${commentId}`, {method:"DELETE"});
+              } catch (err) {
+                  console.error(err);
+              }
+          };
       }
+    }
+      
+    
+
+
+    //editar 
+    const editar = evento.target.closest(".edit-comment");
+    if (editar) {
+      evento.preventDefault();
+      const comentarioDiv = editar.closest(".comment");
+      const commentId = comentarioDiv.dataset.commentId;
+      
+      const spanTexto = comentarioDiv.querySelector(".comment-text");
+      const textoCompleto = spanTexto.innerText; 
+      const textoLimpio = textoCompleto.replace(/^@\S+\s/, ""); 
+
+      localStorage.setItem("edit_comment_id", commentId);
+      localStorage.setItem("edit_comment_content", textoLimpio);
+
+      window.location.href = "/edit-comment.html";
+      return;
+  }
+});
+
+// agregar comentario con enter
+document.addEventListener("keydown", function(evento) {
+    if (evento.key === "Enter" && evento.target.classList.contains("add-comment-input")) {
+        evento.preventDefault(); 
+        const wrapper = evento.target.closest(".comments-wrapper");
+        const btn = wrapper.querySelector(".add-comment-btn");
+        if (btn) btn.click();
+    }
 });
 
 
@@ -196,7 +255,10 @@ function mostrarModal(titulo, mensaje, soloAceptar = false) {
 }
 
 function cerrarModal() {
-  modal.classList.remove('is-active');
+  if(modal) {
+      modal.classList.remove('is-active');
+      modal.classList.remove('modal-pequeno'); 
+  }
 }
 
 if(btnCancelar) btnCancelar.addEventListener('click', cerrarModal);

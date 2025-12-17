@@ -8,7 +8,7 @@ const baseUrl = "http://localhost:3000/api";
 const endpoints = [
   "/users",
   "/posts",
-  "/categories"
+  "/categories",
   "/lunas",
   "/comments"
 ];
