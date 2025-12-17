@@ -266,7 +266,7 @@ if(btnCancelar) btnCancelar.addEventListener('click', cerrarModal);
 if(botonEliminar) {
     botonEliminar.addEventListener('click', function() {
         mostrarModal(
-            '⚠️ Eliminar Cuenta',
+            'Eliminar Cuenta',
             '¿Estás seguro de que quieres eliminar tu cuenta? Esta acción NO se puede deshacer.',
             false
         );
