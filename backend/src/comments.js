@@ -73,9 +73,27 @@ async function deleteComment(comment_id) {
   return result.rowCount > 0;
 }
 
+
+// Actualizar comentario
+async function updateComment(comment_id, content, url) {
+  const query = `
+    UPDATE comments
+    SET content = $1,
+        url = $2
+    WHERE comment_id = $3
+    RETURNING *;
+  `;
+  const values = [content, url, comment_id]; 
+  const result = await dbClient.query(query, values);
+  
+  return result.rows[0];
+}
+
+
 module.exports = {
   getAllComments,
   getCommentsByPostId,
   insertComment,
-  deleteComment
+  deleteComment,
+  updateComment
 };

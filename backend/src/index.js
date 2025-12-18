@@ -50,7 +50,8 @@ const {
   getAllComments,
   getCommentsByPostId,
   insertComment,
-  deleteComment
+  deleteComment,
+  updateComment
 } = require("./comments");
 
 // =======================================
@@ -396,6 +397,29 @@ app.delete('/api/comments/:id', async (req, res) => {
   } catch (err) {
     console.error("Error borrando comentario:", err);
     res.status(500).json({ error: "Error al borrar comentario" });
+  }
+});
+
+// Editar Comentario
+app.put('/api/comments/:id', async (req, res) => {
+  const commentId = req.params.id;
+  const { content, url } = req.body; 
+
+  if (!content) {
+    return res.status(400).json({ error: "El comentario no puede estar vacío" });
+  }
+
+  try {
+    const comentarioActualizado = await updateComment(commentId, content, url);
+    
+    if (comentarioActualizado) {
+      res.json({ success: true, comment: comentarioActualizado });
+    } else {
+      res.status(404).json({ error: "Comentario no encontrado" });
+    }
+  } catch (error) {
+    console.error("Error actualizando comentario:", error);
+    res.status(500).json({ error: "Error al actualizar comentario" });
   }
 });
 

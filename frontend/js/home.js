@@ -348,16 +348,28 @@ document.addEventListener("click", async function(evento) {
       const currentUserId = loggedUser ? loggedUser.user_id : null;
 
       if (Array.isArray(comentarios) && comentarios.length > 0) {
-        // Renderizamos cada comentario
+        // muestro cada comentario
         listaComentarios.innerHTML = comentarios.map(c => {
             const esMio = (c.user_id === currentUserId);
             
             return `
             <div class="comment" data-comment-id="${c.comment_id}">
-                <span class="comment-text"><strong>@${escaparHtml(c.username)}</strong> ${escaparHtml(c.content)}</span>
+                
+                <div class="comment-body" style="flex: 1; display: flex; flex-direction: column;">
+                    
+                    <span class="comment-text"><strong>@${escaparHtml(c.username)}</strong> ${escaparHtml(c.content)}</span>
+                    
+                    ${ 
+                       (c.url && c.url !== "null" && c.url !== "") 
+                       ? `<div class="comment-image" style="margin-top: 8px;">
+                            <img src="${c.url}" style="max-width: 200px; border-radius: 8px; display: block; object-fit: cover;">
+                          </div>` 
+                       : "" 
+                     }
+                </div>
                 
                 ${esMio ? `
-                <div class="comment-menu">
+                <div class="comment-menu" style="margin-left: 10px;">
                     <span class="dots" style="cursor:pointer; font-weight:bold;">...</span>
                     <div class="dropdown-comment" style="display:none; position:absolute; background:#fff; border:1px solid #ccc;">
                         <a href="#" class="edit-comment">Editar</a>
@@ -368,7 +380,7 @@ document.addEventListener("click", async function(evento) {
             </div>`;
         }).join("");
       } else {
-        listaComentarios.innerHTML = "<div class='no-comments'>No hay comentarios aún.</div>";
+        listaComentarios.innerHTML = "<div class='no-comments'>No hay comentarios aún</div>";
       }
       
       // Actualizar contador
