@@ -114,8 +114,6 @@ function renderPosts(posts) {
 
       listaComentarios.innerHTML = "";
       listaComentarios.innerHTML = comentarios.map(c => { 
-        if(c.url) console.log(`Dibujando foto para comentario ${c.comment_id}: ${c.url}`);
-
         return `
         <div class="comment" data-comment-id="${c.comment_id}">
           
