@@ -1,4 +1,3 @@
-/* Fuentes y reset */
 * {
   margin: 0;
   padding: 0;
@@ -12,7 +11,6 @@ body {
   min-height: 100vh;
 }
 
-
 header h1 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.8rem;
@@ -20,7 +18,6 @@ header h1 {
   color: #c4a9ff;
   text-shadow: 0 0 6px rgba(196,169,255,0.6);
 }
-
 
 .nav-left a {
   color: #e4e4e4;
@@ -37,7 +34,6 @@ header h1 {
 }
 
 
-
 .nav-right a:hover {
   color: #ffe8a3;
   text-shadow: 0 0 5px rgba(255,232,163,0.6);
@@ -48,8 +44,6 @@ header h1 {
   text-shadow: 0 0 5px rgba(255,232,163,0.6);
 }
 
-
-/* BARRA DE BÚSQUEDA */
 .search-bar {
   background-color: #120d1f;
   padding: 1rem 2rem;
@@ -70,25 +64,21 @@ header h1 {
   transition: color 1s ease, transform 1s ease;
 }
 
-/* TRANSICIÓN PARA EFECTO PUFF SOLO EN PLACEHOLDER */
 transition: {color 1s ease, transform 1s ease;
 }
 
-/* Esto aplica solo al placeholder */
 #search-input::placeholder {
   color: rgba(244,244,244,1);
   transition: color 1s ease;
 }
 
 #search-input::placeholder {
-  /* variable que modificaremos desde JS */
   color: rgba(244,244,244, var(--placeholder-opacity, 1));
 }
 
 .search-bar input:focus {
   box-shadow: 0 0 10px rgba(234, 163, 255, 0.4);
 }
-
 
 .mensaje-busqueda {
     text-align: center;
@@ -105,7 +95,6 @@ transition: {color 1s ease, transform 1s ease;
     margin: 0.5rem 0;
 }
 
-/* CONTENIDO */
 .main-content {
   text-align: center;
   padding: 4rem 2rem;
@@ -125,8 +114,6 @@ transition: {color 1s ease, transform 1s ease;
   letter-spacing: 0.5px;
 }
 
-
-/* Barra de búsqueda */
 .search-wrapper {
   display: inline-flex;
   align-items: center;
@@ -215,7 +202,6 @@ transition: {color 1s ease, transform 1s ease;
   border-right: 3px solid rgba(106, 79, 150, 0.4);
 }
 
-/*2f143ede*/
 .modal-card-foot {
   background: #1e132e;  
   border-top: 3px solid rgba(74, 52, 114, 0.6);
@@ -244,7 +230,6 @@ transition: {color 1s ease, transform 1s ease;
   background: #2f143ede;
   color: rgba(252, 229, 241, 0.95);
 }
-
 
 .comment strong {
   color: #ffffff !important; 

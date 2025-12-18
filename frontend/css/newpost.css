@@ -1,11 +1,10 @@
-/* ===== CONTENEDOR GENERAL ===== */
 .newpost-container {
   width: 100%;
   max-width: 550px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;                 /* <- separa elementos */
+  gap: 18px;
   padding: 40px 25px;
   font-family: 'Poppins', sans-serif;
   border-radius: 16px;
@@ -14,31 +13,23 @@
   color: white;
 }
 
-
-
-
-/* ===== TITULO ===== */
 .new-dream {
   text-align: center;
-  padding: 10px;
-  font-size: 2.2rem;
+  padding: 45px;
+  font-size: 40px;
   font-family: 'Cormorant Garamond', serif;
-  margin-bottom: 20px;
   color: #c4a9ff;
   text-shadow: 0 0 10px rgba(196,169,255,0.4);
 }
 
-/* ===== LABELS ===== */
 .newpost-container label {
-  font-size: 20px;
-  margin-bottom: 4px;
+  font-size: 22px;
+  padding-top: 8px;
   display: block;
   font-family: 'Cormorant Garamond', serif;
   text-shadow: 0 0 10px rgba(196,169,255,0.4);
-
 }
 
-/* ===== INPUTS Y TEXTAREA ===== */
 .input-estilo {
   width: 100%;
   padding: 12px;
@@ -62,24 +53,23 @@
   color: #b2a1d6;
 }
 
-/* ===== BOTÓN ===== */
-.atrapasueños-btn {
+.submit-btn {
   padding: 12px;
   border-radius: 12px;
   background-color: #9c27b0;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Cormorant Garamond', serif;
   cursor: pointer;
   border: none;
   margin-top: 14px;
-  transition: background-color .3s;
 }
 
 .atrapasueños-btn:hover {
   background-color: #6a1b9a;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   .newpost-container {
     padding: 30px 18px;
