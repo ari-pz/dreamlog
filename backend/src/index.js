@@ -447,9 +447,6 @@ app.get("/api/moon/count/:post_id", async (req, res) => {
 
 // CHECK luna
 app.get("/api/moon/:user_id/:post_id", async (req, res) => {
-  console.log("user_id:", req.params.user_id);
-  console.log("post_id:", req.params.post_id);
-
   const { user_id, post_id } = req.params;
   const result = await hasMoon(user_id, post_id);
   res.json({ hasMoon: result });
