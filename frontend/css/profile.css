@@ -147,15 +147,14 @@ h3.titulo-posts {
 
 /* ===== MODAL ===== */
 .modal-card {
-  border: 4px solid #160221de;  
+  border: 4px solid #22022ebe;  
   border-radius: 0;
-  box-shadow: 6px 6px 0px rgba(45, 27, 78, 0.5);
   background: #1e132e;
 }
 
 .modal-card-head {
   font-family: 'Cormorant Garamond', serif; 
-  background: #1e132e;
+  background: #320642be;
   border-bottom: 3px solid rgba(45, 27, 78, 0.6);
   border-radius: 0;
   padding: 12px 20px;
@@ -178,7 +177,7 @@ h3.titulo-posts {
 }
 
 .modal-card-foot {
-  background: #1e132e;  
+  background: #320642be;  
   border-top: 3px solid rgba(74, 52, 114, 0.6);
   border-radius: 0;
   justify-content: center;
