@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/atrapasuenios.css">
   <link rel="stylesheet" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -18,7 +19,25 @@
 
   <main class="atrapasueños-principal">
     <section class="atrapasueños-secundario">
-      <h2>Tu Atrapasueños</h2>
+
+       <div class="titulo-con-info">
+          <h2>Tu Atrapasueños</h2>
+          <div class="info-tooltip-container">
+            
+              <span class="info-icon">
+                <i class="fa-solid fa-feather-pointed"></i>
+              </span>
+        
+              <div class="info-card">
+                  <p><strong>Desbloquea el brillo:</strong></p>
+                  <p>5 posts ➔ 3 plumas</p>
+                  <p>20 posts ➔ 6 plumas</p>
+                  <p>50 posts ➔ 9 plumas</p>
+                  <p>100 posts ➔ 12 plumas</p>
+              </div>
+          </div>
+      </div>
+      
       <div class="atrapasueños">
           <div class="anillo">
               <img src="img/atrapasueño.png" alt="Atrapasueños" class="atrapasueños-image">
@@ -44,14 +63,11 @@
       <br>
       <br>
       <br>
-      <div class="dream-stats">
-        <!-- stats dinámicos se cargarán aquí -->
-      </div>
-
+      <br>
+      <div class="dream-stats"></div>
 
       <div class="top-categories">
         <div id="category-boxes" class="category-boxes">
-          <!-- Estos 3 cuadros se rellenan con JS -->
           <div class="cat-box empty"></div>
           <div class="cat-box empty"></div>
           <div class="cat-box empty"></div>
@@ -59,7 +75,7 @@
       </div>
 
       <div class="dream-quote">
-        <p id="quote">“Cada hilo guarda un recuerdo invisible.”</p>
+        <p id="quote">“Cada hilo guarda un recuerdo invisible”</p>
       </div>
     </section>
   </main>

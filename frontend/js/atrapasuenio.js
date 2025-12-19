@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-  // Frases oníricas que cambian cada 10 segundos
   const frases = [
     "“Cada hilo guarda un recuerdo invisible.”",
     "“Tu mente descansa, pero tu alma sigue viajando.”",
@@ -17,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     quoteElement.textContent = frases[fraseIndex];
   }, 10000);
 
-  // Obtener usuario logueado
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
   let cantidadPosts = 0;
 
@@ -41,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Traer stats del usuario
   if (loggedUser) {
     const userId = loggedUser.user_id;
 
@@ -51,10 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // stats = { totalPosts, totalLunas }
         cantidadPosts = stats.totalPosts;
 
-        // Actualizar plumas
         actualizarPlumas();
 
-        // Actualizar dream-stats
         const statsDiv = document.querySelector(".dream-stats");
         statsDiv.innerHTML = `
           <p>✦ ${stats.totalPosts} sueños tejidos</p>

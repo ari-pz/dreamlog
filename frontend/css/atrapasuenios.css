@@ -231,3 +231,70 @@
   animation: brillos 4s ease-in-out infinite;
 }
 
+
+.titulo-con-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.info-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    color: #c4a9ff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    transform: translateY(-14px) rotate(-30deg);
+}
+
+.info-icon:hover {
+    color: #fff;      
+    text-shadow: 0 0 10px #c4a9ff; 
+    transform: translateY(-12px) scale(1.2);
+}
+
+.info-card {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%; 
+    right: 15%;
+    transform: translateX(-50%) translateY(10px);
+    width: 200px;
+    background: rgba(30, 20, 60, 0.95);
+    border: 1px solid rgba(196, 169, 255, 0.4);
+    padding: 1rem;
+    border-radius: 10px;
+    z-index: 10;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    text-align: left;
+    font-size: 0.85rem;
+    color: #e4d8ff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.info-card::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgba(196, 169, 255, 0.4) transparent;
+}
+
+.info-tooltip-container:hover .info-card {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
