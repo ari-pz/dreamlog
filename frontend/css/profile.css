@@ -1,11 +1,11 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-image: url('../img/fondo-perfil.jpeg');
-    animation: slowPan 120s linear infinite;
+    animation: movimiento 120s linear infinite;
     min-height: 100vh;
 }
 
-@keyframes slowPan {
+@keyframes movimiento {
   0% {
     background-position: 0% 0%;
   }
@@ -52,9 +52,6 @@ h3.titulo-posts {
   justify-content: center;
 }
 
-/* ============================
-   TARJETA DEL USUARIO
-   ============================ */
 
 .perfil {
   display: inline-flex;

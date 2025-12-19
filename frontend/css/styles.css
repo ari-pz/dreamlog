@@ -64,8 +64,6 @@ header h1 {
   transition: color 1s ease, transform 1s ease;
 }
 
-transition: {color 1s ease, transform 1s ease;
-}
 
 #search-input::placeholder {
   color: rgba(244,244,244,1);

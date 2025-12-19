@@ -11,7 +11,7 @@ body::before {
     width: 100%;
     min-height: 100vh;
     background-image: url(../img/fondo-perfil-editar.jpeg);
-    animation: slowPan 120s linear infinite;
+    animation: movimiento 120s linear infinite;
     z-index: -2;
 }
 
@@ -29,7 +29,7 @@ body::after {
     z-index: -1;
 }
 
-@keyframes slowPan {
+@keyframes movimiento {
   0% {
     background-position: 0% 0%;
   }
