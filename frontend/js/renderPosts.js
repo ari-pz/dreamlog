@@ -68,12 +68,19 @@ function renderPosts(posts) {
         style="display:none;">
         
         <div class="comments-list"></div>
-         <div class="add-comment">
-          <input type="text" class="add-comment-input" placeholder="Escribí un comentario..." />
-          <button class="add-comment-btn">Enviar</button>
+        <div class="add-comment" style="position: relative; display: flex; align-items: center;">
+            
+            <input type="text" class="add-comment-input" placeholder="Escribí un comentario..." style="flex-grow: 1;" />
+            
+            <input type="hidden" class="comment-image-url">
+
+            <i class="fa-solid fa-camera add-image-btn" 
+               title="Adjuntar imagen"
+               style="cursor: pointer; margin: 0 10px; color: #aaa; font-size: 1.2rem;"></i>
+
+            <button class="add-comment-btn">Enviar</button>
         </div>
       </div>
-
     `;
 
     container.appendChild(postDiv);

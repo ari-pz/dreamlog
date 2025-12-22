@@ -236,6 +236,25 @@ h3.titulo-posts {
   backdrop-filter: none !important;         
 }
 
+
+.modal-input-url {
+  width: 100%;
+  padding: 6px 10px;
+  margin-top: 8px;
+  border: 2px solid #dddddd;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  background: rgba(252, 229, 241, 0.95);  
+  transition: border-color 0.3s;
+}
+
+.modal-input-url:focus {
+  border-color: #a777e3; 
+  outline: none;
+}
+
+
 /* ============================
    MASCOTA
    ============================ */

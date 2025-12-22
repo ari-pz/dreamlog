@@ -81,164 +81,14 @@ async function iniciarConLunas(post_id, user_id) {
   icon.onclick = () => CambiarLuna(icon, post_id, user_id, counter);
 }
 
-
-// ==========================================
-//       COMENTARIOS 
-// ==========================================
-document.addEventListener("click", async function(evento) {
-
-    // Abrir/Cerrar lista de comentarios
-    if (evento.target.classList.contains("comment-icon") || evento.target.closest(".comment-icon")) {
-      const icono = evento.target.classList.contains("comment-icon") ? evento.target : evento.target.closest(".comment-icon");
-      const postId = icono.dataset.postId;
-      const wrapper = document.querySelector(`.comments-wrapper[data-post-id="${postId}"]`);
-      
-      if (!wrapper) return;
-  
-      if (wrapper.style.display === "block") {
-        wrapper.style.display = "none";
-        icono.classList.remove("fa-solid");
-        icono.classList.add("fa-regular");
-      } else {
-        wrapper.style.display = "block";
-        icono.classList.remove("fa-regular");
-        icono.classList.add("fa-solid");
-        
-      }
-      return;
-    }
-  
-
-    if (evento.target.classList.contains("add-comment-btn")) {
-      const btn = evento.target;
-      const wrapper = btn.closest(".comments-wrapper");
-      const postId = wrapper.dataset.postId;
-      const input = wrapper.querySelector(".add-comment-input");
-      const content = input.value.trim();
-      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-  
-      if (!content) return;
-  
-      try {
-        const res = await fetch("/api/comments", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: loggedUser.user_id, post_id: postId, content: content })
-        });
-        const newComment = await res.json();
-  
-        
-        const lista = wrapper.querySelector(".comments-list");
-        lista.insertAdjacentHTML("beforeend", `
-          <div class="comment" data-comment-id="${newComment.comment_id}">
-             <span class="comment-text"><strong>@${loggedUser.username}</strong> ${content}</span>
-             <div class="comment-menu"><span class="dots">...</span></div>
-          </div>
-        `);
-        input.value = "";
-        
-        // Actualizar contador
-        const contadorComm = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
-        if(contadorComm) contadorComm.textContent = parseInt(contadorComm.textContent || 0) + 1;
-  
-      } catch (e) { console.error(e); }
-    }
-    
-    // Abrir desplegable
-    if (evento.target.closest(".comment-menu")) {
-        const menu = evento.target.closest(".comment-menu");
-        const dropdown = menu.querySelector(".dropdown-comment");
-        
-       
-        document.querySelectorAll(".dropdown-comment").forEach(d => {
-            if(d !== dropdown) d.style.display = 'none';
-        });
-
-        if(dropdown) {
-            dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
-        }
-    }
-
-    // eliminar comentarios
-    const eliminar = evento.target.closest(".delete-comment"); 
-    if (eliminar) {
-      evento.preventDefault();
-      
-      const comentarioDiv = eliminar.closest(".comment");
-      const commentId = comentarioDiv.dataset.commentId;
-      const wrapper = comentarioDiv.closest(".comments-wrapper");
-      const postId = wrapper.dataset.postId;
-      const contador = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
-
-      if(modal) modal.classList.add('modal-pequeno')
-      mostrarModal(
-          "Eliminar Comentario", 
-          "¿Estás seguro? No hay vuelta atrás.", 
-          false 
-      );
-
-      if(btnAceptar) {
-          btnAceptar.onclick = async function() {
-              cerrarModal();
-            
-              comentarioDiv.remove();
-              
-              if (contador) {
-                  let numeroActual = parseInt(contador.textContent || 0);
-                  contador.textContent = Math.max(0, numeroActual - 1);
-              }
-
-              try {
-                  await fetch(`/api/comments/${commentId}`, {method:"DELETE"});
-              } catch (err) {
-                  console.error(err);
-              }
-          };
-      }
-    }
-      
-    
-
-
-    //editar 
-    const editar = evento.target.closest(".edit-comment");
-    if (editar) {
-      evento.preventDefault();
-      const comentarioDiv = editar.closest(".comment");
-      const commentId = comentarioDiv.dataset.commentId;
-      
-      const spanTexto = comentarioDiv.querySelector(".comment-text");
-      const textoCompleto = spanTexto.innerText; 
-      const textoLimpio = textoCompleto.replace(/^@\S+\s/, ""); 
-
-      localStorage.setItem("edit_comment_id", commentId);
-      localStorage.setItem("edit_comment_content", textoLimpio);
-
-      window.location.href = "/edit-comment.html";
-      return;
-  }
-});
-
-// agregar comentario con enter
-document.addEventListener("keydown", function(evento) {
-    if (evento.key === "Enter" && evento.target.classList.contains("add-comment-input")) {
-        evento.preventDefault(); 
-        const wrapper = evento.target.closest(".comments-wrapper");
-        const btn = wrapper.querySelector(".add-comment-btn");
-        if (btn) btn.click();
-    }
-});
-
-
-// ==========================================
-//  ELIMINAR CUENTA 
-// ==========================================
+// ======
+// MODAL 
+//=======
 const modal = document.getElementById('modal-resultado');
 const modalTitulo = document.getElementById('modal-titulo');
 const modalMensaje = document.getElementById('modal-mensaje');
 const btnAceptar = document.getElementById('btn-aceptar');
 const btnCancelar = document.getElementById('btn-cancelar');
-const botonEliminar = document.getElementById('boton-eliminar');
 
 function mostrarModal(titulo, mensaje, soloAceptar = false) {
   modalTitulo.textContent = titulo;
@@ -263,6 +113,336 @@ function cerrarModal() {
 
 if(btnCancelar) btnCancelar.addEventListener('click', cerrarModal);
 
+// ==========================================
+//       COMENTARIOS 
+// ==========================================
+//Opciones 3 puntitos
+document.addEventListener("click", (e) => {
+  const menu = e.target.closest(".comment-menu"); 
+  
+  document.querySelectorAll(".dropdown-comment").forEach(d => {
+    if (!menu || !menu.contains(d)) {
+        d.style.display = "none";
+    }
+  });
+
+  if (menu) {
+    const dropdown = menu.querySelector(".dropdown-comment");    
+    if (!dropdown) return; 
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+});
+
+document.addEventListener("click", async function(evento) {
+  // Abrir/Cerrar lista de comentarios
+  if (evento.target.classList.contains("comment-icon") || evento.target.closest(".comment-icon")) {
+    const iconoComentario = evento.target.classList.contains("comment-icon") ? evento.target : evento.target.closest(".comment-icon");
+    const postId = iconoComentario.dataset.postId;
+    const contenedorComentarios = document.querySelector(".comments-wrapper[data-post-id='" + postId + "']");
+
+    if (!contenedorComentarios) return;
+
+
+    if (contenedorComentarios.style.display === "block") {
+      contenedorComentarios.style.display = "none";
+      iconoComentario.classList.remove("fa-solid");
+      iconoComentario.classList.add("fa-regular");
+      return;
+    }
+
+    // Abrir
+    contenedorComentarios.style.display = "block";
+    iconoComentario.classList.remove("fa-regular");
+    iconoComentario.classList.add("fa-solid");
+
+    try {
+      const respuesta = await fetch("/api/comments/" + postId);
+      if (!respuesta.ok) throw new Error("Error al obtener comentarios");
+
+      const comentarios = await respuesta.json();
+      const listaComentarios = contenedorComentarios.querySelector(".comments-list");
+      
+      const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+      const currentUserId = loggedUser ? loggedUser.user_id : null;
+
+      if (Array.isArray(comentarios) && comentarios.length > 0) {
+        // muestro cada comentario
+        listaComentarios.innerHTML = comentarios.map(c => {
+            const esMio = (c.user_id === currentUserId);
+            
+            return `
+            <div class="comment" data-comment-id="${c.comment_id}">
+                
+                <div class="comment-body" style="flex: 1; display: flex; flex-direction: column;">
+                    
+                    <span class="comment-text"><strong>@${c.username}</strong> ${c.content}</span>
+                    
+                    ${ 
+                       (c.url && c.url !== "null" && c.url !== "") 
+                       ? `<div class="comment-image" style="margin-top: 8px;">
+                            <img src="${c.url}" style="max-width: 200px; border-radius: 8px; display: block; object-fit: cover;">
+                          </div>` 
+                       : "" 
+                     }
+                </div>
+                
+                ${esMio ? `
+                <div class="comment-menu" style="margin-left: 10px;">
+                    <span class="dots" style="cursor:pointer; font-weight:bold;">...</span>
+                    <div class="dropdown-comment" style="display:none; position:absolute; background:#fff; border:1px solid #ccc;">
+                        <a href="#" class="edit-comment">Editar</a>
+                        <a href="#" class="delete-comment">Eliminar</a>
+                    </div>
+                </div>
+                ` : ''}
+            </div>`;
+        }).join("");
+      } else {
+        listaComentarios.innerHTML = "<div class='no-comments'>No hay comentarios aún</div>";
+      }
+      
+      // Actualizar contador
+      const contador = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
+      if(contador) {
+        // Sumamos 1 visualmente al instante
+        contador.textContent = parseInt(contador.textContent || 0) + 1;
+      }
+
+      try {
+          const res = await fetch("/api/comments", { /* ... */ });
+        
+      } catch (e) { 
+          console.error(e); 
+          if(contador) contador.textContent = parseInt(contador.textContent) - 1;
+          alert("Error al enviar");
+      }
+
+      const contadorComm = document.querySelector(".comment-count[data-post-id='" + postId + "']");
+      if (contadorComm) contadorComm.textContent = comentarios.length;
+      } catch (error) {
+      console.error("Error cargando comentarios:", error);
+      }
+    return;
+  }
+
+  // Botón Cámara 
+  if (evento.target.classList.contains("add-image-btn")) {
+      const iconoCamara = evento.target;
+      const wrapper = iconoCamara.closest(".add-comment");
+      const inputOculto = wrapper.querySelector(".comment-image-url");
+
+      modalTitulo.textContent = "Adjuntar Imagen";
+
+      modalMensaje.innerHTML = `
+        <p>Pegá la URL de tu imagen aquí:</p>
+        <input type="text" id="modal-input-url" 
+               class="modal-input-url" 
+               placeholder="https://...">
+      `;
+
+      if(btnCancelar) btnCancelar.style.display = 'inline-block';
+
+      modal.classList.add('is-active');
+      setTimeout(() => {
+        const inputModal = document.getElementById("modal-input-url");
+        if(inputModal) {
+            inputModal.focus();
+            if(inputOculto.value) inputModal.value = inputOculto.value;
+        }
+      }, 100);
+
+      btnAceptar.onclick = function() {
+          const inputModal = document.getElementById("modal-input-url");
+          const url = inputModal ? inputModal.value.trim() : "";
+
+          if (url) {
+              inputOculto.value = url;
+              iconoCamara.style.color = "#a777e3"; 
+              iconoCamara.classList.add("has-image");
+          } else {
+              inputOculto.value = "";
+              iconoCamara.style.color = "#aaa"; 
+              iconoCamara.classList.remove("has-image");
+          }
+
+          modal.classList.remove('is-active');
+          btnAceptar.onclick = cerrarModal; 
+      };
+      
+
+      return;
+}
+
+// --------------------------
+  // Enviar comentario
+  // --------------------------
+  if (evento.target.classList.contains("add-comment-btn") || evento.target.closest(".add-comment-btn")) {
+    const botonEnviar = evento.target.classList.contains("add-comment-btn") ? evento.target : evento.target.closest(".add-comment-btn");
+    const contenedorComentario = botonEnviar.closest(".comments-wrapper");
+    const postId = contenedorComentario.dataset.postId;
+    const inputComentario = contenedorComentario.querySelector(".add-comment-input");
+    const inputImagen = contenedorComentario.querySelector(".comment-image-url");
+    const iconoCamara = contenedorComentario.querySelector(".add-image-btn");
+    const contenido = (inputComentario.value || "").trim();
+    const imagenUrl = (inputImagen.value || "").trim() || null; 
+  
+
+
+    if (!contenido) {
+      mostrarModal(
+        "Comentario Vacio", 
+        "Escribí un comentario antes de enviar", 
+        false
+      );
+      return;
+    }
+
+    const usuarioLogueado = JSON.parse(localStorage.getItem("loggedUser"));
+    if (!usuarioLogueado) {
+      alert("Tenés que estar logueado para comentar.");
+      return;
+    }
+
+    try {
+      const respuesta = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: usuarioLogueado.user_id,
+          post_id: parseInt(postId),
+          content: contenido,
+          url: imagenUrl
+        })
+      });
+
+      if (!respuesta.ok) throw new Error("Error enviando comentario");
+      
+      const nuevoComentario = await respuesta.json(); 
+
+      const htmlNuevoComentario = `
+        <div class='comment' data-comment-id='${nuevoComentario.comment_id}'> 
+           <div class="comment-body" style="flex: 1; display: flex; flex-direction: column;">
+                <span class="comment-text"><strong>@${usuarioLogueado.username}</strong> ${contenido}</span>
+                ${ 
+                   (imagenUrl) 
+                   ? `<div class="comment-image" style="margin-top: 8px;">
+                        <img src="${imagenUrl}" style="max-width: 200px; border-radius: 8px; display: block; object-fit: cover;">
+                      </div>` 
+                   : ""
+                 }
+
+           </div>
+
+           <div class="comment-menu">
+               <span class="dots" style="cursor:pointer; font-weight:bold;">...</span>
+               <div class="dropdown-comment" style="display:none; position:absolute; background:#fff; border:1px solid #ccc;">
+                   <a href="#" class="edit-comment">Editar</a>
+                   <a href="#" class="delete-comment">Eliminar</a>
+               </div>
+           </div>
+        </div>
+      `;
+      
+      const listaComentarios = contenedorComentario.querySelector(".comments-list");
+      
+      // Si dice "no hay comentarios", lo borramos
+      const noCommentsMsg = listaComentarios.querySelector(".no-comments");
+      if(noCommentsMsg) noCommentsMsg.remove();
+
+      listaComentarios.insertAdjacentHTML("beforeend", htmlNuevoComentario);
+
+      inputComentario.value = "";
+      inputImagen.value = "";
+      iconoCamara.style.color = "#aaa"; 
+
+      const spanContador = document.querySelector(".comment-count[data-post-id='" + postId + "']");
+      if (spanContador) {
+        let count = parseInt(spanContador.textContent || "0");
+        spanContador.textContent = count + 1;
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error al enviar comentario.");
+    }
+    return;
+  }
+});
+
+// Btn Eliminar / Editar
+document.addEventListener("click", async (evento) => {
+  const editar = evento.target.closest(".edit-comment");
+  const eliminar = evento.target.closest(".delete-comment");
+
+  if (editar) {
+    evento.preventDefault();
+    const comentarioDiv = editar.closest(".comment");
+    const commentId = comentarioDiv.dataset.commentId;
+    
+    const spanTexto = comentarioDiv.querySelector(".comment-text");
+    const textoCompleto = spanTexto.innerText; 
+    const textoLimpio = textoCompleto.replace(/^@\S+\s/, ""); 
+
+    localStorage.setItem("edit_comment_id", commentId);
+    localStorage.setItem("edit_comment_content", textoLimpio);
+
+    window.location.href = "/edit-comment.html";
+    return;
+  }
+  
+
+  if (eliminar) {
+    evento.preventDefault();
+    
+    const comentarioDiv = eliminar.closest(".comment");
+    const commentId = comentarioDiv.dataset.commentId;
+    const wrapper = comentarioDiv.closest(".comments-wrapper");
+    const postId = wrapper.dataset.postId;
+    const contador = document.querySelector(`.comment-count[data-post-id="${postId}"]`);
+    
+    mostrarModal(
+        "Eliminar Comentario", 
+        "¿Estás Seguro? No hay vuelta atrás...", 
+        false
+    );
+
+    if(btnAceptar) {
+        btnAceptar.onclick = async function() {
+            cerrarModal();
+
+            comentarioDiv.remove();
+
+            if (contador) {
+                let numeroActual = parseInt(contador.textContent || 0);
+                contador.textContent = Math.max(0, numeroActual - 1);
+            }
+
+            try {
+                await fetch(`/api/comments/${commentId}`, {method:"DELETE"});
+            } catch (err) {
+                console.error(err);
+            }
+        };
+    }
+  }
+});
+
+
+// agregar comentario con enter
+document.addEventListener("keydown", function(evento) {
+    if (evento.key === "Enter" && evento.target.classList.contains("add-comment-input")) {
+        evento.preventDefault(); 
+        const wrapper = evento.target.closest(".comments-wrapper");
+        const btn = wrapper.querySelector(".add-comment-btn");
+        if (btn) btn.click();
+    }
+});
+
+
+// ==========================================
+//  ELIMINAR CUENTA 
+// ==========================================
+const botonEliminar = document.getElementById('boton-eliminar');
 if(botonEliminar) {
     botonEliminar.addEventListener('click', function() {
         mostrarModal(

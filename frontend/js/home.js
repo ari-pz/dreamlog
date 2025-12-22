@@ -1,4 +1,3 @@
-// 1. Obtener usuario logueado
 const loggedUser = JSON.parse(localStorage.getItem("loggedUser")) || null;
 const currentUserId = loggedUser?.user_id || null;
 
@@ -22,7 +21,7 @@ let fraseIndex = 0;
 let typingActive = true;
 let userStartedTyping = false; // nuevo flag
 
-// Si el usuario empieza a escribir, se pausa definitivamente el efecto
+// Si el usuario escribe, se pausa 
 input.addEventListener("input", () => {
     if (input.value.trim() !== "") {
     userStartedTyping = true;
@@ -172,12 +171,9 @@ async function iniciarConLunas(post_id, user_id) {
   // Traer si el user ya dio luna
   const resHas = await fetch(`/api/moon/${user_id}/${post_id}`);
   const dataHas = await resHas.json();
-
-  // Traer contador
   const resCount = await fetch(`/api/moon/count/${post_id}`);
   const dataCount = await resCount.json();
 
-  // Setear contador
   counter.textContent = dataCount.count;
 
   if (dataHas.hasMoon) {
@@ -188,7 +184,6 @@ async function iniciarConLunas(post_id, user_id) {
     icon.classList.add("fa-regular");
   }
 
-  // Agregar el evento click para cambiar las lunas
   icon.onclick = () => CambiarLuna(icon, post_id, user_id, counter);
 }
 
@@ -306,15 +301,6 @@ document.addEventListener("keydown", function(evento) {
     }
 });
 
-// Escapar HTML para seguridad
-function escaparHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
-
 document.addEventListener("click", async function(evento) {
   // Abrir/Cerrar lista de comentarios
   if (evento.target.classList.contains("comment-icon") || evento.target.closest(".comment-icon")) {
@@ -357,7 +343,7 @@ document.addEventListener("click", async function(evento) {
                 
                 <div class="comment-body" style="flex: 1; display: flex; flex-direction: column;">
                     
-                    <span class="comment-text"><strong>@${escaparHtml(c.username)}</strong> ${escaparHtml(c.content)}</span>
+                    <span class="comment-text"><strong>@${c.username}</strong> ${c.content}</span>
                     
                     ${ 
                        (c.url && c.url !== "null" && c.url !== "") 
@@ -407,6 +393,54 @@ document.addEventListener("click", async function(evento) {
     return;
   }
 
+  // Botón Cámara 
+  if (evento.target.classList.contains("add-image-btn")) {
+      const iconoCamara = evento.target;
+      const wrapper = iconoCamara.closest(".add-comment");
+      const inputOculto = wrapper.querySelector(".comment-image-url");
+
+      modalTitulo.textContent = "Adjuntar Imagen";
+
+      modalMensaje.innerHTML = `
+        <p>Pegá la URL de tu imagen aquí:</p>
+        <input type="text" id="modal-input-url" 
+               class="modal-input-url" 
+               placeholder="https://...">
+      `;
+
+      if(btnCancelar) btnCancelar.style.display = 'inline-block';
+
+      modal.classList.add('is-active');
+      setTimeout(() => {
+        const inputModal = document.getElementById("modal-input-url");
+        if(inputModal) {
+            inputModal.focus();
+            if(inputOculto.value) inputModal.value = inputOculto.value;
+        }
+      }, 100);
+
+      btnAceptar.onclick = function() {
+          const inputModal = document.getElementById("modal-input-url");
+          const url = inputModal ? inputModal.value.trim() : "";
+
+          if (url) {
+              inputOculto.value = url;
+              iconoCamara.style.color = "#a777e3"; 
+              iconoCamara.classList.add("has-image");
+          } else {
+              inputOculto.value = "";
+              iconoCamara.style.color = "#aaa"; 
+              iconoCamara.classList.remove("has-image");
+          }
+
+          modal.classList.remove('is-active');
+          btnAceptar.onclick = cerrarModal; 
+      };
+      
+
+      return;
+  }
+
   // --------------------------
   // Enviar comentario
   // --------------------------
@@ -414,12 +448,18 @@ document.addEventListener("click", async function(evento) {
     const botonEnviar = evento.target.classList.contains("add-comment-btn") ? evento.target : evento.target.closest(".add-comment-btn");
     const contenedorComentario = botonEnviar.closest(".comments-wrapper");
     const postId = contenedorComentario.dataset.postId;
-
     const inputComentario = contenedorComentario.querySelector(".add-comment-input");
+    const inputImagen = contenedorComentario.querySelector(".comment-image-url");
+    const iconoCamara = contenedorComentario.querySelector(".add-image-btn");
     const contenido = (inputComentario.value || "").trim();
+    const imagenUrl = (inputImagen.value || "").trim() || null; 
 
     if (!contenido) {
-      alert("Escribí un comentario antes de enviar.");
+      mostrarModal(
+        "Comentario Vacio", 
+        "Escribí un comentario antes de enviar", 
+        false
+      );
       return;
     }
 
@@ -437,7 +477,7 @@ document.addEventListener("click", async function(evento) {
           user_id: usuarioLogueado.user_id,
           post_id: parseInt(postId),
           content: contenido,
-          url: null
+          url: imagenUrl
         })
       });
 
@@ -447,7 +487,18 @@ document.addEventListener("click", async function(evento) {
 
       const htmlNuevoComentario = `
         <div class='comment' data-comment-id='${nuevoComentario.comment_id}'> 
-           <span class="comment-text"><strong>@${escaparHtml(usuarioLogueado.username)}</strong> ${escaparHtml(contenido)}</span>
+           <div class="comment-body" style="flex: 1; display: flex; flex-direction: column;">
+                <span class="comment-text"><strong>@${usuarioLogueado.username}</strong> ${contenido}</span>
+                ${ 
+                   (imagenUrl) 
+                   ? `<div class="comment-image" style="margin-top: 8px;">
+                        <img src="${imagenUrl}" style="max-width: 200px; border-radius: 8px; display: block; object-fit: cover;">
+                      </div>` 
+                   : ""
+                 }
+
+           </div>
+
            <div class="comment-menu">
                <span class="dots" style="cursor:pointer; font-weight:bold;">...</span>
                <div class="dropdown-comment" style="display:none; position:absolute; background:#fff; border:1px solid #ccc;">
@@ -467,8 +518,9 @@ document.addEventListener("click", async function(evento) {
       listaComentarios.insertAdjacentHTML("beforeend", htmlNuevoComentario);
 
       inputComentario.value = "";
+      inputImagen.value = "";
+      iconoCamara.style.color = "#aaa"; 
 
-      // Actualizar contador visualmente
       const spanContador = document.querySelector(".comment-count[data-post-id='" + postId + "']");
       if (spanContador) {
         let count = parseInt(spanContador.textContent || "0");
