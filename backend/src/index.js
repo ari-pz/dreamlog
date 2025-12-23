@@ -79,6 +79,11 @@ app.post("/api/users", async (req, res) => {
     });
   } catch (error) {
     console.error("Error creando usuario:", error);
+    //23505 = nombre ya en uso (duplicate key value)
+    if (error.code === '23505') {
+      return res.status(400).json({ error: "El nombre de usuario ya está en uso. Elige otro" });
+    }
+
     res.status(500).json({ error: "Error al crear usuario" });
   }
 });

@@ -50,7 +50,37 @@
     </form>
   </div>
 
+  <div class="modal" id="modal-resultado">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title" id="modal-titulo"></p>
+      </header>
+      <section class="modal-card-body" id="modal-mensaje"></section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" id="btn-aceptar">Aceptar</button>
+      </footer>
+    </div>
+  </div>
+
   <script>
+  const modal = document.getElementById('modal-resultado');
+  const modalTitulo = document.getElementById('modal-titulo');
+  const modalMensaje = document.getElementById('modal-mensaje');
+  const btnAceptar = document.getElementById('btn-aceptar');
+
+  function mostrarModal(titulo, mensaje) {
+    modalTitulo.textContent = titulo;
+    modalMensaje.textContent = mensaje;
+    modal.classList.add('is-active');
+  }
+
+  function cerrarModal() {
+    modal.classList.remove('is-active');
+  }
+
+  btnAceptar.addEventListener('click', cerrarModal);
+
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("registerForm");
     form.addEventListener("submit", async (e) => {
@@ -60,15 +90,17 @@
       const password = document.getElementById("password").value;
       const bio = document.getElementById("bio").value || null;
       const pfp = document.getElementById("pfp").value || null;
-
-      // Obtener mascota elegida
       const pet_id = document.querySelector('input[name="pet_id"]:checked')?.value || null;
-      // Validación obligatoria
-      if (!pet_id) {
-        alert("Debes elegir un guía nocturno antes de crear tu cuenta.");
+
+      if (!username || !password) {
+        mostrarModal("Faltan datos", "Por favor completa usuario y contraseña.");
         return;
       }
 
+      if (!pet_id) {
+        mostrarModal("Falta un compañero", "Debes elegir un guía nocturno antes de crear tu cuenta")
+        return;
+      }
 
       try {
         const res = await fetch("/api/users", {
@@ -87,16 +119,15 @@
           }));
           window.location.href = "/inicio";
         } else {
-          alert(data.error || "Error al registrarse");
+          mostrarModal("Hubo un problema", data.error || "Error al registrarse");
+
         }
       } catch (err) {
         console.error(err);
-        alert("Error al registrarse");
+        mostrarModal("Error de conexión", "No se pudo conectar con el servidor.");
       }
     });
   });
   </script>
-
-
 </body>
 </html>
