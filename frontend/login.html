@@ -29,10 +29,38 @@
     </form>
   </div>
 
-
+  <div class="modal" id="modal-resultado">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title" id="modal-titulo"></p>
+      </header>
+      <section class="modal-card-body" id="modal-mensaje"></section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" id="btn-aceptar">Aceptar</button>
+      </footer>
+    </div>
+  </div>
 
 
   <script>
+  const modal = document.getElementById('modal-resultado');
+  const modalTitulo = document.getElementById('modal-titulo');
+  const modalMensaje = document.getElementById('modal-mensaje');
+  const btnAceptar = document.getElementById('btn-aceptar');
+
+  function mostrarModal(titulo, mensaje) {
+    modalTitulo.textContent = titulo;
+    modalMensaje.textContent = mensaje;
+    modal.classList.add('is-active');
+  }
+
+  function cerrarModal() {
+    modal.classList.remove('is-active');
+  }
+
+  btnAceptar.addEventListener('click', cerrarModal);
+
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -40,7 +68,7 @@
       const password = document.getElementById("password").value;
 
       if (!username || !password) {
-        alert("Por favor completa todos los campos");
+        mostrarModal("Faltan datos", "Por favor completa todos los campos");
         return;
       }
 
@@ -56,7 +84,6 @@
       if (res.status === 200) {
         const data = await res.json();
     
-        // Guardar usuario en LocalStorage
         localStorage.setItem("loggedUser", JSON.stringify({
           user_id: data.user.user_id,
           username: data.user.username
@@ -65,7 +92,7 @@
         window.location.href = "/inicio";
       
       } else {
-        alert("Usuario o contraseña incorrectos");
+        mostrarModal("Error de acceso", "Usuario o contraseña incorrectos");
       }
     });
   </script>
