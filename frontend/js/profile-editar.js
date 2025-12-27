@@ -46,7 +46,7 @@ async function verificarNombre(nombre) {
       const user_id = getUserId();
       
       // LLAMAR AL BACKEND para verificar en la base de datos
-      const response = await fetch(`http://localhost:3000/api/username/${nombre}/${user_id}`);
+      const response = await fetch(`/api/username/${nombre}/${user_id}`);
       const resultado = await response.json();
 
       if  (resultado.disponible) { 
@@ -185,7 +185,7 @@ editarBtn.addEventListener('click', async function(event) {
     console.log('Enviendo datos:', {user_id, username, password, bio, pfp});
 
     try {
-      const response = await fetch(`http://localhost:3000/api/users/${user_id}`, {
+      const response = await fetch(`/api/users/${user_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
