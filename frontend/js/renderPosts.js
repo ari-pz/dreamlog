@@ -90,28 +90,37 @@ function renderPosts(posts) {
     if (btnEliminar) {
         btnEliminar.addEventListener("click", async (e) => {
             e.preventDefault();
+
+            mostrarModal(
+                "Eliminar Sueño", 
+                "¿Estás seguro de eliminar tu sueño? Es definitivo", 
+                false 
+            );
             
-            if (confirm("¿Estás seguro que quieres eliminar este post?")) {
-                try {
-                    const res = await fetch(`/api/posts/${post.post_id}`, {
-                        method: "DELETE"
-                    });
-                    const data = await res.json();
+            const btnAceptar = document.getElementById("btn-aceptar");
+            btnAceptar.onclick = async function() {
+                cerrarModal();
 
-                    if (data.success) {
-                        alert("Post eliminado correctamente");
-                        postDiv.remove(); 
-                    } else {
-                        alert(data.message || "No se pudo eliminar el post");
-                    }
-                } catch (err) {
-                    console.error("Error eliminando post:", err);
-                    alert("Hubo un error al eliminar el post");
+            try {
+              const res = await fetch(`/api/posts/${post.post_id}`, {
+                method: "DELETE"
+              });
+                const data = await res.json();
+
+                if (data.success) {
+                    postDiv.remove(); 
+                    //mostrarModal("¡Listo!", "Post eliminado correctamente", true);                    
+                    btnAceptar.onclick = cerrarModal;
+                } else {
+                    mostrarModal("Error", data.message || "No se pudo eliminar el post", true);
                 }
+            } catch (err) {
+                console.error("Error eliminando post:", err);
+                mostrarModal("Error", "Hubo un error de conexión al eliminar", true);
             }
+            };
         });
-    }
-
+      }
 
     //cargar comentarios
     try {

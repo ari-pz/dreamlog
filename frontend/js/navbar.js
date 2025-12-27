@@ -3,25 +3,43 @@ fetch("navbar.html")
   .then(html => {
     document.getElementById("navbar").innerHTML = html;
 
-    const userData = localStorage.getItem("loggedUser");
-    if (!userData) window.location.href = "/";
-
+    const modal = document.getElementById('modal-resultado');
+    const modalTitulo = document.getElementById('modal-titulo');
+    const modalMensaje = document.getElementById('modal-mensaje');
+    const btnAceptar = document.getElementById('btn-aceptar');
+    const btnCancelar = document.getElementById('btn-cancelar');
     const logoutBtn = document.getElementById("logout-link");
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", async () => {
-        const confirmLogout = confirm("¿Estás seguro de que quieres cerrar sesión?");
-        if (!confirmLogout) return;
+      logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
 
-        const user = JSON.parse(localStorage.getItem("loggedUser"));
+        modalTitulo.textContent = "Cerrar Sesión";
+        modalMensaje.textContent = "¿Estás segura de que querés salir?";
+        
+        btnAceptar.style.display = 'inline-block';
+        btnCancelar.style.display = 'inline-block';
 
-        await fetch("/api/logout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: user.username })
-        });
+        modal.classList.add('is-active');
 
-        localStorage.removeItem("loggedUser");
-        window.location.href = "/";
+        btnCancelar.onclick = function() {
+            modal.classList.remove('is-active');
+        };
+
+        btnAceptar.onclick = async function() {
+            modal.classList.remove('is-active');
+            const user = JSON.parse(localStorage.getItem("loggedUser"));
+            
+            if (user) {
+                await fetch("/api/logout", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ username: user.username })
+                });
+            }
+
+            localStorage.removeItem("loggedUser");
+            window.location.href = "/";
+        };
       });
     }
   });

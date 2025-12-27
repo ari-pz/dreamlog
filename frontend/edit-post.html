@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dreamlog - Editar Sueño</title>
-  <link rel="stylesheet" href="css/newpost.css">
-  <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/png" href="/img/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="css/newpost.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
@@ -33,29 +34,38 @@
     <button id="btn-post" type="submit" class="atrapasueños-btn">Guardar Cambios</button>
   </div>
 
+  <div class="modal" id="modal-resultado">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title" id="modal-titulo"></p>
+      </header>
+      <section class="modal-card-body" id="modal-mensaje"></section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" id="btn-aceptar">Aceptar</button>
+        <button class="button is-success" id="btn-cancelar">Cancelar</button>
+      </footer>
+    </div>
+  </div>
+
   <script>
-    // 1. Obtener post_id de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('post_id');
 
     if (!postId) {
       alert('Error: No se encontró el ID del post en la URL.');
       console.error('No se pudo obtener el postId de la URL.');
-      // Si no hay ID, no tiene sentido continuar
-      // Podrías redirigir o simplemente detener la ejecución de loadPost
-      // Pero si quieres que el botón no funcione:
+
       btnPost.disabled = true; // Deshabilita el botón si no hay ID
       throw new Error('Post ID es requerido.');
     }
 
 
-    // 2. Seleccionar los inputs
     const contentInput = document.getElementById('content');
     const imageInput = document.getElementById('image');
     const categoryInput = document.getElementById('category');
     const btnPost = document.getElementById('btn-post');
 
-    // 3. Función para traer el post desde el backend
     async function loadPost() {
       try {
         const res = await fetch(`/api/posts/${postId}`);
@@ -65,7 +75,6 @@
         }
         const post = await res.json();
 
-        // 4. Pre-cargar valores en el form
         contentInput.value = post.content || '';
         imageInput.value = post.image || '';
         categoryInput.value = post.category_name || '';
@@ -75,10 +84,8 @@
       }
     }
 
-    // 5. Llamar a la función al cargar la página
     loadPost();
 
-    // 6. Función para enviar cambios (solo content e image)
     btnPost.addEventListener('click', async () => {
       const updatedPost = {
         content: contentInput.value,
