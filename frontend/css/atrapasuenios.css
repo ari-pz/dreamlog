@@ -261,6 +261,9 @@
     transform: translateY(-12px) scale(1.2);
 }
 
+.titulo{
+    color:aliceblue !important;
+}
 .info-card {
     visibility: hidden;
     opacity: 0;
