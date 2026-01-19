@@ -12,6 +12,14 @@ dbClient.on('connect', () => {
   console.log('Conectado a PostgreSQL (users.js)');
 });
 
+// ===================================================
+// VALIDACIÓN DE CONTRASEÑA
+// ===================================================
+function isValidPassword(password) {
+  const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
+  return regex.test(password);
+}
+
 
 // ===================================================
 // FUNCIONES PARA USERS
@@ -43,6 +51,13 @@ async function getUserByUsername(username) {
 
 // POST USER
 async function createUser({ username, password, bio, pfp, pet_id }) {
+
+  if (!isValidPassword(password)) {
+    throw new Error(
+      'La contraseña debe tener: mínimo 8 caracteres, una mayúscula, un número, un caracter especial (!@#$...)'
+    );
+  }
+  
   const result = await dbClient.query( 
     `INSERT INTO users (username, password, bio, pfp, pet_id)
      VALUES ($1, $2, $3, $4, $5)
@@ -82,8 +97,15 @@ async function updateUser(user_id, username, password, bio, pfp) {
             valores.push(username);
             contador = contador + 1;
         }
-
+      
         if (password) {
+
+            if (!isValidPassword(password)) {
+                throw new Error(
+                  'La contraseña debe tener: mínimo 8 caracteres, una mayúscula, un número, un caracter especial (!@#$...)'
+                );
+            }
+
             campos.push(`password = $${contador}`);
             valores.push(password);
             contador = contador + 1;
