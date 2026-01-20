@@ -19,7 +19,10 @@
   <div class="form-container">
     <form id="registerForm">
       <div class="form-input">
-        <input id="username" placeholder="Usuario">
+        <div class="username-row">
+          <input id="username" placeholder="Usuario">
+          <p id="username-help" class="username-help"></p>
+        </div>
         <input type="password" id="password" placeholder="Contraseña">
         <p id="password-help" class="password-help"></p>
 	      <input id="bio" placeholder="Biografía">
@@ -87,6 +90,25 @@
         passwordHelp.textContent = "";
       }
     });
+    
+    // ===== Validación de nombre de usuario (registro) =====
+    const usernameInput = document.getElementById("username");
+    const usernameHelp = document.getElementById("username-help");
+
+    usernameInput.addEventListener("input", () => {
+      if (usernameInput.value.length === 0) {
+        usernameHelp.textContent = "";
+        return;
+      }
+
+      if (usernameInput.value.length < 4) {
+        usernameHelp.textContent =
+          "El nombre de usuario debe tener al menos 4 caracteres";
+      } else {
+        usernameHelp.textContent = "";
+      }
+    });
+
 
     const modalTitulo = document.getElementById('modal-titulo');
     const modalMensaje = document.getElementById('modal-mensaje');
