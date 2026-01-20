@@ -21,6 +21,7 @@
       <div class="form-input">
         <input id="username" placeholder="Usuario">
         <input type="password" id="password" placeholder="Contraseña">
+        <p id="password-help" class="password-help"></p>
 	      <input id="bio" placeholder="Biografía">
         <input id="pfp" placeholder="URL de Foto de Perfil">
       </div>
@@ -64,70 +65,92 @@
   </div>
 
   <script>
-  const modal = document.getElementById('modal-resultado');
-  const modalTitulo = document.getElementById('modal-titulo');
-  const modalMensaje = document.getElementById('modal-mensaje');
-  const btnAceptar = document.getElementById('btn-aceptar');
+    const modal = document.getElementById('modal-resultado');
+    
+    // ===== Validación de contraseña (registro) =====
+    const passwordInput = document.getElementById("password");
+    const passwordHelp = document.getElementById("password-help");
 
-  function mostrarModal(titulo, mensaje) {
-    modalTitulo.textContent = titulo;
-    modalMensaje.textContent = mensaje;
-    modal.classList.add('is-active');
-  }
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
 
-  function cerrarModal() {
-    modal.classList.remove('is-active');
-  }
-
-  btnAceptar.addEventListener('click', cerrarModal);
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("registerForm");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const bio = document.getElementById("bio").value || null;
-      const pfp = document.getElementById("pfp").value || null;
-      const pet_id = document.querySelector('input[name="pet_id"]:checked')?.value || null;
-
-      if (!username || !password) {
-        mostrarModal("Faltan datos", "Por favor completa usuario y contraseña.");
+    passwordInput.addEventListener("input", () => {
+      if (passwordInput.value.length === 0) {
+        passwordHelp.textContent = "";
         return;
       }
 
-      if (!pet_id) {
-        mostrarModal("Falta un compañero", "Debes elegir un guía nocturno antes de crear tu cuenta")
-        return;
-      }
-
-      try {
-        const res = await fetch("/api/users", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password, bio, pfp, pet_id })
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          localStorage.setItem("loggedUser", JSON.stringify({
-            user_id: data.user.user_id,
-            username: data.user.username,
-            pfp: data.user.pfp
-          }));
-          window.location.href = "/inicio";
-        } else {
-          mostrarModal("Hubo un problema", data.error || "Error al registrarse");
-
-        }
-      } catch (err) {
-        console.error(err);
-        mostrarModal("Error de conexión", "No se pudo conectar con el servidor.");
+      if (!passwordRegex.test(passwordInput.value)) {
+        passwordHelp.textContent =
+          "La contraseña debe tener: mínimo 8 caracteres, una mayúscula, un número, un caracter especial (!@#$...)";
+      } else {
+        passwordHelp.textContent = "";
       }
     });
-  });
+
+    const modalTitulo = document.getElementById('modal-titulo');
+    const modalMensaje = document.getElementById('modal-mensaje');
+    const btnAceptar = document.getElementById('btn-aceptar');
+
+    function mostrarModal(titulo, mensaje) {
+      modalTitulo.textContent = titulo;
+      modalMensaje.textContent = mensaje;
+      modal.classList.add('is-active');
+    }
+
+    function cerrarModal() {
+      modal.classList.remove('is-active');
+    }
+
+    btnAceptar.addEventListener('click', cerrarModal);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("registerForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const bio = document.getElementById("bio").value || null;
+        const pfp = document.getElementById("pfp").value || null;
+        const pet_id = document.querySelector('input[name="pet_id"]:checked')?.value || null;
+
+        if (!username || !password) {
+          mostrarModal("Faltan datos", "Por favor completa usuario y contraseña.");
+          return;
+        }
+
+        if (!pet_id) {
+          mostrarModal("Falta un compañero", "Debes elegir un guía nocturno antes de crear tu cuenta")
+          return;
+        }
+
+        try {
+          const res = await fetch("/api/users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password, bio, pfp, pet_id })
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            localStorage.setItem("loggedUser", JSON.stringify({
+              user_id: data.user.user_id,
+              username: data.user.username,
+              pfp: data.user.pfp
+            }));
+            window.location.href = "/inicio";
+          } else {
+            mostrarModal("Hubo un problema", data.error || "Error al registrarse");
+
+          }
+        } catch (err) {
+          console.error(err);
+          mostrarModal("Error de conexión", "No se pudo conectar con el servidor.");
+        }
+      });
+    });
   </script>
 </body>
 </html>
