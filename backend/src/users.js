@@ -20,6 +20,13 @@ function isValidPassword(password) {
   return regex.test(password);
 }
 
+// ===================================================
+// VALIDACIÓN DE USERNAME
+// ===================================================
+function isValidUsername(username) {
+  return typeof username === "string" && username.length >= 4;
+}
+
 
 // ===================================================
 // FUNCIONES PARA USERS
@@ -52,6 +59,12 @@ async function getUserByUsername(username) {
 // POST USER
 async function createUser({ username, password, bio, pfp, pet_id }) {
 
+  if (!isValidUsername(username)) {
+    throw new Error(
+      "El nombre de usuario debe tener al menos 4 caracteres"
+    );
+  }
+
   if (!isValidPassword(password)) {
     throw new Error(
       'La contraseña debe tener: mínimo 8 caracteres, una mayúscula, un número, un caracter especial (!@#$...)'
@@ -64,6 +77,7 @@ async function createUser({ username, password, bio, pfp, pet_id }) {
      RETURNING *`,
     [username, password, bio, pfp, pet_id]
   );
+  
   return result.rows[0];
 }
 
