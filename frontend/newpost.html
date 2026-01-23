@@ -11,24 +11,23 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-
-
-  <!----- Navbar ----->
   <div id="navbar"></div>
   <script src="/js/navbar.js"></script>
 
-  <!-----Principal----->
+
   <h2 class="new-dream">Nuevo Sueño</h2>
-  <div class="newpost-container">
-    <label>Escribí tu sueño</label>
+  <form id="dream-form" class="newpost-container">
+    <label for="content">Escribí tu sueño</label>
     <textarea id="content" placeholder="Escribe tu sueño aquí..." required class="input-estilo"></textarea>
+    <div class="url">
+      <label>Inserta la URL de una Imagen/Gif</label>
+      <p class="p-option">(Opcional)</p>
+    </div>
+    <input id="image" type="url" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
 
-    <label>Inserta la URL de una Imagen/Gif (opcional)</label>
-    <input id="image" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
-
-    <label>Elegí una de las Categorías Disponibles</label>
+    <label for="category">Elegí una de las categorías disponibles</label>
       <select id="category" required class="input-estilo">
+        <option value="" disabled selected>Selecciona una categoría...</option>
         <option value="1">Pesadilla</option>
         <option value="2">Recurrente</option>
         <option value="3">Absurdo</option>
@@ -36,62 +35,55 @@
         <option value="5">Lúcido</option>
         <option value="6">Inquietante</option> 
       </select>
-      <button id="btn-post" type="submit" class="submit-btn">Publicar Sueño</button>
-  </div>
+      <div class="buttons-container">
+        <button type="submit" class="submit-btn">Publicar Sueño</button>
+        <button type="button" class="cancel-btn" onclick="window.location.href='/inicio'">Cancelar</button>
+      </div>
+  </form>
 
-  <div class="modal" id="modal-resultado">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title" id="modal-titulo"></p>
-      </header>
-      <section class="modal-card-body" id="modal-mensaje"></section>
-      <footer class="modal-card-foot">
-        <button class="button is-success" id="btn-aceptar">Aceptar</button>
-        <button class="button is-success" id="btn-cancelar">Cancelar</button>
-      </footer>
-    </div>
-  </div>
 
   <script>
-    document.getElementById("btn-post").addEventListener("click", async () => {
-
+    document.getElementById("dream-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      
       const content = document.getElementById("content").value;
       const image = document.getElementById("image").value;
       const category_id = document.getElementById("category").value;
-
+      
       const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-  
+
       if (!loggedUser) {
         alert("Necesitas estar logueado");
         return;
       }
 
-      const user_id = loggedUser.user_id;
-
       const postData = {
-        user_id,
+        user_id: loggedUser.user_id,
         content,
         image,
         category_id
       };
 
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData),
+      try {
+        const response = await fetch("http://localhost:3000/api/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(postData),
+          });
+
+          if (response.ok) {
+            alert("¡Publicación exitosa!");
+            window.location.href = "/inicio";
+          } else {
+            alert("Hubo un error al publicar el sueño.");
+          } 
+        } catch (error) {
+          console.error("Error:", error);
+          alert("No se pudo conectar con el servidor.");
+        }
       });
-
-      const result = await response.json();
-      console.log("Post creado:", result);
-      alert("Publicación exitosa!");
-
-      window.location.href = "/inicio";
-    });
-
-
-  </script>
-
+    </script>
+      
 </body>
 </html>
 
