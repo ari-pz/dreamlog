@@ -1,12 +1,26 @@
-// Nos conectamos a Postgres con Pool
 const { Pool } = require("pg");
-const dbClient = new Pool ({
-  user: "postgres",
-  password: "postgres",
-  host: "localhost",
-  port: 5432,
-  database: "dreamlog",
-});
+
+//busco url 
+const direBaseDatos = process.env.DATABASE_URL;
+let configuracionDb;
+
+if (direBaseDatos) {
+  configuracionDb = {
+    direBaseDatos: direBaseDatos,
+    ssl: { rejectUnauthorized: false }
+  };
+} else {
+  configuracionDb = {
+    host: 'localhost',
+    user: 'postgres',
+    password: 'postgres', 
+    database: 'dreamlog',
+    port: 5432
+  };
+}
+
+const dbClient = new Pool(configuracionDb);
+
 
 
 // GET all MOON
@@ -18,9 +32,6 @@ async function getAllMoons() {
 // ===================================================
 // FUNCIONES PARA POSTS
 // ===================================================
-
-
-
 // Función para obtener UN SOLO post por su ID
 async function getPostById(postId) {
   try {

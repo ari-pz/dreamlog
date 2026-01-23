@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: dreamlog-postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - dreamlog-db:/var/lib/postgresql/data
+      - ./backend/src:/src 
+      - ./backend/src/tables.sql:/docker-entrypoint-initdb.d/1-tables.sql
+      - ./backend/src/tests.sql:/docker-entrypoint-initdb.d/2-tests.sql
+    #restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - dreamlog-net
+
+
+  backend:
+    build: ./backend
+    container_name: dreamlog-backend
+    ports:
+      - "3001:3000"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    networks:
+      - dreamlog-net
+    #restart: always
+
+
+  frontend:
+    build: ./frontend
+    container_name: dreamlog-frontend
+    ports:
+      - "3000:80" 
+    depends_on:
+      - backend
+    #restart: always
+    networks:
+      - dreamlog-net
+
+volumes:
+  dreamlog-db:
+
+networks:
+  dreamlog-net:
