@@ -1,9 +1,8 @@
-/* Contenedor de todos los posts */
 #posts-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* centra los posts */
-  gap: 15px; /* espacio entre posts */
+  align-items: center;
+  gap: 15px;
   padding: 20px;
 }
 
@@ -27,7 +26,6 @@
   gap: 5px;
 }
 
-/* Categoría con fondo y color */
 .post-footer .category {
   padding: 2px 8px;
   border-radius: 5px;
@@ -39,7 +37,6 @@
   background-color: #542b66;
 }
 
-/* Contenedor de cada post */
 .post {
   width: 100%;
   max-width: 600px;
@@ -52,14 +49,13 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* HEADER */
+
 .post-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* Foto de perfil */
 .pfp {
   width: 40px;
   height: 40px;
@@ -67,26 +63,23 @@
   margin-right: 10px;
 }
 
-/* Nombre de usuario */
+
 .post-header .username,
 .post-header span {
   font-weight: bold;
 }
 
-/* Contenedor del menu de opciones */
 .menu {
   position: relative;
   cursor: pointer;
 }
 
-/* Puntos para desplegable */
 .dots {
   font-weight: bold;
   font-size: 18px;
   color: white;
 }
 
-/* Dropdown */
 .dropdown {
   display: none;
   position: absolute;
@@ -99,7 +92,6 @@
   z-index: 10;
 }
 
-/* Links dentro del dropdown */
 .dropdown a {
   display: block;
   padding: 8px 12px;
@@ -107,42 +99,26 @@
   color: black;
 }
 
-/* Links que deben ir en rojo */
 .dropdown a.style-red {
   color: red;
 }
 
-/* Mostrar dropdown al hover (puede cambiar a click con JS) */
 .menu:hover .dropdown {
   display: block;
 }
 
-/* Contenido del post */
 .post-content {
   margin: 10px 0;
 }
 
-/* Footer: categoría, lunas, comentarios */
 .post-footer {
   display: flex;
   gap: 15px;
   font-size: 0.9em;
   color: #ccc;
+  align-items: center;
 }
 
-
-/* CONTENEDOR DEL POST */
-/*.post {
-  position: relative;
-  padding: 15px;
-  background: #fff;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-}*/
-
-
-/* TEXTAREA DE EDICIÓN */
 .edit-area {
   width: 100%;
   box-sizing: border-box;
@@ -163,7 +139,6 @@
   box-shadow: 0 0 3px rgba(158, 111, 255, 0.4);
 }
 
-/* INPUT PARA LA URL DE LA IMAGEN */
 .edit-img {
   width: 100%;
   box-sizing: border-box;
@@ -180,7 +155,6 @@
   box-shadow: 0 0 3px rgba(158, 111, 255, 0.4);
 }
 
-/* BOTONES DE GUARDAR / CANCELAR */
 .edit-controls {
   display: flex;
   justify-content: flex-end;
@@ -196,21 +170,15 @@
   font-size: 14px;
 }
 
-/* Botón Guardar */
 .save-edit {
   background: black;
   color: white;
 }
 
-
-/* Botón Cancelar */
 .cancel-edit {
   background: #eee;
 }
 
-/* ============================================
-   SECCIÓN DE COMENTARIOS 
-   ============================================ */
 .comments-wrapper {
   background: #2a1f3d; 
   padding: 15px;
@@ -295,7 +263,7 @@
   padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  background: #1e132e; /* Fondo Violeta Oscuro */
+  background: #1e132e;
   color: white;
   font-size: 0.9em;
   outline: none;
