@@ -66,6 +66,11 @@
         alert("Necesitas estar logueado");
         return;
       }
+      
+      if (!content) {
+        alert("Tenés que escribir algo para publicar el sueño");
+        return;
+      }
 
       const user_id = loggedUser.user_id;
 
@@ -75,23 +80,37 @@
         image,
         category_id
       };
+      
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/posts`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(postData),
+        });
 
-      const response = await fetch(`${BACKEND_URL}/api/posts`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData),
-      });
+        const result = await response.json();
 
-      const result = await response.json();
-      console.log("Post creado:", result);
-      alert("Publicación exitosa!");
+        // VALIDACIÓN RESPUESTA BACKEND
+        if (!response.ok) {
+          alert(result.error || "Error al crear la publicación");
+          return;
+        }
 
-      window.location.href = "/home.html";
+        alert("Publicación exitosa!");
+        window.location.href = "/home.html";
+
+      } catch (error) {
+        console.error(error);
+        alert("Error de conexión con el servidor");
+      }
     });
-
 
   </script>
 
 </body>
 </html>
+
+
+
+
 
