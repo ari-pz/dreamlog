@@ -1,9 +1,10 @@
-
 const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = 3000;
+const cors = require("cors"); 
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname,"..", "..", "frontend")));
 
@@ -11,11 +12,6 @@ app.use(express.static(path.join(__dirname,"..", "..", "frontend")));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "frontend", "login.html"));
 });
-// MOSTRAR home.html
-app.get("/inicio", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "..", "frontend", "home.html"));
-});
-
 
 
 

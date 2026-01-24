@@ -46,6 +46,10 @@
   </div>
 
   <script>
+  const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
+    
   document.addEventListener("DOMContentLoaded", () => {
     //  Obtener datos de la memoria
     const commentId = localStorage.getItem("edit_comment_id");
@@ -82,7 +86,7 @@
       };
 
       try {
-        const res = await fetch(`/api/comments/${commentId}`, {
+        const res = await fetch(`${BACKEND_URL}/api/comments/${commentId}`, {
           method: 'PUT', 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updatedComment)
@@ -94,7 +98,7 @@
           localStorage.removeItem("edit_comment_content");
           
           alert('¡Comentario editado correctamente!');
-          window.location.href = "/inicio"; 
+          window.location.href = "/home.html"; 
         } else {
           const data = await res.json();
           alert('Error al editar: ' + (data.error || "Error desconocido"));

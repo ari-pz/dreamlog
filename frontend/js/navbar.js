@@ -1,3 +1,7 @@
+const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
+
 fetch("navbar.html")
   .then(res => res.text())
   .then(html => {
@@ -30,7 +34,7 @@ fetch("navbar.html")
             const user = JSON.parse(localStorage.getItem("loggedUser"));
             
             if (user) {
-                await fetch("/api/logout", {
+                await fetch(`${BACKEND_URL}/api/logout`, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ username: user.username })

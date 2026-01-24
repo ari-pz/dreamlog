@@ -49,6 +49,10 @@
   </div>
 
   <script>
+    const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
+
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('post_id');
 
@@ -68,7 +72,7 @@
 
     async function loadPost() {
       try {
-        const res = await fetch(`/api/posts/${postId}`);
+        const res = await fetch(`${BACKEND_URL}/api/posts/${postId}`);
         if (res.status === 404) {
           alert('Post no encontrado');
           return;
@@ -93,7 +97,7 @@
       };
 
       try {
-        const res = await fetch(`/api/posts/${postId}`, {
+        const res = await fetch(`${BACKEND_URL}/api/posts/${postId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updatedPost)
@@ -101,7 +105,7 @@
 
         if (res.ok) {
           alert('¡Sueño editado correctamente!');
-          window.location.href = "/inicio";
+          window.location.href = "/home.html";
         } else {
           const data = await res.json();
           alert('Error al editar: ' + data.error);

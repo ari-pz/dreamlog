@@ -1,3 +1,6 @@
+const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
 //Validacion del nombre
 const nombreInput = document.getElementById('nombre-input');
 const iconoValidacion = document.getElementById('icon-validacion'); 
@@ -46,7 +49,7 @@ async function verificarNombre(nombre) {
       const user_id = getUserId();
       
       // LLAMAR AL BACKEND para verificar en la base de datos
-      const response = await fetch(`/api/username/${nombre}/${user_id}`);
+      const response = await fetch(`${BACKEND_URL}/api/username/${nombre}/${user_id}`);
       const resultado = await response.json();
 
       if  (resultado.disponible) { 
@@ -185,7 +188,7 @@ editarBtn.addEventListener('click', async function(event) {
     console.log('Enviendo datos:', {user_id, username, password, bio, pfp});
 
     try {
-      const response = await fetch(`/api/users/${user_id}`, {
+      const response = await fetch(`${BACKEND_URL}/api/users/${user_id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

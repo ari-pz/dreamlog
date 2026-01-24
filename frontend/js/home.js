@@ -1,8 +1,12 @@
+const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
+
 const loggedUser = JSON.parse(localStorage.getItem("loggedUser")) || null;
 const currentUserId = loggedUser?.user_id || null;
 
 async function loadPosts() {
-    const posts = await fetch('/api/posts').then(res => res.json());
+    const posts = await fetch('${BACKEND_URL}/api/posts').then(res => res.json());
     renderPosts(posts, currentUserId); 
 }
 loadPosts();
@@ -77,7 +81,7 @@ async function buscarPorCategoria(categoria) {
     }
     
     try {
-        const response = await fetch(`http://localhost:3000/api/posts/categories/${categoria}`);
+        const response = await fetch(`${BACKEND_URL}/api/posts/categories/${categoria}`);
         const data = await response.json();
         
         if (data.message || data.length === 0) {
@@ -96,7 +100,7 @@ async function buscarPorCategoria(categoria) {
 // Función para cargar todos los posts (cuando no hay búsqueda)
 async function cargarTodosLosPosts() {
     try {
-        const response = await fetch('http://localhost:3000/api/posts');
+        const response = await fetch('${BACKEND_URL}/api/posts');
         const posts = await response.json();
         
         if (posts.message || posts.length === 0) {
@@ -136,7 +140,7 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
   const isMooned = icon.classList.contains("fa-solid");
 
   if (isMooned) {
-    await fetch("/api/moon", {
+    await fetch("${BACKEND_URL}/api/moon", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, post_id })
@@ -146,7 +150,7 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
     icon.classList.add("fa-regular");
   } else {
     // DAR LUNA
-    await fetch("/api/moon", {
+    await fetch("${BACKEND_URL}/api/moon", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, post_id })
@@ -157,7 +161,7 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
   }
 
   // Actualizar contador
-  const resCount = await fetch(`/api/moon/count/${post_id}`);
+  const resCount = await fetch(`${BACKEND_URL}/api/moon/count/${post_id}`);
   const dataCount = await resCount.json();
 
   counter.textContent = dataCount.count;
@@ -169,9 +173,9 @@ async function iniciarConLunas(post_id, user_id) {
   const counter = document.querySelector(`.moon-count[data-post-id="${post_id}"]`);
 
   // Traer si el user ya dio luna
-  const resHas = await fetch(`/api/moon/${user_id}/${post_id}`);
+  const resHas = await fetch(`${BACKEND_URL}/api/moon/${user_id}/${post_id}`);
   const dataHas = await resHas.json();
-  const resCount = await fetch(`/api/moon/count/${post_id}`);
+  const resCount = await fetch(`${BACKEND_URL}/api/moon/count/${post_id}`);
   const dataCount = await resCount.json();
 
   counter.textContent = dataCount.count;
@@ -283,7 +287,7 @@ document.addEventListener("click", async (evento) => {
             }
 
             try {
-                await fetch(`/api/comments/${commentId}`, {method:"DELETE"});
+                await fetch(`${BACKEND_URL}/api/comments/${commentId}`, {method:"DELETE"});
             } catch (err) {
                 console.error(err);
             }
@@ -324,7 +328,7 @@ document.addEventListener("click", async function(evento) {
     iconoComentario.classList.add("fa-solid");
 
     try {
-      const respuesta = await fetch("/api/comments/" + postId);
+      const respuesta = await fetch("${BACKEND_URL}/api/comments/" + postId);
       if (!respuesta.ok) throw new Error("Error al obtener comentarios");
 
       const comentarios = await respuesta.json();
@@ -377,7 +381,7 @@ document.addEventListener("click", async function(evento) {
       }
 
       try {
-          const res = await fetch("/api/comments", { /* ... */ });
+          const res = await fetch("${BACKEND_URL}/api/comments", { /* ... */ });
         
       } catch (e) { 
           console.error(e); 
@@ -470,7 +474,7 @@ document.addEventListener("click", async function(evento) {
     }
 
     try {
-      const respuesta = await fetch("/api/comments", {
+      const respuesta = await fetch("${BACKEND_URL}/api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

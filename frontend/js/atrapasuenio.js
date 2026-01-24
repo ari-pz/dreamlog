@@ -1,3 +1,7 @@
+const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
+    
 document.addEventListener("DOMContentLoaded", () => {
   const frases = [
     "“Cada hilo guarda un recuerdo invisible.”",
@@ -41,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (loggedUser) {
     const userId = loggedUser.user_id;
 
-    fetch(`/api/users/${userId}/stats`)
+    fetch(`${BACKEND_URL}/api/users/${userId}/stats`)
       .then(res => res.json())
       .then(stats => {
         // stats = { totalPosts, totalLunas }

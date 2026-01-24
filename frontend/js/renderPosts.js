@@ -1,4 +1,7 @@
 function renderPosts(posts) {
+  const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
   const currentUserId = loggedUser?.user_id;
   const container = document.getElementById("posts-container");
@@ -102,7 +105,7 @@ function renderPosts(posts) {
                 cerrarModal();
 
             try {
-              const res = await fetch(`/api/posts/${post.post_id}`, {
+              const res = await fetch(`${BACKEND_URL}/api/posts/${post.post_id}`, {
                 method: "DELETE"
               });
                 const data = await res.json();
@@ -124,7 +127,7 @@ function renderPosts(posts) {
 
     //cargar comentarios
     try {
-      const res = await fetch(`/api/comments/${post.post_id}`);
+      const res = await fetch(`${BACKEND_URL}/api/comments/${post.post_id}`);
       const comentarios = await res.json();
       const listaComentarios = postDiv.querySelector(".comments-list");
 

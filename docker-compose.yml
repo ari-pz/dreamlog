@@ -9,7 +9,6 @@ services:
       - ./backend/src:/src 
       - ./backend/src/tables.sql:/docker-entrypoint-initdb.d/1-tables.sql
       - ./backend/src/tests.sql:/docker-entrypoint-initdb.d/2-tests.sql
-    #restart: always
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -26,13 +25,13 @@ services:
     depends_on:
       - postgres
     environment:
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}
       - DB_HOST=postgres
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
     networks:
       - dreamlog-net
-    #restart: always
 
 
   frontend:
@@ -42,7 +41,6 @@ services:
       - "3000:80" 
     depends_on:
       - backend
-    #restart: always
     networks:
       - dreamlog-net
 

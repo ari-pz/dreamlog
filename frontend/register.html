@@ -68,6 +68,10 @@
   </div>
 
   <script>
+    const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
+
     const modal = document.getElementById('modal-resultado');
     
     // ===== Validación de contraseña (registro) =====
@@ -148,7 +152,7 @@
         }
 
         try {
-          const res = await fetch("/api/users", {
+          const res = await fetch(`${BACKEND_URL}/api/users`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password, bio, pfp, pet_id })

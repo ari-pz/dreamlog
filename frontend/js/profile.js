@@ -1,3 +1,7 @@
+const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
+
 document.addEventListener("DOMContentLoaded", () => {
   cargarMisPosts();
 });
@@ -13,7 +17,7 @@ async function cargarMisPosts() {
   const USER_ID = loggedUser.user_id;
 
   try {
-    const res = await fetch(`/api/posts/user/${USER_ID}`);
+    const res = await fetch(`${BACKEND_URL}/api/posts/user/${USER_ID}`);
     const posts = await res.json();
     const container = document.getElementById("posts-container");
 
@@ -36,7 +40,7 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
   const isMooned = icon.classList.contains("fa-solid");
 
   if (isMooned) {
-    await fetch("/api/moon", {
+    await fetch(`${BACKEND_URL}/api/moon`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, post_id })
@@ -44,7 +48,7 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
     icon.classList.remove("fa-solid");
     icon.classList.add("fa-regular");
   } else {
-    await fetch("/api/moon", {
+    await fetch(`${BACKEND_URL}/api/moon`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, post_id })
@@ -53,7 +57,7 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
     icon.classList.add("fa-solid");
   }
 
-  const resCount = await fetch(`/api/moon/count/${post_id}`);
+  const resCount = await fetch(`${BACKEND_URL}/api/moon/count/${post_id}`);
   const dataCount = await resCount.json();
   counter.textContent = dataCount.count;
 }
@@ -64,9 +68,9 @@ async function iniciarConLunas(post_id, user_id) {
 
   if (!icon || !counter) return;
 
-  const resHas = await fetch(`/api/moon/${user_id}/${post_id}`);
+  const resHas = await fetch(`${BACKEND_URL}/api/moon/${user_id}/${post_id}`);
   const dataHas = await resHas.json();
-  const resCount = await fetch(`/api/moon/count/${post_id}`);
+  const resCount = await fetch(`${BACKEND_URL}/api/moon/count/${post_id}`);
   const dataCount = await resCount.json();
 
   counter.textContent = dataCount.count;
@@ -156,7 +160,7 @@ document.addEventListener("click", async function(evento) {
     iconoComentario.classList.add("fa-solid");
 
     try {
-      const respuesta = await fetch("/api/comments/" + postId);
+      const respuesta = await fetch(`${BACKEND_URL}/api/comments/` + postId);
       if (!respuesta.ok) throw new Error("Error al obtener comentarios");
 
       const comentarios = await respuesta.json();
@@ -209,7 +213,7 @@ document.addEventListener("click", async function(evento) {
       }
 
       try {
-          const res = await fetch("/api/comments", { /* ... */ });
+          const res = await fetch(`${BACKEND_URL}/api/comments`, { /* ... */ });
         
       } catch (e) { 
           console.error(e); 
@@ -304,7 +308,7 @@ document.addEventListener("click", async function(evento) {
     }
 
     try {
-      const respuesta = await fetch("/api/comments", {
+      const respuesta = await fetch(`${BACKEND_URL}/api/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -418,7 +422,7 @@ document.addEventListener("click", async (evento) => {
             }
 
             try {
-                await fetch(`/api/comments/${commentId}`, {method:"DELETE"});
+                await fetch(`${BACKEND_URL}/api/comments/${commentId}`, {method:"DELETE"});
             } catch (err) {
                 console.error(err);
             }
@@ -457,7 +461,7 @@ if(botonEliminar) {
             if(!loggedUser) return;
 
             try {
-                const response = await fetch(`http://localhost:3000/api/users/${loggedUser.user_id}`, {
+                const response = await fetch(`${BACKEND_URL}/api/users/${loggedUser.user_id}`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' }
                 });

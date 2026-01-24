@@ -73,6 +73,10 @@
 
   <!-- ======================= OBTENER DATOS DEL USUARIO ======================= -->
   <script>
+  const BACKEND_URL = window.location.hostname === "localhost" 
+    ? "http://localhost:3001" 
+    : "https://dreamlog-5k3h.onrender.com"; 
+
   document.addEventListener("DOMContentLoaded", async () => {
     const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
     if (!loggedUser) {
@@ -81,7 +85,7 @@
     }
 
     try {
-      const res = await fetch(`/api/users/${loggedUser.user_id}`);
+      const res = await fetch(`${BACKEND_URL}/api/users/${loggedUser.user_id}`);
       if (!res.ok) throw new Error("No se pudo obtener el perfil");
       const user = await res.json();
 
@@ -110,7 +114,7 @@
     const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
     if (!loggedUser) return;
 
-    const res = await fetch(`/api/users/${loggedUser.user_id}`);
+    const res = await fetch(`${BACKEND_URL}/api/users/${loggedUser.user_id}`);
     const user = await res.json();
     const petId = user.pet_id;
 
@@ -123,11 +127,11 @@
           "./img_mascotas/gato4.png"
         ],
         frases: [
-          "Miau... soñemos juntos 💜",
+          "Miau... soñemos juntos",
           "Estoy vigilando tus sueños.",
           "Las noches brillan más con vos.",
           "Si dudás, ronroneá profundo.",
-          "Te cuido mientras descansás 🌙🐈‍⬛"
+          "Te cuido mientras descansás"
         ]
       },
 
@@ -139,9 +143,9 @@
           "./img_mascotas/panda4.png"
         ],
         frases: [
-          "Hoy es un buen día para soñar fuerte 🌙",
+          "Hoy es un buen día para soñar fuerte",
           "Estoy orgulloso de vos, pequeño soñador.",
-          "Respirá... todo va a estar bien 🐼✨",
+          "Respirá... todo va a estar bien",
           "Tu sueño tiene más poder del que imaginás.",
           "Recordá: un paso a la vez."
         ]
@@ -155,7 +159,7 @@
           "./img_mascotas/perezoso4.png"
         ],
         frases: [
-          "Todo a su propio ritmo 💤✨",
+          "Todo a su propio ritmo.",
           "Respirá lento, soñá fuerte.",
           "Estoy acá, acompañándote siempre.",
           "Dormir también es avanzar.",

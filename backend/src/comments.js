@@ -6,7 +6,7 @@ let configuracionDb;
 
 if (direBaseDatos) {
   configuracionDb = {
-    direBaseDatos: direBaseDatos,
+    connectionString: direBaseDatos,
     ssl: { rejectUnauthorized: false }
   };
 } else {
