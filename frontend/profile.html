@@ -73,10 +73,6 @@
 
   <!-- ======================= OBTENER DATOS DEL USUARIO ======================= -->
   <script>
-  const BACKEND_URL = window.location.hostname === "localhost" 
-    ? "http://localhost:3001" 
-    : "https://dreamlog-5k3h.onrender.com"; 
-
   document.addEventListener("DOMContentLoaded", async () => {
     const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
     if (!loggedUser) {

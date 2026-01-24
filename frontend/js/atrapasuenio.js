@@ -1,7 +1,3 @@
-const BACKEND_URL = window.location.hostname === "localhost" 
-    ? "http://localhost:3001" 
-    : "https://dreamlog-5k3h.onrender.com"; 
-    
 document.addEventListener("DOMContentLoaded", () => {
   const frases = [
     "“Cada hilo guarda un recuerdo invisible.”",

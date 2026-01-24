@@ -1,12 +1,8 @@
-const BACKEND_URL = window.location.hostname === "localhost" 
-    ? "http://localhost:3001" 
-    : "https://dreamlog-5k3h.onrender.com"; 
-
 const loggedUser = JSON.parse(localStorage.getItem("loggedUser")) || null;
 const currentUserId = loggedUser?.user_id || null;
 
 async function loadPosts() {
-    const posts = await fetch('${BACKEND_URL}/api/posts').then(res => res.json());
+    const posts = await fetch(`${BACKEND_URL}/api/posts`).then(res => res.json());
     renderPosts(posts, currentUserId); 
 }
 loadPosts();
@@ -100,7 +96,7 @@ async function buscarPorCategoria(categoria) {
 // Función para cargar todos los posts (cuando no hay búsqueda)
 async function cargarTodosLosPosts() {
     try {
-        const response = await fetch('${BACKEND_URL}/api/posts');
+        const response = await fetch(`${BACKEND_URL}/api/posts`);
         const posts = await response.json();
         
         if (posts.message || posts.length === 0) {
@@ -140,7 +136,7 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
   const isMooned = icon.classList.contains("fa-solid");
 
   if (isMooned) {
-    await fetch("${BACKEND_URL}/api/moon", {
+    await fetch(`${BACKEND_URL}/api/moon`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, post_id })
@@ -150,7 +146,7 @@ async function CambiarLuna(icon, post_id, user_id, counter) {
     icon.classList.add("fa-regular");
   } else {
     // DAR LUNA
-    await fetch("${BACKEND_URL}/api/moon", {
+    await fetch(`${BACKEND_URL}/api/moon`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user_id, post_id })
@@ -328,7 +324,7 @@ document.addEventListener("click", async function(evento) {
     iconoComentario.classList.add("fa-solid");
 
     try {
-      const respuesta = await fetch("${BACKEND_URL}/api/comments/" + postId);
+      const respuesta = await fetch(`${BACKEND_URL}/api/comments/` + postId);
       if (!respuesta.ok) throw new Error("Error al obtener comentarios");
 
       const comentarios = await respuesta.json();
@@ -378,15 +374,6 @@ document.addEventListener("click", async function(evento) {
       if(contador) {
         // Sumamos 1 visualmente al instante
         contador.textContent = parseInt(contador.textContent || 0) + 1;
-      }
-
-      try {
-          const res = await fetch("${BACKEND_URL}/api/comments", { /* ... */ });
-        
-      } catch (e) { 
-          console.error(e); 
-          if(contador) contador.textContent = parseInt(contador.textContent) - 1;
-          alert("Error al enviar");
       }
 
       const contadorComm = document.querySelector(".comment-count[data-post-id='" + postId + "']");
@@ -474,7 +461,7 @@ document.addEventListener("click", async function(evento) {
     }
 
     try {
-      const respuesta = await fetch("${BACKEND_URL}/api/comments", {
+      const respuesta = await fetch(`${BACKEND_URL}/api/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
