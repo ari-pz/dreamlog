@@ -7,7 +7,7 @@ let configuracionDb;
 if (direBaseDatos) {
   configuracionDb = {
     connectionString: direBaseDatos,
-    ssl: { rejectUnauthorized: false }
+    ssl: direBaseDatos.includes('@postgres:') ? false : { rejectUnauthorized: false } 
   };
 } else {
   configuracionDb = {
