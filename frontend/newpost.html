@@ -18,7 +18,7 @@
   <div id="navbar"></div>
   <script src="/js/navbar.js"></script>
 
-  <!-----Principal----->
+  <!-----Formulario principal----->
   <h2 class="new-dream">Nuevo Sueño</h2>
   <div class="newpost-container">
     <label>Escribí tu sueño</label>
@@ -52,23 +52,6 @@
       </footer>
     </div>
   </div>
-  
-  
-  <script>
-    function mostrarModal(titulo, mensaje) {
-      document.getElementById("modal-titulo").innerText = titulo;
-      document.getElementById("modal-mensaje").innerText = mensaje;
-      document.getElementById("modal-resultado").classList.add("is-active");
-    }
-
-    function cerrarModal() {
-      document.getElementById("modal-resultado").classList.remove("is-active");
-    }
-
-    document.getElementById("btn-aceptar").addEventListener("click", cerrarModal);
-    document.getElementById("btn-cancelar").addEventListener("click", cerrarModal);
-  </script>
-
 
   <script>
     document.getElementById("btn-post").addEventListener("click", async () => {
@@ -80,18 +63,12 @@
       const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
   
       if (!loggedUser) {
-        mostrarModal(
-          "Sesión requerida",
-          "Necesitás estar logueado para publicar un sueño"
-        );
+        alert("Necesitas estar logueado");
         return;
       }
       
-      if (!content.trim()) {
-        mostrarModal(
-          "Publicación incompleta",
-          "Tenés que escribir algo para publicar el sueño"
-        );
+      if (!content) {
+        alert("Tenés que escribir algo para publicar el sueño");
         return;
       }
 
@@ -115,27 +92,24 @@
 
         // VALIDACIÓN RESPUESTA BACKEND
         if (!response.ok) {
-          mostrarModal(
-            "Error al publicar",
-            result.error || "Ocurrió un error al crear la publicación"
-          );
+          alert(result.error || "Error al crear la publicación");
           return;
         }
 
-        mostrarModal(
-          "Publicación exitosa",
-          "Tu sueño fue publicado correctamente"
-        );
+        alert("Publicación exitosa!");
+        window.location.href = "/home.html";
 
-        setTimeout(() => {
-          window.location.href = "/home.html";
-        }, 1500);
+      } catch (error) {
+        console.error(error);
+        alert("Error de conexión con el servidor");
+      }
     });
 
   </script>
 
 </body>
 </html>
+
 
 
 
