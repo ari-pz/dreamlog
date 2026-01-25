@@ -1,10 +1,21 @@
+.url {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.p-option {
+  color: grey;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+}
+
 .newpost-container {
   width: 100%;
   max-width: 550px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
   padding: 40px 25px;
   font-family: 'Poppins', sans-serif;
   border-radius: 16px;
@@ -15,7 +26,7 @@
 
 .new-dream {
   text-align: center;
-  padding: 45px;
+  padding: 25px;
   font-size: 40px;
   font-family: 'Cormorant Garamond', serif;
   color: #c4a9ff;
@@ -24,7 +35,6 @@
 
 .newpost-container label {
   font-size: 22px;
-  padding-top: 8px;
   display: block;
   font-family: 'Cormorant Garamond', serif;
   text-shadow: 0 0 10px rgba(196,169,255,0.4);
@@ -45,13 +55,38 @@
 
 .input-estilo:focus {
   outline: none;
-  border-color: #4a2e8c;
-  box-shadow: 0 0 8px rgba(186,146,255,0.3);
+  border-color: #4a2e8c !important;
+  box-shadow: 0 0 8px rgba(186,146,255,0.3) !important;
 }
 
 .input-estilo::placeholder {
   color: #b2a1d6;
 }
+
+.buttons-container {
+  display: flex;
+  gap: 12px; 
+  margin-top: 14px;
+}
+.submit-btn, .cancel-btn {
+  flex: 1; 
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Cormorant Garamond', serif;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s;
+}
+.cancel-btn {
+  background-color: #4a2e8c;
+  color: #c4a9ff;
+}
+.cancel-btn:hover {
+  background-color: #351f66;
+}
+
 
 .submit-btn {
   padding: 12px;
@@ -63,7 +98,7 @@
   font-family: 'Cormorant Garamond', serif;
   cursor: pointer;
   border: none;
-  margin-top: 14px;
+  margin-top: 14px 0 !important;
 }
 
 .atrapasueños-btn:hover {
@@ -79,3 +114,11 @@
   }
 }
 
+.input-estilo:invalid:focus {
+  border-color: #ff4d4d;
+  box-shadow: 0 0 8px rgba(255, 77, 77, 0.3);
+}
+select.input-estilo {
+  appearance: none;
+  cursor: pointer;
+}
