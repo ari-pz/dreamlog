@@ -20,7 +20,7 @@
     <textarea id="content" placeholder="Escribe tu sueño aquí..." required class="input-estilo"></textarea>
     <div class="url">
       <label for="image">Inserta la URL de una Imagen/Gif</label>
-      <p class="p-option">(Opcional)</P>
+      <p class="p-option">(Opcional)</p>
     </div>
 
     <input id="image" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
@@ -54,9 +54,6 @@
       </footer>
     </div>
   </div>
-  
-  
-
   <script>
     function mostrarModal(titulo, mensaje) {
       document.getElementById("modal-titulo").innerText = titulo;
@@ -67,18 +64,13 @@
       document.getElementById("modal-resultado").classList.remove("is-active");
     }
     document.getElementById("btn-aceptar").addEventListener("click", cerrarModal);
-    document.getElementById("btn-cancelar").addEventListener("click", cerrarModal);
-  </script>
-
-
-  <script>
+    
+    
     document.getElementById("dream-form").addEventListener("submit", async (event) => {
       event.preventDefault();
-    
       const content = document.getElementById("content").value;
       const image = document.getElementById("image").value;
       const category_id = document.getElementById("category").value;
-      
       const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
   
       if (!loggedUser) {
