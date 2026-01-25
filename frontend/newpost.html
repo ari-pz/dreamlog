@@ -11,24 +11,23 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-
-
-  <!----- Navbar ----->
   <div id="navbar"></div>
   <script src="/js/navbar.js"></script>
 
-  <!-----Principal----->
+
   <h2 class="new-dream">Nuevo Sueño</h2>
-  <div class="newpost-container">
-    <label>Escribí tu sueño</label>
+  <form id="dream-form" class="newpost-container">
+    <label for="content">Escribí tu sueño</label>
     <textarea id="content" placeholder="Escribe tu sueño aquí..." required class="input-estilo"></textarea>
+    <div class="url">
+      <label for="image">Inserta la URL de una Imagen/Gif</label>
+      <p class="p-option">(Opcional)</P>
+    </div>
 
-    <label>Inserta la URL de una Imagen/Gif (opcional)</label>
     <input id="image" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
-
-    <label>Elegí una de las Categorías Disponibles</label>
+    <label for="category">Elegí una de las categorías disponibles</label>
       <select id="category" required class="input-estilo">
+        <option value="" disabled selected>Selecciona una categoria...</option>
         <option value="1">Pesadilla</option>
         <option value="2">Recurrente</option>
         <option value="3">Absurdo</option>
@@ -36,8 +35,12 @@
         <option value="5">Lúcido</option>
         <option value="6">Inquietante</option> 
       </select>
-      <button id="btn-post" type="submit" class="submit-btn">Publicar Sueño</button>
-  </div>
+      <div class="buttons-container">
+        <button id="btn-post" type="submit" class="submit-btn">Publicar Sueño</button>
+        <button type="button" class="cancel-btn" onclick="window.location.href='/inicio'">Cancelar</button>
+      </div>
+  </form>
+
 
   <div class="modal" id="modal-resultado">
     <div class="modal-background"></div>
@@ -54,29 +57,29 @@
   </div>
   
   
+
   <script>
     function mostrarModal(titulo, mensaje) {
       document.getElementById("modal-titulo").innerText = titulo;
       document.getElementById("modal-mensaje").innerText = mensaje;
       document.getElementById("modal-resultado").classList.add("is-active");
     }
-
     function cerrarModal() {
       document.getElementById("modal-resultado").classList.remove("is-active");
     }
-
     document.getElementById("btn-aceptar").addEventListener("click", cerrarModal);
     document.getElementById("btn-cancelar").addEventListener("click", cerrarModal);
   </script>
 
 
   <script>
-    document.getElementById("btn-post").addEventListener("click", async () => {
-
+    document.getElementById("dream-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+    
       const content = document.getElementById("content").value;
       const image = document.getElementById("image").value;
       const category_id = document.getElementById("category").value;
-
+      
       const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
   
       if (!loggedUser) {
@@ -94,11 +97,10 @@
         );
         return;
       }
-
       const user_id = loggedUser.user_id;
-
+      
       const postData = {
-        user_id,
+        user_id: loggedUser.user_id,
         content,
         image,
         category_id
@@ -113,7 +115,6 @@
 
         const result = await response.json();
 
-        // VALIDACIÓN RESPUESTA BACKEND
         if (!response.ok) {
           mostrarModal(
             "Error al publicar",
