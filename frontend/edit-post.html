@@ -23,7 +23,17 @@
 
   <div class="newpost-container">
     <label for="content">✦ Modifica tu sueño</label>
-    <textarea id="content" placeholder="Escribe tu sueño aquí..." required class="input-estilo"></textarea>
+    <textarea 
+      id="content" 
+      placeholder="Escribe tu sueño aquí..." 
+      required 
+      class="input-estilo"
+      maxlength="255"
+    ></textarea>
+    
+    <small id="char-counter" class="char-hint">
+      0 / 255 caracteres
+    </small>
 
     <label for="image">✦ Cambia la URL de la imagen</label>
     <input id="image" placeholder="https://example.com/mi-imagen.jpg" class="input-estilo">
@@ -31,7 +41,19 @@
     <label for="category">✦ Tu categoría se mantiene</label>
     <input id="category" class="input-estilo" disabled>
 
-    <button id="btn-post" type="submit" class="atrapasueños-btn">Guardar Cambios</button>
+    <div class="buttons-container">
+      <button id="btn-post" class="submit-btn">
+        Guardar cambios
+      </button>
+      <button 
+        type="button" 
+        class="cancel-btn"
+        onclick="window.location.href='/home.html'"
+      >
+        Cancelar
+      </button>
+    </div>
+
   </div>
 
   <div class="modal" id="modal-resultado">
@@ -52,6 +74,15 @@
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('post_id');
 
+
+    const contentInput = document.getElementById('content');
+    const imageInput = document.getElementById('image');
+    const categoryInput = document.getElementById('category');
+    const btnPost = document.getElementById('btn-post');
+    
+    const counter = document.getElementById("char-counter");
+    const MAX_CHARS = 255;
+    
     if (!postId) {
       alert('Error: No se encontró el ID del post en la URL.');
       console.error('No se pudo obtener el postId de la URL.');
@@ -59,12 +90,19 @@
       btnPost.disabled = true; // Deshabilita el botón si no hay ID
       throw new Error('Post ID es requerido.');
     }
+    
+    function updateCounter() {
+      const length = contentInput.value.length;
+      counter.textContent = `${length} / ${MAX_CHARS} caracteres`;
 
-
-    const contentInput = document.getElementById('content');
-    const imageInput = document.getElementById('image');
-    const categoryInput = document.getElementById('category');
-    const btnPost = document.getElementById('btn-post');
+      if (length >= MAX_CHARS) {
+        counter.classList.add("limit");
+      } else {
+        counter.classList.remove("limit");
+      }
+    }
+    
+    contentInput.addEventListener("input", updateCounter);
 
     async function loadPost() {
       try {
@@ -78,6 +116,8 @@
         contentInput.value = post.content || '';
         imageInput.value = post.image || '';
         categoryInput.value = post.category_name || '';
+        
+        updateCounter();
 
       } catch (error) {
         console.error('Error al cargar el post:', error);
@@ -115,4 +155,3 @@
 
 </body>
 </html>
-
