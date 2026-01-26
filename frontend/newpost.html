@@ -17,7 +17,13 @@
   <h2 class="new-dream">Nuevo Sueño</h2>
   <form id="dream-form" class="newpost-container">
     <label for="content">Escribí tu sueño</label>
-    <textarea id="content" placeholder="Escribe tu sueño aquí..." required class="input-estilo"></textarea>
+    <textarea 
+      id="content" 
+      placeholder="Escribe tu sueño aquí..." 
+      required 
+      class="input-estilo"
+      maxlength="255"
+    ></textarea>
     <small id="char-counter" class="char-hint">
       0 / 255 caracteres
     </small>
@@ -124,19 +130,19 @@
     
     const textarea = document.getElementById("content");
     const counter = document.getElementById("char-counter");
-    const MAX = 255;
+    const MAX_CHARS = 255;
 
     textarea.addEventListener("input", () => {
       const length = textarea.value.length;
-      counter.textContent = `${length} / ${MAX} caracteres`;
+      counter.textContent = `${length} / ${MAX_CHARS} caracteres`;
 
-      if (length === MAX) {
+      if (length >= MAX_CHARS) {
         counter.classList.add("limit");
       } else {
         counter.classList.remove("limit");
       }
-    });
-
+    }
+    
   </script>
 
 </body>
