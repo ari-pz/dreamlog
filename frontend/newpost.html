@@ -18,6 +18,9 @@
   <form id="dream-form" class="newpost-container">
     <label for="content">Escribí tu sueño</label>
     <textarea id="content" placeholder="Escribe tu sueño aquí..." required class="input-estilo"></textarea>
+    <small id="char-counter" class="char-hint">
+      0 / 255 caracteres
+    </small>
     <div class="url">
       <label for="image">Inserta la URL de una Imagen/Gif</label>
       <p class="p-option">(Opcional)</p>
@@ -116,6 +119,21 @@
 
       } catch (error) {
         mostrarModal("Error de conexión", "No se pudo conectar con el servidor.");
+      }
+    });
+    
+    const textarea = document.getElementById("content");
+    const counter = document.getElementById("char-counter");
+    const MAX = 255;
+
+    textarea.addEventListener("input", () => {
+      const length = textarea.value.length;
+      counter.textContent = `${length} / ${MAX} caracteres`;
+
+      if (length === MAX) {
+        counter.classList.add("limit");
+      } else {
+        counter.classList.remove("limit");
       }
     });
 
