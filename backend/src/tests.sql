@@ -15,7 +15,7 @@ INSERT INTO lunas (user_id, post_id) VALUES
 (1, 3);
 
 INSERT INTO comments (user_id, post_id, content) VALUES
-(1, 1, 'Qué miedo con los ascensores 😱'),
-(1, 2, 'Uy, los videojuegos pueden ser intensos 😅'),
+(1, 1, 'Qué miedo con los ascensores'),
+(1, 2, 'Uy, los videojuegos pueden ser intensos'),
 (1, 3, 'Eso es demasiado extraño, me pasó algo parecido');
      
