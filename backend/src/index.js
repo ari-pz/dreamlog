@@ -8,14 +8,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname,"..", "..", "frontend")));
 
-// MOSTRAR login.html primero ante todo
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "frontend", "login.html"));
 });
 
-
-
-//IMPORTAR FUNCIONES
 const { getAllUsers,
         getUserById,
         getUserByUsername,
@@ -50,11 +46,7 @@ const {
   updateComment
 } = require("./comments");
 
-// =======================================
-// USERS
-// =======================================
 
-// Crear nuevo user
 app.post("/api/users", async (req, res) => {
   try {
     const { username, password, bio, pfp, pet_id } = req.body;
@@ -84,9 +76,6 @@ app.post("/api/users", async (req, res) => {
   }
 });
 
-
-
-// GET users
 app.get("/api/users", async (req, res) => {
   try {
     const users = await getAllUsers();
@@ -96,7 +85,6 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
-// GET user by id
 app.get("/api/users/:id", async (req, res) => {
   try {
     const user = await getUserById(req.params.id);
@@ -110,8 +98,6 @@ app.get("/api/users/:id", async (req, res) => {
   }
 });
 
-
-//UPDATE profile
 app.put('/api/users/:id', async (req, res) => {
     const user_id = parseInt(req.params.id);
     const username = req.body.username;
@@ -120,7 +106,6 @@ app.put('/api/users/:id', async (req, res) => {
     const pfp = req.body.pfp;
 
     console.log('Recibido en PUT /api/users/:id:', { user_id, username, password, bio, pfp });
-
 
     if (username) {
         if (username.length < 4) {
@@ -175,8 +160,6 @@ app.put('/api/users/:id', async (req, res) => {
     });
 });
 
-
-// Verificar si un nombre está disponible
 app.get('/api/username/:username/:user_id', async (req, res) => {
     const username = req.params.username;
     let user_id;
@@ -197,7 +180,6 @@ app.get('/api/username/:username/:user_id', async (req, res) => {
     }
 });
 
-// Eliminar cuenta
 app.delete('/api/users/:id', async (req, res) => {
     const user_id = parseInt(req.params.id);
     console.log('Intentando eliminar usuario:', user_id);
@@ -226,12 +208,6 @@ app.delete('/api/users/:id', async (req, res) => {
     }
 });
 
-
-
-// =======================================
-// POSTS
-// =======================================
-// OBTENER POST por id
 app.get('/api/posts/:id', async (req, res) => {
   const postId = req.params.id; 
 
@@ -249,8 +225,6 @@ app.get('/api/posts/:id', async (req, res) => {
   }
 });
 
-
-// UPDATE post
 app.put('/api/posts/:id', async (req, res) => {
   const postId = req.params.id;
   const { content, image } = req.body;
@@ -263,9 +237,6 @@ app.put('/api/posts/:id', async (req, res) => {
   }
 });
 
-
-
-// DELETE post
 app.delete("/api/posts/:id", async (req, res) => {
   const postId = parseInt(req.params.id, 10);
 
@@ -287,8 +258,6 @@ app.delete("/api/posts/:id", async (req, res) => {
   }
 });
 
-
-// GET posts
 app.get("/api/posts", async (req, res) => {
   try {
     const posts = await getAllPosts();
@@ -299,9 +268,6 @@ app.get("/api/posts", async (req, res) => {
   }
 });
 
-
-
-// GET post by user_id
 app.get("/api/posts/user/:id", async (req, res) => {
   try {
     const posts = await getPostsByUserId(req.params.id);
@@ -312,8 +278,6 @@ app.get("/api/posts/user/:id", async (req, res) => {
   }
 });
 
-
-// GET cantidad de posts 
 app.get("/api/posts/count/:user_id", async (req, res) => {
   const user_id = parseInt(req.params.user_id);
   try {
@@ -325,8 +289,6 @@ app.get("/api/posts/count/:user_id", async (req, res) => {
   }
 });
 
-
-// POST nuevo post
 app.post("/api/posts", async (req, res) => {
   try {
     const { user_id, content, image, category_id } = req.body;
@@ -344,11 +306,6 @@ app.post("/api/posts", async (req, res) => {
   }
 });
 
-
-// =======================================
-// COMENTARIOS
-// =======================================
-// Obtener los comentarios
 app.get('/api/comments', async (req, res) => {
   try {
     const comments = await getAllComments();
@@ -371,7 +328,6 @@ app.get('/api/comments/:post_id', async (req, res) => {
   }
 });
 
-//Agrego Comentario 
 app.post('/api/comments', async (req, res) => {
   const { user_id, post_id, content, url } = req.body;
   try {
@@ -383,7 +339,6 @@ app.post('/api/comments', async (req, res) => {
   }
 });
 
-// BORRAR Comentario
 app.delete('/api/comments/:id', async (req, res) => {
   const commentId = req.params.id;
 
@@ -424,10 +379,6 @@ app.put('/api/comments/:id', async (req, res) => {
   }
 });
 
-// =======================================
-// LUNAS
-// =======================================
-// GET Lunas
 app.get("/api/lunas", async (req, res) => {
   try {
     const lunas = await getAllMoons();
@@ -438,42 +389,30 @@ app.get("/api/lunas", async (req, res) => {
   }
 });
 
-
-// CONTAR lunas
 app.get("/api/moon/count/:post_id", async (req, res) => {
   const { post_id } = req.params;
   const count = await getMoonCount(post_id);
   res.json({ count });
 });
 
-// CHECK luna
 app.get("/api/moon/:user_id/:post_id", async (req, res) => {
   const { user_id, post_id } = req.params;
   const result = await hasMoon(user_id, post_id);
   res.json({ hasMoon: result });
 });
 
-// DAR luna
 app.post("/api/moon", async (req, res) => {
   const { user_id, post_id } = req.body;
   await addMoon(user_id, post_id);
   res.json({ success: true });
 });
 
-// QUITAR luna
 app.delete("/api/moon", async (req, res) => {
   const { user_id, post_id } = req.body;
   await removeMoon(user_id, post_id);
   res.json({ success: true });
 });
 
-
-
-// =======================================
-// CATEGORIES
-// =======================================
-
-// GET all categories
 app.get("/api/categories", async (req, res) => {
   try {
     const categories = await getCategories();
@@ -484,8 +423,6 @@ app.get("/api/categories", async (req, res) => {
   }
 });
 
-
-// GET para buscar posts por categoría
 app.get('/api/posts/categories/:categorie', async (req, res) => {
     const categoriaBuscada = req.params.categorie.toLowerCase();
 
@@ -504,7 +441,6 @@ app.get('/api/posts/categories/:categorie', async (req, res) => {
     }
 });
 
-// GET: top categorías usadas por un usuario
 app.get("/api/users/:user_id/top-categories", async (req, res) => {
   const user_id = parseInt(req.params.user_id);
 
@@ -523,12 +459,10 @@ app.get("/api/users/:user_id/top-categories", async (req, res) => {
       }
     });
 
-    // Ordenamos de más a menos usadas
     const sorted = Object.entries(counts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 3);
 
-    // Traemos los nombres de categorías
     const allCategories = await getCategories();
 
     const result = sorted.map(([catId, total]) => {
@@ -548,11 +482,6 @@ app.get("/api/users/:user_id/top-categories", async (req, res) => {
   }
 });
 
-// =======================================
-// Estadísticas del usuario
-// =======================================
-
-// GET stats de sueños y lunas de un usuario
 app.get("/api/users/:user_id/stats", async (req, res) => {
   const user_id = parseInt(req.params.user_id);
 
@@ -572,10 +501,6 @@ app.get("/api/users/:user_id/stats", async (req, res) => {
     res.status(500).json({ error: "Error al obtener estadísticas del usuario" });
   }
 });
-
-// =======================================
-// LOGIN
-// =======================================
 
 app.post("/api/login", async (req, res) => {
   try {
@@ -609,20 +534,12 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// =======================================
-// LOGOUT
-// =======================================
-
 app.post("/api/logout", (req, res) => {
-  const { username } = req.body; // viene del fetch desde el frontend
+  const { username } = req.body;
   console.log(`Usuario "${username}" ha cerrado sesión desde el navegador`);
   res.json({ message: "Logout registrado en el servidor" });
 });
 
-
-
-
-// SERVIDOR
 app.listen(PORT, () => {
   console.log('Servidor corriendo en http://localhost:' + PORT);
 });
