@@ -33,17 +33,45 @@ Antes de levantar el proyecto, asegurate de tener instalados:
 ```bash
 git clone git@github.com:ari-pz/dreamlog.git
 ```
-2. **Instalar dependencias del backend**
+2. **Levantar el proyecto con Docker**
 ```bash
 cd dreamlog
-cd backend
-npm install
+docker compose up --build
 ```
-3. **Levantar la base de datos y el Backend**
-```bash
-cd ..
-make dev
-```
+
+## 🧱 Arquitectura del sistema
+
+Dreamlog está desarrollado siguiendo una arquitectura en tres capas, desacopladas mediante Docker Compose:
+
+FRONTEND
+- Sitio estático servido mediante Nginx.
+- Se comunica con el backend mediante solicitudes fetch() a la API REST.
+- Se ejecuta en un contenedor independiente.
+
+BACKEND
+- API REST desarrollada en Node.js con Express.
+- Expone endpoints bajo el prefijo /api.
+- Maneja la conexión con la base de datos.
+- Devuelve datos en formato JSON.
+- Se ejecuta en un contenedor independiente.
+
+BASE DE DATOS
+- Motor PostgreSQL.
+- Contiene las entidades principales del sistema: Users, Posts, Categories, Lunas
+- Utiliza claves foráneas para definir relaciones entre entidades.
+
+## 🔗 Comunicación entre servicios
+
+Flujo de una solicitud: 
+
+1) El usuario accede al frontend en http://localhost:3000.
+2) Nginx sirve los archivos estáticos (HTML, CSS, JS).
+3) El frontend realiza una solicitud fetch() a /api/....
+4) Nginx redirige esa solicitud al contenedor del backend.
+5) El backend procesa la lógica y consulta PostgreSQL.
+6) PostgreSQL devuelve los datos.
+7) El backend responde en formato JSON.
+8) El frontend renderiza dinámicamente la información.
 
 ## 📸 Capturas de pantalla
 
@@ -62,5 +90,4 @@ make dev
 
 **Nuevo Sueño**
 ![newpost](./assets/newpost1.png)
-
 
