@@ -1,6 +1,4 @@
 const { Pool } = require("pg");
-
-//busco url 
 const direBaseDatos = process.env.DATABASE_URL;
 let configuracionDb;
 
@@ -21,17 +19,11 @@ if (direBaseDatos) {
 
 const dbClient = new Pool(configuracionDb);
 
-
-
-// GET all MOON
 async function getAllMoons() {
   const response = await dbClient.query("SELECT * FROM lunas");
   return response.rows;
 }
 
-// ===================================================
-// FUNCIONES PARA POSTS
-// ===================================================
 // Función para obtener UN SOLO post por su ID
 async function getPostById(postId) {
   try {
@@ -44,8 +36,6 @@ async function getPostById(postId) {
     `;
     const values = [postId];
     const result = await dbClient.query(query, values);
-
-    // Devuelve el primer elemento (el post único) o null si no existe
     return result.rows[0] || null;
   } catch (error) {
     console.error('Error obteniendo post por ID:', error);
@@ -53,8 +43,6 @@ async function getPostById(postId) {
   }
 }
 
-
-// GET: GET all POSTS
 async function getAllPosts() {
   const query = `
     SELECT 
@@ -74,9 +62,6 @@ async function getAllPosts() {
   const { rows } = await dbClient.query(query);
   return rows;
 }
-
-
-// GET: GET POST by user_id
 async function getPostsByUserId(user_id) {
   const query = `
     SELECT 
@@ -98,16 +83,11 @@ async function getPostsByUserId(user_id) {
   return result.rows;
 }
 
-
-//Para el desplegables delnewpost.html
 async function getCategories() {
   const query = `SELECT category_id, name FROM categories ORDER BY name ASC;`;
   const { rows } = await dbClient.query(query);
   return rows;
 }
-
-
-// GET: cantidad de posts 
 async function getPostsCount(user_id) {
   const query = `SELECT COUNT(*) FROM posts WHERE user_id = $1`;
   const { rows } = await dbClient.query(query, [user_id]);
@@ -136,8 +116,6 @@ async function getPostsByCategory(categoria) {
   return rows;
 }
 
-
-// INSERT post
 async function createPost(user_id, content, image, category_id) {
   const query = `
     INSERT INTO posts (user_id, content, image, category_id)
@@ -149,12 +127,6 @@ async function createPost(user_id, content, image, category_id) {
   return result.rows[0];
 }
 
-
-
-
-
-
-// Verificar si es usuario dio 'like'
 async function hasMoon(user_id, post_id) {
   const query = `
     SELECT 1 FROM lunas WHERE user_id = $1 AND post_id = $2
@@ -162,8 +134,6 @@ async function hasMoon(user_id, post_id) {
   const result = await dbClient.query(query, [user_id, post_id]);
   return result.rowCount > 0;
 }
-
-// Agregar luna 
 async function addMoon(user_id, post_id) {
   const query = `
     INSERT INTO lunas (user_id, post_id)
@@ -172,16 +142,12 @@ async function addMoon(user_id, post_id) {
   `;
   await dbClient.query(query, [user_id, post_id]);
 }
-
-// REMOVE moon
 async function removeMoon(user_id, post_id) {
   const query = `
     DELETE FROM lunas WHERE user_id = $1 AND post_id = $2
   `;
   await dbClient.query(query, [user_id, post_id]);
 }
-
-// COUNT moons
 async function getMoonCount(post_id) {
   const query = `
     SELECT COUNT(*) FROM lunas WHERE post_id = $1
@@ -189,8 +155,6 @@ async function getMoonCount(post_id) {
   const { rows } = await dbClient.query(query, [post_id]);
   return parseInt(rows[0].count, 10);
 }
-
-// DELETE post
 async function deletePost(post_id) {
   try {
     const result = await dbClient.query(
@@ -209,7 +173,6 @@ async function deletePost(post_id) {
 }
 
 
-//UPDATE post
 async function updatePost(postId, content, image) {
   try {
     const query = `
@@ -233,10 +196,6 @@ async function updatePost(postId, content, image) {
   }
 }
 
-
-// ===================================================
-// EXPORTAR FUNCIONES
-// ===================================================
 module.exports = {
   getAllPosts,
   getPostsByUserId,
