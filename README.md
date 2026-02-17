@@ -61,6 +61,6 @@ make dev
 ![profile](./assets/profile.png)
 
 **Nuevo Sueño**
-![newpost](./assets/newpost.png)
+![newpost](./assets/newpost1.png)
 
 
