@@ -24,7 +24,6 @@ async function getAllMoons() {
   return response.rows;
 }
 
-// Función para obtener UN SOLO post por su ID
 async function getPostById(postId) {
   try {
     const query = `
