@@ -1,6 +1,5 @@
 const { Pool } = require("pg");
 
-//busco url 
 const direBaseDatos = process.env.DATABASE_URL;
 let configuracionDb;
 
@@ -21,38 +20,25 @@ if (direBaseDatos) {
 
 const dbClient = new Pool(configuracionDb);
 
-//Testeo conexion
 dbClient.on('connect', () => {
   console.log('Conectado a PostgreSQL (users.js)');
 });
 
-// ===================================================
-// VALIDACIÓN DE CONTRASEÑA
-// ===================================================
 function isValidPassword(password) {
   const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
   return regex.test(password);
 }
 
-// ===================================================
-// VALIDACIÓN DE USERNAME
-// ===================================================
+
 function isValidUsername(username) {
   return typeof username === "string" && username.length >= 4;
 }
 
-
-// ===================================================
-// FUNCIONES PARA USERS
-// ===================================================
-
-// GET all USERS
 async function getAllUsers() {
   const response = await dbClient.query("SELECT * FROM users");
   return response.rows;
 }
 
-// GET USER by ID
 async function getUserById(user_id) {
   const result = await dbClient.query(
     "SELECT * FROM users WHERE user_id = $1",
@@ -61,7 +47,6 @@ async function getUserById(user_id) {
   return result.rows[0];
 }
 
-// GET USER by USERNAME
 async function getUserByUsername(username) {
   const result = await dbClient.query(
     "SELECT * FROM users WHERE username = $1",
@@ -70,7 +55,6 @@ async function getUserByUsername(username) {
   return result.rows[0];
 }
 
-// POST USER
 async function createUser({ username, password, bio, pfp, pet_id }) {
 
   if (!isValidUsername(username)) {
@@ -95,12 +79,9 @@ async function createUser({ username, password, bio, pfp, pet_id }) {
   return result.rows[0];
 }
 
-
-
-// TRAER PERFIL DEL USUARIO LOGUEADO
 async function getLoggedUserProfile() {
   const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
-  if (!loggedUser) return null; // si no está logueado
+  if (!loggedUser) return null;
   try {
     const response = await fetch(`/api/users/${loggedUser.user_id}`);
     if (!response.ok) throw new Error("No se pudo obtener el perfil");
@@ -112,8 +93,6 @@ async function getLoggedUserProfile() {
   }
 }
 
-
-//MODIFICAR Datos del Usuario
 async function updateUser(user_id, username, password, bio, pfp) {
     try {
         let campos = [];
@@ -181,9 +160,6 @@ async function updateUser(user_id, username, password, bio, pfp) {
     }
 }
 
-
-
-// Verificar si un nombre ya está en uso.  Si ya existe el nombre => True
 async function nameInUse(username, excluyendoUserId = null) {
     try {
         let query, params;
@@ -205,8 +181,6 @@ async function nameInUse(username, excluyendoUserId = null) {
     }
 }
 
-
-//ELIMINAR Usuario
 async function deleteUser(user_id) {
     try {
         const query = "DELETE FROM users WHERE user_id = $1";
