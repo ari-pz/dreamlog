@@ -32,10 +32,16 @@ Antes de levantar el proyecto, asegurate de tener instalados:
 1. **Clonar el repositorio**
 ```bash
 git clone git@github.com:ari-pz/dreamlog.git
+cd dreamlog
 ```
+2. **Levantar el backend y base de datos**
+```bash
+cd backend
+npm install
+```
+
 2. **Levantar el proyecto con Docker**
 ```bash
-cd dreamlog
 docker compose up --build
 ```
 
