@@ -39,8 +39,7 @@ cd dreamlog
 cd backend
 npm install
 ```
-
-2. **Levantar el proyecto con Docker**
+3. **Levantar el proyecto con Docker**
 ```bash
 docker compose up --build
 ```
