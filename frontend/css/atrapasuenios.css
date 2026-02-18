@@ -214,15 +214,15 @@
 
 @keyframes brillos {
   0% {
-    box-shadow: 0 0 6px rgba(255,255,255,0.12);
+    box-shadow: 0 0 6px rgba(196,169,255,0.2);
     transform: translateY(0px);
   }
   50% {
-    box-shadow: 0 0 14px rgba(255,255,255,0.35);
+    box-shadow: 0 0 18px rgba(196,169,255,0.45);
     transform: translateY(-3px);
   }
   100% {
-    box-shadow: 0 0 6px rgba(255,255,255,0.12);
+    box-shadow: 0 0 6px rgba(196,169,255,0.2);
     transform: translateY(0px);
   }
 }
@@ -300,4 +300,82 @@
     visibility: visible;
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+}
+
+.category-boxes {
+  display: grid;
+  grid-template-columns: repeat(3, 180px);
+  justify-content: center;
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.cat-box {
+  height: 140px;
+  border-radius: 18px;
+  padding: 25px 15px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(196,169,255,0.3);
+  box-shadow: 0 0 15px rgba(196,169,255,0.15);
+  transition: all 0.3s ease;
+  color: #f3eaff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.cat-box:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 0 25px rgba(196,169,255,0.4);
+}
+
+.cat-box h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.cat-count {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  color: #d8cfff;
+}
+
+.cat-box:nth-child(1) {
+  background: linear-gradient(145deg, rgba(90,60,150,0.5), rgba(40,20,80,0.6));
+}
+
+.cat-box:nth-child(2) {
+  background: linear-gradient(145deg, rgba(60,90,160,0.5), rgba(20,40,80,0.6));
+}
+
+.cat-box:nth-child(3) {
+  background: linear-gradient(145deg, rgba(120,70,170,0.5), rgba(50,20,90,0.6));
+}
+
+.cat-box:nth-child(4) {
+  background: linear-gradient(145deg, rgba(80,120,180,0.5), rgba(30,50,100,0.6));
+}
+
+.cat-box:nth-child(5) {
+  background: linear-gradient(145deg, rgba(140,90,200,0.5), rgba(60,30,110,0.6));
+}
+
+.cat-box:nth-child(6) {
+  background: linear-gradient(145deg, rgba(70,100,170,0.5), rgba(25,45,90,0.6));
+}
+
+@media (max-width: 768px) {
+  .category-boxes {
+    grid-template-columns: repeat(2, 150px);
+  }
+}
+
+@media (max-width: 480px) {
+  .category-boxes {
+    grid-template-columns: 1fr;
+  }
 }
