@@ -37,6 +37,40 @@ document.addEventListener("DOMContentLoaded", () => {
       else pluma.classList.remove('active');
     });
   }
+  
+  function actualizarCategorias(userId) {
+    fetch(`${BACKEND_URL}/api/posts/user/${userId}`)
+      .then(res => res.json())
+      .then(posts => {
+
+        const conteo = {};
+
+        // Contar posts por category_id
+        posts.forEach(post => {
+          if (post.category_id) {
+            conteo[post.category_id] = (conteo[post.category_id] || 0) + 1;
+          }
+        });
+
+        const boxes = document.querySelectorAll(".cat-box");
+
+        boxes.forEach(box => {
+          const catId = parseInt(box.dataset.id);
+          const cantidad = conteo[catId] || 0;
+
+          box.querySelector(".cat-count").textContent = `${cantidad} sueños`;
+
+          if (cantidad > 0) {
+            box.classList.remove("empty");
+          } else {
+            box.classList.add("empty");
+          }
+        });
+
+      })
+      .catch(err => console.error("Error cargando categorías:", err));
+  }
+
 
   if (loggedUser) {
     const userId = loggedUser.user_id;
@@ -48,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cantidadPosts = stats.totalPosts;
 
         actualizarPlumas();
+        actualizarCategorias(userId);
 
         const statsDiv = document.querySelector(".dream-stats");
         statsDiv.innerHTML = `
