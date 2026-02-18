@@ -68,6 +68,7 @@ async function getPostsByUserId(user_id) {
       posts.user_id,
       posts.content,
       posts.image,
+      posts.category_id,
       posts.created_at,
       users.username,
       users.pfp,
