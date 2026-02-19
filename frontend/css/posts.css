@@ -291,3 +291,12 @@
 .add-comment-btn:active {
   transform: scale(0.98);
 }
+
+.username-link {
+  color: #c4a9ff;
+  text-decoration: none;
+}
+
+.username-link:hover {
+  text-decoration: underline;
+}

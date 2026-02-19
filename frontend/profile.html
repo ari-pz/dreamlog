@@ -80,19 +80,34 @@
       return;
     }
 
+    // Obtener user_id de la URL
+    const params = new URLSearchParams(window.location.search);
+    const userIdFromUrl = params.get("user_id");
+
+    // Si hay en URL usamos ese, si no usamos el logueado
+    const userIdToLoad = userIdFromUrl || loggedUser.user_id;
+
     try {
-      const res = await fetch(`${BACKEND_URL}/api/users/${loggedUser.user_id}`);
+      const res = await fetch(`${BACKEND_URL}/api/users/${userIdToLoad}`);
       if (!res.ok) throw new Error("No se pudo obtener el perfil");
       const user = await res.json();
 
       document.getElementById("profile-username").textContent = `@${user.username}`;
       document.getElementById("profile-bio").textContent = user.bio || "Sin bio";
       document.getElementById("profile-pic").src = user.pfp || "/img/icon_default.png";
+
+      // Si estoy viendo otro perfil, oculto botones de editar/eliminar
+      if (userIdToLoad != loggedUser.user_id) {
+        document.getElementById("boton-editar").style.display = "none";
+        document.getElementById("boton-eliminar").style.display = "none";
+      }
+
     } catch (err) {
       console.error(err);
     }
   });
-  </script> 
+  </script>
+
 
 
 

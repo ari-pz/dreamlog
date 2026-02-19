@@ -10,7 +10,13 @@ async function cargarMisPosts() {
     return;
   }
 
-  const USER_ID = loggedUser.user_id;
+  const params = new URLSearchParams(window.location.search);
+  const userIdFromUrl = params.get("user_id");
+  const USER_ID = userIdFromUrl || loggedUser.user_id;
+  if (USER_ID != loggedUser.user_id) {
+    const colDerecha = document.querySelector(".col-derecha");
+    if (colDerecha) colDerecha.style.display = "none";
+  }
 
   try {
     const res = await fetch(`${BACKEND_URL}/api/posts/user/${USER_ID}`);

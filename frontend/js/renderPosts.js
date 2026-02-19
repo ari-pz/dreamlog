@@ -21,7 +21,9 @@ function renderPosts(posts) {
       <div class="post-header">
         <div class="post-user">
           <img src="${post.pfp}" class="pfp">
-          <span class="username">@${post.username}</span>
+          <a href="profile.html?user_id=${post.user_id}" class="username">
+            @${post.username}
+          </a>
         </div>
 
         <div class="menu">
@@ -138,7 +140,15 @@ function renderPosts(posts) {
           
           <div class="comment-body" style="flex: 1; display: flex; flex-direction: column;">
              
-             <span class="comment-text"><strong>@${c.username}</strong> ${c.content}</span>
+             <span class="comment-text">
+               <strong>
+                 <a href="profile.html?user_id=${c.user_id}" class="username-link">
+                   @${c.username}
+                 </a>
+               </strong> 
+               ${c.content}
+             </span>
+
              
              ${ 
                (c.url && c.url !== "null" && c.url !== "") 
