@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS posts (
     post_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     content VARCHAR(255) NOT NULL,
-    image VARCHAR(255),
+    image TEXT,
     category_id INT REFERENCES categories(category_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -66,6 +66,6 @@ CREATE TABLE IF NOT EXISTS comments (
     user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     post_id INT NOT NULL REFERENCES posts(post_id) ON DELETE CASCADE,
     content VARCHAR(255) NOT NULL,
-    url VARCHAR(255),
+    url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
